@@ -1,45 +1,118 @@
 package othello.util;
 
+import java.util.HashSet;
+import java.util.Set;
+
 /**
  * 
  * @author Loïc Frétard
  *
- * Classe représentant une coordonée sur le plateau de jeu.
+ * Classe représentant une coordonée (couple d'entier) sur le plateau de jeu.
  * classe non-mutable
- *
- * @inv
- * 	x >= 0 && y >= 0
  */
 public class Coord {
-	private int x;
-	private int y;
-	
-	public Coord(int x, int y) {
-		if (x < 0 || y < 0) {
-			throw new AssertionError();
-		}
-		this.x = x;
-		this.y = y;
+	public static final Coord ORIGIN = new Coord(0, 0);
+	public static final Coord RIGHT = new Coord(0, 1);
+	public static final Coord DOWN = new Coord(1, 0);
+	public static final Coord LEFT = RIGHT.minus();
+	public static final Coord UP = DOWN.minus();
+	public static final Coord L_UP = LEFT.add(UP);
+	public static final Coord L_DOWN = LEFT.add(DOWN);
+	public static final Coord R_UP = RIGHT.add(UP);
+	public static final Coord R_DOWN = RIGHT.add(DOWN);
+	public static final Set<Coord> CARDINALS = new HashSet<Coord>();
+	static {
+		CARDINALS.add(LEFT);
+		CARDINALS.add(RIGHT);
+		CARDINALS.add(UP);
+		CARDINALS.add(DOWN);
+		CARDINALS.add(L_UP);
+		CARDINALS.add(L_DOWN);
+		CARDINALS.add(R_UP);
+		CARDINALS.add(R_DOWN);
 	}
 	
 	/**
-	 * Addition de deux coordonnées.
-	 * @post
-	 * 	return == Coord(c1.x + c2.x, c1.y + c2.y)
+	 * Calcule la distance entre c1 et c2.
 	 */
-	public Coord add(Coord c1, Coord c2) {
-		return new Coord(c1.x + c2.x, c1.y + c2.y);
+	public static double dist(final Coord c1, final Coord c2) {
+		final Coord c = c1.minus(c2);
+		return Math.sqrt(c.row * c.row + c.col * c.col);
 	}
 	
+	private final int row;
+	private final int col;
+	
+	// CONSTRUCTEUR
+	public Coord(int row, int col) {
+		this.row = row;
+		this.col = col;
+	}
+	
+	// REQUETES
+	public int row() { return row; }
+	public int col() { return col; }
+
 	public boolean equals(Object obj) {
 		if (obj != null && this.getClass() == obj.getClass()) {
-			Coord c = (Coord) obj;
-			return x == c.x && y == c.y;
+			final Coord c = (Coord) obj;
+			return row == c.row && col == c.col;
 		}
 		return false;
 	}
-	
+
 	public int hashCode() {
-		return 7 * x + y;
+		return 7 * row + col;
 	}
+	
+	// CREATEURS
+	/**
+	 * Addition de deux coordonnées.
+	 * @post
+	 * 	return.equals(Coord(this.row + c.row, this.col + c.col))
+	 */
+	public Coord add(final Coord c) {
+		return new Coord(row + c.row, col + c.col);
+	}
+	
+	/**
+	 * Renvoie l'opposé de this.
+	 * @post
+	 * 	return.equals(Coord(-this.row, -this.col))
+	 */
+	public Coord minus() {
+		return new Coord(-row, -col);
+	}
+
+	/**
+	 * Soustraction de deux coordonnées.
+	 * @post
+	 * 	return.equals(Coord(this.row - c.row, this.col - c.col))
+	 */
+	public Coord minus(final Coord c) {
+		return new Coord(row - c.row, col - c.col);
+	}
+
+	/**
+	 * Multiplication d'une coordonnée par un entier.
+	 * @post
+	 * 	return.equals(Coord(n * this.row, n * this.col))
+	 */
+	public Coord mult(int n) {
+		return new Coord(n * row, n * col);
+	}
+	
+	/**
+	 * Sucre syntaxique.
+	 * A utiliser dans un Iterator par exemple pour parcourir un axe.
+	 */
+	public Coord left() { return this.add(LEFT); }
+	public Coord right() { return this.add(RIGHT); }
+	public Coord up() { return this.add(UP); }
+	public Coord down() { return this.add(DOWN); }
+	public Coord upLeft() { return this.add(L_UP); }
+	public Coord downLeft() { return this.add(L_DOWN); }
+	public Coord upRight() { return this.add(R_UP); }
+	public Coord downRight() { return this.add(R_DOWN); }
+	
 }
