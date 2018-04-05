@@ -9,6 +9,13 @@ import java.util.Set;
  *
  * Classe représentant une coordonée (couple d'entier) sur le plateau de jeu.
  * classe non-mutable
+ * 
+ * L'origine se trouve en haut à gauche de l'écran
+ *   |
+ * --+---->
+ *   |
+ *   |
+ *   V
  */
 public class Coord {
 	public static final Coord ORIGIN = new Coord(0, 0);
@@ -52,6 +59,26 @@ public class Coord {
 	// REQUETES
 	public int row() { return row; }
 	public int col() { return col; }
+	
+	/**
+	 * Renvoie true si this est "plus proche" de l'origine que c.
+	 * Ici "plus proche" signifie que this est dans le rectangle
+	 * défini par ORIGIN et c inclus.
+	 * Sinon renvoie false.
+	 */
+	public boolean isInfTo(final Coord c) {
+		return row * c.row >= 0 && col * c.col >= 0
+			&& Math.abs(row) <= Math.abs(c.row)
+			&& Math.abs(col) <= Math.abs(c.col);
+	}
+	
+	/**
+	 * Renvoie true si this se trouve dans le rectangle défini par c1 et c2
+	 * Sinon renvoie false.
+	 */
+	public boolean isInRect(final Coord c1, final Coord c2) {
+		return this.minus(c1).isInfTo(c2.minus(c1));
+	}
 
 	public boolean equals(Object obj) {
 		if (obj != null && this.getClass() == obj.getClass()) {

@@ -1,5 +1,8 @@
 package othello.util;
 
+import java.util.Iterator;
+import java.util.List;
+
 /**
  * 
  * @author Loïc Frétard
@@ -9,7 +12,10 @@ package othello.util;
  * 
  */
 public interface StrategyTree {
-	public interface Node {
-		
+	interface Node extends Iterable<StrategyTree> {
+		List<StrategyTree> children();
+		int getEval();
+		void setEval(int e);
 	}
+	Board getBoard();
 }
