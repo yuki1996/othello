@@ -9,13 +9,36 @@ import java.util.List;
  * 
  * Classe représentant les arbres utilisés pour les stratégies.
  * 
- * 
  */
 public interface StrategyTree {
-	interface Node extends Iterable<StrategyTree> {
-		List<StrategyTree> children();
-		int getEval();
-		void setEval(int e);
+	/**
+	 * Classe représentant un noeud/une feuille de l'arbre.
+	 * On peut parcourir les enfants d'un Node en le mettant dans un for-each.
+	 */
+	interface Node extends Iterable<Node> {
+		/**
+		 * renvoie la liste des enfants deu noeud.
+		 */
+		List<? extends Node> children();
+		
+		/**
+		 * Renvoie l'évaluation du noeud.
+		 */
+		double getEval();
+		
+		/**
+		 * Modifie l'évaluation du noeud.
+		 */
+		void setEval(double e);
 	}
+	
+	/**
+	 * Renvoie le Board associé à cet arbre.
+	 */
 	Board getBoard();
+	
+	/**
+	 * Renvoie la racine de l'arbre.
+	 */
+	Node getRoot();
 }
