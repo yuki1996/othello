@@ -1,0 +1,28 @@
+<i> Othello
+isGameOver() : Bool //cantplay(currentplayer) ??
+foePlayed() : Bool //le jouer adverse a joué
+getCurrentPlayer()
+restart()
+getValidMoves(Color) : Set <ICoord>
+getBoard() : Board
+SpawnPlayer() // Factor
+SpawnAI(Strategy,Niveau)
+canPlay(IPlayer p)
+
+<i> Board
+isValidMove(ICoord,Color) : Bool //getColor(ICoord)
+getColor(ICoord) : Color
+getSize() : int
+isValid(ICoord)
+putDisk(ICoord, Color)
+
+Enum Color
+	BLACK
+	WHITE
+	NB : NULL
+	
+<i> IPlayer
+final myColor
+getColor() : Color
+abstractPlayer() : void
+getBoard() : Board
