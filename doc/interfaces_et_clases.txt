@@ -9,6 +9,7 @@ SpawnPlayer() // Factor
 SpawnAI(Strategy,Niveau)
 canPlay(IPlayer p)
 
+
 <i> Board
 isValidMove(ICoord,Color) : Bool //getColor(ICoord)
 getColor(ICoord) : Color
