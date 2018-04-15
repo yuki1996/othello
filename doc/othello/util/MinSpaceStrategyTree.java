@@ -4,6 +4,8 @@ import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 
+import othello.model.Board;
+
 public class MinSpaceStrategyTree implements StrategyTree {
 	private static final int BITS = 
 		(int) Math.ceil(Math.log((Color.values().length + 1)) / Math.log(2.0));
