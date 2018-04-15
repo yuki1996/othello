@@ -47,7 +47,7 @@ public class MinSpaceStrategyTree implements StrategyTree {
 		// OUTILS
 		private void setDisk(Coord move, Color c) {
 			assert(move != null && c != null);
-			assert(move.isInfTo(new Coord(board.getSize(), board.getSize())));
+			assert(move.isInRect(new Coord(board.getSize(), board.getSize())));
 			
 			int size = board.getSize();
 			//int nbCell = size * size;
