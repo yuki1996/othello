@@ -6,12 +6,25 @@ Set<Coord> getValidMoves(Color color) {
             if (board.getColor(x) != color && board.getColor(x) != null && board.isValid(x)) {
                 x = x.plus(card)
                 while (board.getColor(x) != color && board.getColor(x) != null && board.isValid(x)) {
-                    x = x.plus(card)
+                    x = x.plus(card);
                 }
                 if (board.getColor(x) == null && board.isValid(x)) {
                     ret.add(x);
                 }
             }
+        }
+    }
+}
+
+
+#### Othello ou Board ?
+@pre
+    getValidMoves(color).contains(c)
+void putDisk(Coord c, Color color) {
+    insérer(c, color);
+    for (Coord card : Coord.CARDINALS) {
+        for (Coord x = c.plus(card); board.getColor(x) != color; x = x.plus(card)) {
+            insérer(x, color);
         }
     }
 }

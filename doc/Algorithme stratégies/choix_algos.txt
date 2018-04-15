@@ -1,0 +1,9 @@
+SSS* # prioritaire
+alpha-beta (negamax)
+
+heuristiques/difficultés:
+- le plus difficile : priorité aux coins puis bords + autre(s) critère(s)
+    choisi le "meilleur coup" à 100%
+- le plus facile : choix random
+- variations avec une probabilité de faire un choix moins interessant 
+    (a*(e^(1/(b*x))-1)) avec a et b des paramètres (x appartient à [0:1[ donc problème en 0)
