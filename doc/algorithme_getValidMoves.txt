@@ -1,0 +1,17 @@
+Set<Coord> getValidMoves(Color color) {
+    Set<Coord> ret = new HashSet<Coord>();
+    for (d : DISKS[color]) {
+        for (Coord card : Coord.CARDINALS) {
+            Coord x = d.plus(card);
+            if (board.getColor(x) != color && board.getColor(x) != null && board.isValid(x)) {
+                x = x.plus(card)
+                while (board.getColor(x) != color && board.getColor(x) != null && board.isValid(x)) {
+                    x = x.plus(card)
+                }
+                if (board.getColor(x) == null && board.isValid(x)) {
+                    ret.add(x);
+                }
+            }
+        }
+    }
+}
