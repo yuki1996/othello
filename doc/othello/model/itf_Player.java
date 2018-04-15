@@ -2,10 +2,9 @@ package othello.model;
 
 import othello.util.Color;
 
-public interface Player{
+public interface itf_Player{
 //	final Color myColor = p;
 	Color getColor();
-	void abstractPlayer();
+	void Play();
 	Board getBoard();
-
 }
