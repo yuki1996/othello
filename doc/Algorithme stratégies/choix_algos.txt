@@ -6,4 +6,28 @@ heuristiques/difficultés:
     choisi le "meilleur coup" à 100%
 - le plus facile : choix random
 - variations avec une probabilité de faire un choix moins interessant 
-    (a*(e^(1/(b*x))-1)) avec a et b des paramètres (x appartient à [0:1[ donc problème en 0)
+
+on défini fpn(x) : [0:1[ -> {0, ..., n - 1} paramétrée par p (proba d'avoir 0) et n (nb de coups possibles)
+    {
+        si fpn est croissante (plus interressante)
+        {
+            fpn(0) = 0
+            fpn(1) = n
+            fpn(p) = 1
+        }
+        si fpn est décroissante
+        {
+            fpn(1) = 0
+            fpn(0) = n
+            fpn(1-p) = 1
+        }
+    }
+
+    fpn(x) = a*e^(b*x) - a = a*(e^(b*x) - 1)
+    b = 
+    a = (n-1)/(e^b - e^(p*b))
+
+    (a*(e^(1/(b*x+1))-1)) avec a et b des paramètres (x appartient à [0:1[ donc problème en 0)
+    (1/p - 1)(1/x - 1) avec 0 <= p < 1 probabilité d'avoir le meilleur coup
+
+    beaucoup plus simple n*x^(-ln(n)/ln(p))
