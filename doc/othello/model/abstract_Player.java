@@ -2,25 +2,23 @@ package othello.model;
 
 import othello.util.Color;
 
-abstract class abstract_Player implements IPlayer{
+abstract class abstract_Player implements itf_Player{
 	
 	protected final Color myColor;
-	protected final IBoard board;
 	
-	abstract_Player(Color myColor, IBoard board){
+	abstract_Player(Color myColor){
 		this.myColor = myColor;
-		this.board = board;
 	}
 	
 	public Color getColor() {
 		return this.myColor;
 	}
 	
-	public IBoard getBoard() {
-		return this.board;
+	public Board getBoard() {
+		return new Board(8);
 	}
 	
-	public void play() {
+	public void Play() {
 		
 	}
 }
