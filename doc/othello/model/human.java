@@ -2,9 +2,9 @@ package othello.model;
 
 import othello.util.Color;
 
-public class human extends abstract_Player{
+public class Human extends abstract_Player{
 		
-	human(Color myColor){
-		super(myColor);
+	Human(Color myColor, IBoard board){
+		super(myColor, board);
 	}
 }
