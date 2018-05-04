@@ -1,7 +1,7 @@
 package othello.util;
 
 /**
- * Modélise une couleur. (gné)
+ * Modélise une couleur. 
  * 
  * une case vide ou un match nul sera représenté par null
  */
