@@ -1,5 +1,7 @@
 package othello.model;
 
+import java.util.Set;
+
 import othello.util.Color;
 import othello.util.Coord;
 
@@ -33,4 +35,8 @@ public interface IBoard {
 	 */
 	void putDisk(Coord xy, Color color);
 	
+	/**
+	 * Retourne les mouvements valides du joueur de la couleur player_color
+	 */
+	public Set<Coord> getValidMoves(Color player_color);
 }
