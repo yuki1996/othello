@@ -23,6 +23,11 @@ public interface IOthello {
 	public IBoard getBoard();
 	
 	/**
+	 * Retourne la couleur du gagnant.
+	 */
+	public Color isWinner();
+	
+	/**
 	 * Retourne le joueur courant
 	 */
 	public IPlayer getCurrentPlayer();
@@ -40,7 +45,7 @@ public interface IOthello {
 	/**
 	 * Le joueur courant joue un tour. S'il peut pas jouer mais son adversaire si alors
 	 * le joueur passe juste son tour.
-	 * xy est la coordonnée selectionnée
+	 * xy est la coordonnée selectionnée, elle peut être null
 	 * @pre : !isGameOver()
 	 */
 	public void turn(Coord xy);

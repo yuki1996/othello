@@ -8,40 +8,40 @@ import othello.util.Coord;
 
 public class Othello implements IOthello {
 	
-	private IPlayer playerBlackpass, playerWhitepass;
+	private IPlayer playerBlack, playerWhite;
 	private IBoard myBoard;
 	private IPlayer currentPlayer;
 	
 	//Jeu avec 2 humains
 	public Othello() {
 		myBoard = new Board(8);
-		playerBlackpass = spawnPlayer(Color.BLACK);
-		playerWhitepass = spawnPlayer(Color.WHITE);
+		playerBlack = spawnPlayer(Color.BLACK);
+		playerWhite = spawnPlayer(Color.WHITE);
 		initialisationBoard();
-		currentPlayer = playerBlackpass;
+		currentPlayer = playerBlack;
 	}
 	
 	//jeu avec 1 humain et 1 IA, l'humain joue d'abord
 	public Othello(String strategie, int niveau) {
 		myBoard = new Board(8);
-		playerBlackpass = spawnPlayer(Color.BLACK);
-		playerWhitepass = spawnAI(Color.WHITE, strategie, niveau);
+		playerBlack = spawnPlayer(Color.BLACK);
+		playerWhite = spawnAI(Color.WHITE, strategie, niveau);
 		initialisationBoard();
-		currentPlayer = playerBlackpass;
+		currentPlayer = playerBlack;
 	}
 	
 	//Jeu avec 2 IA
 	public Othello(String strategieP1, int niveauP1, String strategieP2, int niveauP2) {
 		myBoard = new Board(8);
-		playerBlackpass = spawnAI(Color.BLACK, strategieP1, niveauP1);
-		playerWhitepass = spawnAI(Color.WHITE, strategieP2, niveauP2);
+		playerBlack = spawnAI(Color.BLACK, strategieP1, niveauP1);
+		playerWhite = spawnAI(Color.WHITE, strategieP2, niveauP2);
 		initialisationBoard();
-		currentPlayer = playerBlackpass;
+		currentPlayer = playerBlack;
 	}
 	
 	//REQUETES
 	public boolean isGameOver() {
-		if (!foePlayed() && !canPlay(currentPlayer)) {
+		if (foePlayed() && !canPlay(currentPlayer)) {
 			return true;
 		} 
 		return false;
@@ -52,7 +52,8 @@ public class Othello implements IOthello {
 	}
 	
 	public boolean foePlayed() {
-		return true;
+		IPlayer foe = (currentPlayer == playerBlack ? playerWhite : playerBlack);
+		return !foe.isPlaying();
 	}
 	
 	public IBoard getBoard() {
@@ -66,6 +67,23 @@ public class Othello implements IOthello {
 		return false;
 	}
 	
+	public Color isWinner() {
+		if (!isGameOver()) {
+			throw new IllegalArgumentException("partie pas fini");
+		} 
+		int nbPointWhite = myBoard.getPointsPlayer(Color.WHITE);
+		int nbPointBlack = myBoard.getPointsPlayer(Color.BLACK);
+		System.out.println("white :" + nbPointWhite + "/ black :"+nbPointBlack);
+		if (nbPointWhite == nbPointBlack) {
+			return null;
+		} else if (nbPointWhite > nbPointBlack) {
+			return Color.WHITE;
+		} 
+		return Color.BLACK;
+				
+		
+	}
+	
 	//METHODES
 	public void restart() {
 		myBoard = new Board(8);
@@ -77,7 +95,7 @@ public class Othello implements IOthello {
 		} else if (canPlay(currentPlayer)) {
 			currentPlayer.play(xy);
 		}
-		currentPlayer = (currentPlayer == playerBlackpass ? playerWhitepass : playerBlackpass);
+		currentPlayer = (currentPlayer == playerBlack ? playerWhite : playerBlack);
 	}
 	
 	//OUTILS

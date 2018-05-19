@@ -3,12 +3,13 @@ package othello.model;
 import othello.util.Color;
 import othello.util.Coord;
 
-abstract class abstract_Player implements IPlayer{
+abstract class AbstractPlayer implements IPlayer{
 	
 	protected final Color myColor;
 	protected final IBoard board;
+	protected boolean isPlaying;
 	
-	abstract_Player(Color myColor, IBoard board){
+	AbstractPlayer(Color myColor, IBoard board){
 		this.myColor = myColor;
 		this.board = board;
 	}
@@ -21,12 +22,25 @@ abstract class abstract_Player implements IPlayer{
 		return this.board;
 	}
 	
-	public abstract void play(Coord xy);
+	public boolean isPlaying() {
+		return isPlaying;
+	}
 	
 	public void choose(Coord xy) {
 		if (!board.isValidMove(xy, myColor)) {
 			throw new IllegalArgumentException("impossible de poser le pion!");
 		}
-		board.putDisk(xy, myColor);
+		board.playAShot(xy, myColor);
 	}
+	
+	public void startTurn() {
+		isPlaying = true;
+	}
+
+	public void finishTurn() {
+		isPlaying = false;
+	}
+	
+	public abstract void play(Coord xy);
+	
 }

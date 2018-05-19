@@ -16,11 +16,25 @@ public interface IPlayer {
 	public IBoard getBoard();
 	
 	/**
+	 * Retourne si le joueur joue
+	 */
+	public boolean isPlaying();
+	
+	/**
+	 * Le joueur commence son tour
+	 */
+	public void startTurn();
+
+	/**
+	 * Le joueur a fini son tour
+	 */
+	public void finishTurn();
+	
+	/**
 	 * Le joueur joue son tour, la coordonnée xy est 
 	 */
 	public void play(Coord xy);
 	
-
 	/**
 	 * Le joueur choisit de poser le pion en xy
 	 */

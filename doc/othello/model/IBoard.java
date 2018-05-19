@@ -31,12 +31,23 @@ public interface IBoard {
 	
 	/**
 	 * Pose le pion
-	 * @pre : isValidMove(xy, color)
+	 * @pre : isValid(xy)
 	 */
 	void putDisk(Coord xy, Color color);
+	
+	/**
+	 * Jeu le coup en xy, cad poser le pion, et retourne les pions de l'adversaire correspondant au coup 
+	 * @pre : isValidMove(xy, color)
+	 */
+	void playAShot(Coord xy, Color color);
 	
 	/**
 	 * Retourne les mouvements valides du joueur de la couleur player_color
 	 */
 	public Set<Coord> getValidMoves(Color player_color);
+	
+	/**
+	 * Retourne le nombre de points de la couleur du joueur
+	 */
+	public int getPointsPlayer(Color colorPlayer);
 }
