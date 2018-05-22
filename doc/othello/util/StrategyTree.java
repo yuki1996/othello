@@ -31,6 +31,12 @@ public interface StrategyTree {
 		 * Modifie l'évaluation du noeud.
 		 */
 		void setEval(double e);
+		
+		/**
+		 * Renvoie la couleur de la case de coordonnée c dans l'état
+		 * contenu dans le noeud.
+		 */
+		Color getDisk(Coord move);
 	}
 	
 	/**

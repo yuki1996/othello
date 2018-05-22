@@ -44,17 +44,26 @@ public class MinSpaceStrategyTree implements StrategyTree {
 			evaluation = e;
 		}
 		
+		public Color getDisk(Coord move) {
+			assert(move != null);
+			assert(move.isInRect(new Coord(board.getSize(), board.getSize())));
+			
+			long a = ((long) Math.pow(2, BITS) - 1);
+			return a == 0 ? null :
+				Color.values()[(int) (boardState[shift(move) / Long.SIZE] | a) - 1];
+		}
+		
 		// OUTILS
 		private void setDisk(Coord move, Color c) {
 			assert(move != null && c != null);
 			assert(move.isInRect(new Coord(board.getSize(), board.getSize())));
 			
-			int size = board.getSize();
-			//int nbCell = size * size;
-			int shift = BITS * move.row() * size + move.col();
-			
-			long a = (c.ordinal() + 1) << (shift % Long.SIZE);
-			boardState[shift / Long.SIZE] |= a;
+			long a = (c.ordinal() + 1) << (shift(move) % Long.SIZE);
+			boardState[shift(move) / Long.SIZE] |= a;
+		}
+		
+		private int shift(Coord c) {
+			return BITS * c.row() * board.getSize() + c.col();
 		}
 		
 	}
