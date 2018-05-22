@@ -1,12 +1,13 @@
 package othello.model;
 
 import java.util.HashSet;
+import java.util.Observable;
 import java.util.Set;
 
 import othello.util.Color;
 import othello.util.Coord;
 
-public class Othello implements IOthello {
+public class Othello extends Observable implements IOthello {
 	
 	private IPlayer playerBlack, playerWhite;
 	private IBoard myBoard;
@@ -22,10 +23,10 @@ public class Othello implements IOthello {
 	}
 	
 	//jeu avec 1 humain et 1 IA, l'humain joue d'abord
-	public Othello(String strategie, int niveau) {
+	public Othello(int player, String strategie, int niveau) {
 		myBoard = new Board(8);
-		playerBlack = spawnPlayer(Color.BLACK);
-		playerWhite = spawnAI(Color.WHITE, strategie, niveau);
+		playerBlack = spawnPlayer(player == 0 ? Color.BLACK : Color.WHITE);
+		playerWhite = spawnAI(player == 0 ? Color.WHITE : Color.BLACK, strategie, niveau);
 		initialisationBoard();
 		currentPlayer = playerBlack;
 	}
@@ -87,6 +88,8 @@ public class Othello implements IOthello {
 	//METHODES
 	public void restart() {
 		myBoard = new Board(8);
+		initialisationBoard();
+		currentPlayer = playerBlack;
 	}
 	
 	public void turn(Coord xy) {
@@ -96,6 +99,7 @@ public class Othello implements IOthello {
 			currentPlayer.play(xy);
 		}
 		currentPlayer = (currentPlayer == playerBlack ? playerWhite : playerBlack);
+		notifyObservers();
 	}
 	
 	//OUTILS
@@ -125,5 +129,6 @@ public class Othello implements IOthello {
 		myBoard.putDisk(new Coord(4,3), Color.BLACK);
 		//E5(4,4) pion blanc
 		myBoard.putDisk(new Coord(4,4), Color.WHITE);
+		notifyObservers();
 	}
 }

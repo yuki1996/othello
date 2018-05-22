@@ -1,12 +1,13 @@
 package othello.model;
 
 import java.util.HashSet;
+import java.util.Observable;
 import java.util.Set;
 
 import othello.util.Color;
 import othello.util.Coord;
 
-public class Board implements IBoard{
+public class Board extends Observable implements IBoard {
 	
 	private int size;
 
@@ -107,8 +108,8 @@ public class Board implements IBoard{
 		        	x = x.plus(card);
 		        }
 			}
-			
 	    }
+		notifyObservers();
 	}
 	
 	public void putDisk(Coord xy, Color color) {
