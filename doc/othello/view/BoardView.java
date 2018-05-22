@@ -5,22 +5,27 @@ import java.awt.BorderLayout;
 import java.awt.GridLayout;
 
 import javax.swing.JFrame;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
-import javax.swing.SwingUtilities;
 
 import othello.model.IOthello;
+import othello.model.IPlayer;
 import othello.model.Othello;
+import othello.util.Color;
 import othello.util.Coord;
 
-public class BoardView extends JPanel {
+public class BoardView {
 
 	// ATTRIBUTS
-	
+
     public final int BORDER_SIZE = 1;
     
     private IOthello model;
-    
     private CellView[][] cells;
+    private JFrame mainFrame;
+    private JLabel currentPlayer;
+    private JLabel whiteDiskNb;
+    private JLabel blackDiskNb;
     
     // CONSTRUCTEUR
     public BoardView(IOthello model) {
@@ -37,11 +42,28 @@ public class BoardView extends JPanel {
     
     // COMMANDES
     
+    public void display() {
+        mainFrame.pack();
+        mainFrame.setLocationRelativeTo(null);
+        mainFrame.setVisible(true);
+    }
+    
     public void setModel(IOthello model) {
         this.model = model;
+        Color colorCurrentPlayer = getModel().getCurrentPlayer().getColor();
         for(int i = 0 ; i < cells.length; ++i) {
         	for(int j = 0 ; j < cells[i].length; ++j) {
-                cells[i][j].repaint();
+        		Coord coord = new Coord(i,j);
+        		Color c = getModel().getBoard().getColor(coord);
+        		if (c == Color.BLACK) {
+                    cells[i][j].setDrawableCell(DrawableCell.BLACK);
+        		} else if (c == Color.WHITE) {
+                    cells[i][j].setDrawableCell(DrawableCell.WHITE);
+        		} else if (getModel().getValidMoves(colorCurrentPlayer).contains(coord)) {
+                    cells[i][j].setDrawableCell(DrawableCell.VALID_MOVE);
+        		} else {
+                    cells[i][j].setDrawableCell(DrawableCell.INVALID_MOVE);
+        		}
             }
         }
     }
@@ -52,22 +74,50 @@ public class BoardView extends JPanel {
     
     private void createView() {
         cells = new CellView[model.getBoard().getSize()][model.getBoard().getSize()];
+        Color colorCurrentPlayer = getModel().getCurrentPlayer().getColor();
         for(int i = 0 ; i < cells.length; ++i) {
         	for(int j = 0 ; j < cells[i].length; ++j) {
-                cells[i][j] = new CellView(this, new Coord(i,j));
+        		Coord coord = new Coord(i,j);
+        		Color c = getModel().getBoard().getColor(coord);
+        		if (c == Color.BLACK) {
+                    cells[i][j] = new CellView(DrawableCell.BLACK);
+        		} else if (c == Color.WHITE) {
+                    cells[i][j] = new CellView(DrawableCell.WHITE);
+        		} else if (getModel().getValidMoves(colorCurrentPlayer).contains(coord)) {
+                    cells[i][j] = new CellView(DrawableCell.VALID_MOVE);
+        		} else {
+                    cells[i][j] = new CellView(DrawableCell.INVALID_MOVE);
+        		}
             }
         }
+        mainFrame = new JFrame("Plateau de jeu");
+        mainFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        mainFrame.setResizable(false);
+        currentPlayer = new JLabel("C'est le tour du joueur " 
+        		+ getPlayerName(model.getCurrentPlayer()) + ".");
+        whiteDiskNb = new JLabel("salut");
+        blackDiskNb = new JLabel("salut");
     }
     
     private void placeComponents() {
-        this.setLayout(new GridLayout(model.getBoard().getSize(), 
+    	JPanel p = new JPanel(new GridLayout(model.getBoard().getSize(), 
         		model.getBoard().getSize())); {
 			for(int i = 0 ; i < cells.length; ++i) {
 	        	for(int j = 0 ; j < cells[i].length; ++j) {
-	            	this.add(cells[i][j]);
+	            	p.add(cells[i][j]);
 	            }
 	        }
+		}
+        mainFrame.add(p, BorderLayout.CENTER);
+        p = new JPanel(new BorderLayout()); {
+	        JPanel q = new JPanel(new GridLayout(2,1)); {
+	        	q.add(blackDiskNb);
+	        	q.add(whiteDiskNb);
+			}
+	        p.add(q, BorderLayout.NORTH);
         }
+        mainFrame.add(p, BorderLayout.EAST);
+        mainFrame.add(currentPlayer, BorderLayout.NORTH);
     }
     
     private void createController() {
@@ -122,39 +172,24 @@ public class BoardView extends JPanel {
 //			public void propertyChange(PropertyChangeEvent evt) {
 //				boolean paint = evt.getOldValue() == null;
 //				highlightCells(((Report) (paint ? evt.getNewValue()
-//					: evt.getOldValue())).importantSets(), paint);
+//					for : evt.getOldValue())).importantSets(), paint);
 //			}
 //        	
 //        });
     }
     
+    private String getPlayerName(IPlayer player) {
+    	return player.getColor().name();
+    }
+    
     // TEST
     public static void main(String[] args) {
-        class Bla {
-            private static final String filename = "grille2.txt";
-            JFrame mainFrame = new JFrame(filename);
-            IOthello model;
-            public Bla() {
-                model = new Othello();
-                mainFrame.add(new BoardView(model), BorderLayout.CENTER);
-                mainFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-            }
-            
-            public void display() {
-                mainFrame.pack();
-                mainFrame.setLocationRelativeTo(null);
-                mainFrame.setVisible(true);
-            }
-        }
-        
-        SwingUtilities.invokeLater(new Runnable() {
-
-            @Override
-            public void run() {
-                new Bla().display();
-            }
-            
-        });
+    	IOthello model = new Othello();
+        BoardView bv = new BoardView(model);
+        bv.display();
+        bv.cells[0][0].setDrawableCell(DrawableCell.BLACK);
+        bv.cells[0][1].setDrawableCell(DrawableCell.WHITE);
+        bv.cells[0][2].setDrawableCell(DrawableCell.VALID_MOVE);
     }
     
 }
