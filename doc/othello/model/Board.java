@@ -108,8 +108,8 @@ public class Board extends Observable implements IBoard {
 		        	x = x.plus(card);
 		        }
 			}
-			
 	    }
+		notifyObservers();
 	}
 	
 	public void putDisk(Coord xy, Color color) {
@@ -117,7 +117,6 @@ public class Board extends Observable implements IBoard {
 			throw new IllegalArgumentException("mouvement impossible");
 		}
 		coord_color[xy.row()][xy.col()] = color;
-		notifyObservers();
 	}
 	
 	//OUTILS

@@ -90,7 +90,6 @@ public class Othello extends Observable implements IOthello {
 		myBoard = new Board(8);
 		initialisationBoard();
 		currentPlayer = playerBlack;
-		notifyObservers();
 	}
 	
 	public void turn(Coord xy) {
@@ -130,5 +129,6 @@ public class Othello extends Observable implements IOthello {
 		myBoard.putDisk(new Coord(4,3), Color.BLACK);
 		//E5(4,4) pion blanc
 		myBoard.putDisk(new Coord(4,4), Color.WHITE);
+		notifyObservers();
 	}
 }
