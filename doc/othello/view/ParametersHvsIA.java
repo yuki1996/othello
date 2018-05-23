@@ -87,6 +87,8 @@ public class ParametersHvsIA extends Parameters {
 		getPlay().addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent event) {
 				BoardView board = new BoardView(new Othello(selected, getStrat(), getNiveau()));
+				board.display();
+				quitter();
 			}
 		});
 	}

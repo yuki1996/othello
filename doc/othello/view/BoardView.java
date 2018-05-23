@@ -42,6 +42,7 @@ public class BoardView {
     private JLabel whitePlayer;
     private JLabel blackPlayer;
     private JLabel blackScore;
+    private Set<Coord> possibilities;
     
     // CONSTRUCTEUR
     public BoardView(IOthello model) {
@@ -66,20 +67,18 @@ public class BoardView {
     
     public void setModel(IOthello model) {
         this.model = model;
-        refreshBoard();
-        refreshPlayer();
+        refresh();
     }
     
     //OUTILS
     
     private void createModel(IOthello model) {
         this.model = model;
+        possibilities = model.getBoard().getValidMoves(model.getCurrentPlayer().getColor());
     }
     
     private void createView() {
         cells = new CellView[model.getBoard().getSize()][model.getBoard().getSize()];
-        Color colorCurrentPlayer = getModel().getCurrentPlayer().getColor();
-        Set<Coord> validMoves = getModel().getBoard().getValidMoves(colorCurrentPlayer);
         for(int i = 0 ; i < cells.length; ++i) {
         	for(int j = 0 ; j < cells[i].length; ++j) {
         		Coord coord = new Coord(i,j);
@@ -88,14 +87,14 @@ public class BoardView {
                     cells[i][j] = new CellView(DrawableCell.BLACK);
         		} else if (c == Color.WHITE) {
                     cells[i][j] = new CellView(DrawableCell.WHITE);
-        		} else if (validMoves.contains(coord)) {
+        		} else if (possibilities.contains(coord)) {
                     cells[i][j] = new CellView(DrawableCell.VALID_MOVE);
         		} else {
                     cells[i][j] = new CellView(DrawableCell.INVALID_MOVE);
         		}
             }
         }
-        mainFrame = new JFrame("Plateau de jeu");
+        mainFrame = new JFrame("Othello");
         mainFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         mainFrame.setResizable(false);
         currentPlayer = new JLabel("Joueur " 
@@ -206,22 +205,21 @@ public class BoardView {
     private void createController() {
     	for(int i = 0 ; i < cells.length; ++i) {
         	for(int j = 0 ; j < cells[i].length; ++j) {
-            	cells[i][j].addMouseListener(new CellListener(model, i, j));
+            	cells[i][j].addMouseListener(new CellListener(new Coord(i,j)));
             }
         }
 
        model.addPropertyChangeListener(IOthello.TURN, new PropertyChangeListener() {
+
 			@Override
 			public void propertyChange(PropertyChangeEvent evt) {
-				refreshPlayer();
-				refreshBoard();
+				refresh();
 			}
 		});
     }
-    
-    private void refreshBoard() {
-	    Color colorCurrentPlayer = getModel().getCurrentPlayer().getColor();
-        Set<Coord> validMoves = getModel().getBoard().getValidMoves(colorCurrentPlayer);
+
+    private void refresh() {
+        possibilities = model.getBoard().getValidMoves(model.getCurrentPlayer().getColor());
 	    for(int i = 0 ; i < cells.length; ++i) {
 	    	for(int j = 0 ; j < cells[i].length; ++j) {
 	    		Coord coord = new Coord(i,j);
@@ -230,7 +228,7 @@ public class BoardView {
 	                cells[i][j].setDrawableCell(DrawableCell.BLACK);
 	    		} else if (c == Color.WHITE) {
 	                cells[i][j].setDrawableCell(DrawableCell.WHITE);
-	    		} else if (validMoves.contains(coord)) {
+	    		} else if (possibilities.contains(coord)) {
 	                cells[i][j].setDrawableCell(DrawableCell.VALID_MOVE);
 	    		} else {
 	                cells[i][j].setDrawableCell(DrawableCell.INVALID_MOVE);
@@ -239,13 +237,10 @@ public class BoardView {
 	    }
     	whiteScore.setText(model.getBoard().getPointsPlayer(Color.WHITE) + "");
         blackScore.setText(model.getBoard().getPointsPlayer(Color.BLACK) + "");
-    }
-    
-    private void refreshPlayer() {
     	currentPlayer.setText("Joueur " 
         		+ colorToString(model.getCurrentPlayer().getColor()) + " doit jouer.");
     	if (model.isGameOver()) {
-			//TODO
+    		currentPlayer.setText("La partie est finie !");
 		}
     }
     
@@ -260,22 +255,15 @@ public class BoardView {
     //CLASSES INTERNES
     class CellListener extends MouseAdapter {
     	
-    	private IOthello model;
-    	private int i;
-    	private int j;
+    	private Coord c;
     	
-    	public CellListener(IOthello model, int i, int j) {
-    		this.model = model;
-    		this.i = i;
-    		this.j = j;
+    	public CellListener(Coord c) {
+    		this.c = c;
     	}
     	
     	public void mouseClicked(MouseEvent e) {
-    		Color colorCurrentPlayer = getModel().getCurrentPlayer().getColor();
-    	    Set<Coord> validMoves = getModel().getBoard().getValidMoves(colorCurrentPlayer);
-    	    Coord coord = new Coord(i,j);
-    		if (model.canPlay(model.getCurrentPlayer()) && validMoves.contains(coord)) {
-    			model.turn(coord);
+    		if (possibilities.contains(c)) {
+    			model.turn(c);
     		}
     	}
     }

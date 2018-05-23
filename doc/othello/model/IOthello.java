@@ -9,6 +9,7 @@ public interface IOthello {
 	
 	
 	// PROPRIETES
+
 	static final String TURN = "turn";
 	
 	/**

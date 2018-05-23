@@ -12,7 +12,7 @@ import othello.model.Othello;
 
 public class Parameters2IA extends Parameters{
 	//Composant J2
-	private JLabel labelStratJ2 = new JLabel("Stratégie utilisée ");
+	private JLabel labelStratJ2 = new JLabel("Stratï¿½gie utilisï¿½e ");
 	private JComboBox<String> stratJ2 = new JComboBox<String>();
 	private JLabel labelNiveauJ2 = new JLabel("Niveau ");
 	private JSlider niveauJ2 = new JSlider(JSlider.HORIZONTAL, 0, 100, 50);
@@ -21,24 +21,24 @@ public class Parameters2IA extends Parameters{
 		super(p);
 		init();
 		
-		stratJ2.addItem("Stratégie 1");
-		stratJ2.addItem("Stratégie 2");
+		stratJ2.addItem("Stratï¿½gie 1");
+		stratJ2.addItem("Stratï¿½gie 2");
 		
 		//Position titre Joueur 1
 		setPosition(0, getNiveauDispo(), 3);
-		getPanel().add(new JLabel("Paramètre IA 2"), getConstraint());
+		getPanel().add(new JLabel("Paramï¿½tre IA 2"), getConstraint());
 		incrNiveauDispo();
 		
-		//Position du label de la liste déroulante de stratégie
+		//Position du label de la liste dï¿½roulante de stratï¿½gie
 		setPosition(0,getNiveauDispo(),1);
 		getPanel().add(labelStratJ2, getConstraint());
 		
-		//Position de la liste déroulante de stratégie
+		//Position de la liste dï¿½roulante de stratï¿½gie
 		setPosition(1,getNiveauDispo(),2);
 		getPanel().add(stratJ2, getConstraint());
 		incrNiveauDispo();
 		
-		//Position du label de la liste déroulante de stratégie
+		//Position du label de la liste dï¿½roulante de stratï¿½gie
 		setPosition(0,getNiveauDispo(),1);
 		getPanel().add(labelNiveauJ2, getConstraint());
 		
@@ -51,6 +51,8 @@ public class Parameters2IA extends Parameters{
 		getPlay().addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent event) {
 				BoardView board = new BoardView(new Othello(getStrat(), getNiveau(), stratJ2.getSelectedItem().toString(), niveauJ2.getValue()));
+				board.display();
+				quitter();
 			}
 		});
 

@@ -49,7 +49,7 @@ public class Othello implements IOthello {
 	
 	//REQUETES
 	public boolean isGameOver() {
-		if (foePlayed() && !canPlay(currentPlayer)) {
+		if (!foePlayed() && !canPlay(currentPlayer) || getBoard().isFull()) {
 			return true;
 		} 
 		return false;
@@ -107,7 +107,11 @@ public class Othello implements IOthello {
 		}
 		IPlayer oldCurrentPlayer = currentPlayer;
 		currentPlayer = (oldCurrentPlayer == playerBlack ? playerWhite : playerBlack);
-		propertySupport.firePropertyChange(TURN, false, true);
+		propertySupport.firePropertyChange(IOthello.TURN, false, true);
+		if (!canPlay(currentPlayer) && !isGameOver()) {
+			System.out.println(isGameOver());
+			turn(null);
+		}
 	}
 	
 	public void addPropertyChangeListener(String property, PropertyChangeListener l) {
