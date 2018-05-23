@@ -1,11 +1,16 @@
 package othello.model;
 
-import java.util.Set;
+import java.beans.PropertyChangeListener;
 
 import othello.util.Color;
 import othello.util.Coord;
 
 public interface IOthello {
+	
+	
+	// PROPRIETES
+	String PLAYER = "player";
+	String BOARD = "board";
 	
 	/**
 	 * Retourne si le jeu est fini
@@ -49,4 +54,17 @@ public interface IOthello {
 	 * @pre : !isGameOver()
 	 */
 	public void turn(Coord xy);
+	
+	/**
+	 * Ajoute un écouteur
+	 * @pre : l != null
+	 */
+	void addPropertyChangeListener(String property, PropertyChangeListener l);
+	
+	
+	/**
+	 * Retire un écouteur
+	 * @pre : l != null
+	 */
+	void removePropertyChangeListener(String property, PropertyChangeListener l);
 }

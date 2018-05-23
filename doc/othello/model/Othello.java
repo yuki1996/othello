@@ -1,41 +1,48 @@
 package othello.model;
 
-import java.util.HashSet;
-import java.util.Observable;
-import java.util.Set;
+import java.beans.PropertyChangeListener;
+import java.beans.PropertyChangeSupport;
 
 import othello.util.Color;
 import othello.util.Coord;
 
-public class Othello extends Observable implements IOthello {
+public class Othello implements IOthello {
 	
 	private IPlayer playerBlack, playerWhite;
 	private IBoard myBoard;
 	private IPlayer currentPlayer;
+	private PropertyChangeSupport propertySupport;
 	
 	//Jeu avec 2 humains
 	public Othello() {
 		myBoard = new Board(8);
 		playerBlack = spawnPlayer(Color.BLACK);
 		playerWhite = spawnPlayer(Color.WHITE);
+		propertySupport = new PropertyChangeSupport(this);
 		initialisationBoard();
 		currentPlayer = playerBlack;
 	}
 	
 	//jeu avec 1 humain et 1 IA, l'humain joue d'abord
-	public Othello(int player, String strategie, int niveau) {
+	public Othello(Color colorHumain, String strategie, int niveau) {
+		if (colorHumain == null) {
+			throw new IllegalArgumentException("le joueur humain doit avoir une couleur");
+		}
 		myBoard = new Board(8);
-		playerBlack = spawnPlayer(player == 0 ? Color.BLACK : Color.WHITE);
-		playerWhite = spawnAI(player == 0 ? Color.WHITE : Color.BLACK, strategie, niveau);
+		playerBlack = spawnPlayer(colorHumain);
+		playerWhite = spawnAI(colorHumain == Color.BLACK ? Color.WHITE : Color.BLACK, strategie, niveau);
+		propertySupport = new PropertyChangeSupport(this);
 		initialisationBoard();
 		currentPlayer = playerBlack;
 	}
 	
 	//Jeu avec 2 IA
 	public Othello(String strategieP1, int niveauP1, String strategieP2, int niveauP2) {
+		propertySupport = new PropertyChangeSupport(this);
 		myBoard = new Board(8);
 		playerBlack = spawnAI(Color.BLACK, strategieP1, niveauP1);
 		playerWhite = spawnAI(Color.WHITE, strategieP2, niveauP2);
+		propertySupport = new PropertyChangeSupport(this);
 		initialisationBoard();
 		currentPlayer = playerBlack;
 	}
@@ -97,10 +104,27 @@ public class Othello extends Observable implements IOthello {
 			throw new IllegalArgumentException("fin du jeu");
 		} else if (canPlay(currentPlayer)) {
 			currentPlayer.play(xy);
+			propertySupport.firePropertyChange(BOARD, null, getBoard());
 		}
-		currentPlayer = (currentPlayer == playerBlack ? playerWhite : playerBlack);
-		notifyObservers();
+		IPlayer oldCurrentPlayer = currentPlayer;
+		currentPlayer = (oldCurrentPlayer == playerBlack ? playerWhite : playerBlack);
+		propertySupport.firePropertyChange("TURN", false, true);
 	}
+	
+	public void addPropertyChangeListener(String property, PropertyChangeListener l) {
+		if (l == null) {
+			throw new IllegalArgumentException("l'écouteur est null");
+		}
+		propertySupport.addPropertyChangeListener(property, l);
+	}
+	
+	public void removePropertyChangeListener(String property, PropertyChangeListener l) {
+		if (l == null) {
+			throw new IllegalArgumentException("l'écouteur est null");
+		}
+		propertySupport.removePropertyChangeListener(property, l);
+	}
+	
 	
 	//OUTILS
 	/**
@@ -121,6 +145,7 @@ public class Othello extends Observable implements IOthello {
 	 * Initialise le plateau avec les 4 pièces au départ.
 	 */
 	private void initialisationBoard() {
+		IBoard oldBoard = getBoard();
 		//D4(3,3) pion blanc
 		myBoard.putDisk(new Coord(3,3), Color.WHITE);
 		//E4(3,4) pion noir
@@ -129,6 +154,6 @@ public class Othello extends Observable implements IOthello {
 		myBoard.putDisk(new Coord(4,3), Color.BLACK);
 		//E5(4,4) pion blanc
 		myBoard.putDisk(new Coord(4,4), Color.WHITE);
-		notifyObservers();
+		propertySupport.firePropertyChange(BOARD, oldBoard, getBoard());
 	}
 }
