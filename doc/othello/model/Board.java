@@ -1,7 +1,5 @@
 package othello.model;
 
-import java.beans.PropertyChangeListener;
-import java.beans.PropertyChangeSupport;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -13,12 +11,10 @@ public class Board implements IBoard {
 	private final int size;
 
 	private final Color coord_color[][]; //= new Color[getSize()][getSize()];
-	private PropertyChangeSupport propertySupport;
 	
 	public Board(int size){
 		this.size = size;
 		coord_color = new Color [this.size][this.size];
-		propertySupport = new PropertyChangeSupport(this);
 	}
 
 	//REQUÊTES
@@ -28,6 +24,17 @@ public class Board implements IBoard {
 	
 	public Color getColor(Coord c) {
 		return coord_color[c.row()][c.col()];
+	}
+	
+	public boolean isFull() {
+		for (Color[] t : coord_color) {
+			for (Color c : t) {
+				if (c == null) {
+					return false;
+				}
+			}
+		}
+		return true;
 	}
 	
 	public boolean isValidMove(Coord xy, Color color) {
@@ -95,10 +102,7 @@ public class Board implements IBoard {
 
 		//couleur adversaire;
 		Color foeColor = color == Color.WHITE ? Color.BLACK : Color.WHITE;
-		Color oldColor = getColor(xy);
 		coord_color[xy.row()][xy.col()] = color;
-		int index = xy.row() * 10 + xy.col();
-		propertySupport.fireIndexedPropertyChange(COLOR, index, oldColor, color);
 		for (Coord card : Coord.CARDINALS) {
 			Coord x = xy.plus(card);
 			//On verifie qu'il y a un élément à prendre en "sandwich" dans cette direction
@@ -120,24 +124,7 @@ public class Board implements IBoard {
 		if (!isValid(xy)) {
 			throw new IllegalArgumentException("mouvement impossible");
 		}
-		Color oldColor = getColor(xy);
 		coord_color[xy.row()][xy.col()] = color;
-		int index = xy.row() * size + xy.col();
-		propertySupport.fireIndexedPropertyChange(COLOR, index, oldColor, color);
-	}
-	
-	public void addPropertyChangeListener(String property, PropertyChangeListener l) {
-		if (l == null) {
-			throw new IllegalArgumentException("l'écouteur est null");
-		}
-		propertySupport.addPropertyChangeListener(property, l);
-	}
-	
-	public void removePropertyChangeListener(String property, PropertyChangeListener l) {
-		if (l == null) {
-			throw new IllegalArgumentException("l'écouteur est null");
-		}
-		propertySupport.removePropertyChangeListener(property, l);
 	}
 	
 	//OUTILS

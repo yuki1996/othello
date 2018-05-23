@@ -33,10 +33,14 @@ public class ParametersHvsIA extends Parameters {
 		getPanel().add(new JLabel("Joueur"), getConstraint());
 		incrNiveauDispo();
 		
+		setMargeX(100);
+		setAlignLeft();
 		//Position label jeton
 		setPosition(0, getNiveauDispo(), 1);
 		getPanel().add(labelJeton, getConstraint());
 		
+		setAlignMiddle();
+		setMargeX(0);
 		//Position jeton noir
 		setPosition(1, getNiveauDispo(), 1);
 		getPanel().add(black, getConstraint());
@@ -87,6 +91,8 @@ public class ParametersHvsIA extends Parameters {
 		getPlay().addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent event) {
 				BoardView board = new BoardView(new Othello(selected, getStrat(), getNiveau()));
+				board.display();
+				quitter();
 			}
 		});
 	}

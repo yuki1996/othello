@@ -39,6 +39,21 @@ public class Test {
 		System.out.println("\n\nRecommence la partie");
 		printBoard(game);
 		
+		//Affichage du jeu : joue 60 tours (fin partie) ou jusqu'un des 2 joueurs peut pas jouer son tour
+		set = game.getBoard().getValidMoves(Color.BLACK);
+		k = 0;
+		while (!set.isEmpty() && k < 2) {
+			Iterator<Coord> it = set.iterator();
+			System.out.println();
+
+			Coord coord = (Coord) it.next();
+			System.out.println("Tour "+ k+ " "+(k % 2 != 0 ? Color.WHITE : Color.BLACK) + " joue " +coord.row()+ ";" + coord.col());
+			game.turn(coord);
+			printBoard(game);
+			++k;
+			set = game.getBoard().getValidMoves( k % 2 != 0 ? Color.WHITE : Color.BLACK);
+		}
+		
 	}
 	
 	//outils

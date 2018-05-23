@@ -49,7 +49,7 @@ public class Othello implements IOthello {
 	
 	//REQUETES
 	public boolean isGameOver() {
-		if (foePlayed() && !canPlay(currentPlayer)) {
+		if (!foePlayed() && !canPlay(currentPlayer) || getBoard().isFull()) {
 			return true;
 		} 
 		return false;
@@ -81,7 +81,6 @@ public class Othello implements IOthello {
 		} 
 		int nbPointWhite = myBoard.getPointsPlayer(Color.WHITE);
 		int nbPointBlack = myBoard.getPointsPlayer(Color.BLACK);
-		System.out.println("white :" + nbPointWhite + "/ black :"+nbPointBlack);
 		if (nbPointWhite == nbPointBlack) {
 			return null;
 		} else if (nbPointWhite > nbPointBlack) {
@@ -96,7 +95,10 @@ public class Othello implements IOthello {
 	public void restart() {
 		myBoard = new Board(8);
 		initialisationBoard();
+		playerBlack.setBoard(myBoard);
+		playerWhite.setBoard(myBoard);
 		currentPlayer = playerBlack;
+		propertySupport.firePropertyChange(IOthello.TURN, false, true);
 	}
 	
 	public void turn(Coord xy) {
@@ -104,11 +106,14 @@ public class Othello implements IOthello {
 			throw new IllegalArgumentException("fin du jeu");
 		} else if (canPlay(currentPlayer)) {
 			currentPlayer.play(xy);
-			propertySupport.firePropertyChange(BOARD, null, getBoard());
 		}
 		IPlayer oldCurrentPlayer = currentPlayer;
 		currentPlayer = (oldCurrentPlayer == playerBlack ? playerWhite : playerBlack);
-		propertySupport.firePropertyChange("TURN", false, true);
+		propertySupport.firePropertyChange(IOthello.TURN, false, true);
+		if (!canPlay(currentPlayer) && !isGameOver()) {
+			//System.out.println(isGameOver());
+			turn(null);
+		}
 	}
 	
 	public void addPropertyChangeListener(String property, PropertyChangeListener l) {
@@ -145,7 +150,6 @@ public class Othello implements IOthello {
 	 * Initialise le plateau avec les 4 pièces au départ.
 	 */
 	private void initialisationBoard() {
-		IBoard oldBoard = getBoard();
 		//D4(3,3) pion blanc
 		myBoard.putDisk(new Coord(3,3), Color.WHITE);
 		//E4(3,4) pion noir
@@ -154,6 +158,5 @@ public class Othello implements IOthello {
 		myBoard.putDisk(new Coord(4,3), Color.BLACK);
 		//E5(4,4) pion blanc
 		myBoard.putDisk(new Coord(4,4), Color.WHITE);
-		propertySupport.firePropertyChange(BOARD, oldBoard, getBoard());
 	}
 }

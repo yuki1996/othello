@@ -16,6 +16,11 @@ public interface IPlayer {
 	public IBoard getBoard();
 	
 	/**
+	 * Change le plateau de jeu
+	 */
+	public void setBoard(IBoard board);
+	
+	/**
 	 * Retourne si le joueur joue
 	 */
 	public boolean isPlaying();

@@ -15,7 +15,6 @@ import javax.swing.JPanel;
 public class ImagePanel extends JPanel{
 	private BufferedImage image;
 	public ImagePanel(String s) {
-		this.setBorder(BorderFactory.createLineBorder(Color.black));
 		File f = new File("src/othello/view/img/"+s);
 		try {
 			image = ImageIO.read(f);
@@ -26,6 +25,6 @@ public class ImagePanel extends JPanel{
 	
 	protected void paintComponent(Graphics g) {
 		super.paintComponent(g);
-		g.drawImage(image, 0, 0, 50, 50, null);
+		g.drawImage(image, 0, 0, this.getHeight(), this.getWidth(), null);
 	}
 }

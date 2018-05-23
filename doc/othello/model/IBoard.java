@@ -7,14 +7,16 @@ import othello.util.Color;
 import othello.util.Coord;
 
 public interface IBoard {
-	
-	// PROPRIETES
-	String COLOR = "color";
 		
 	/**
 	 * Retourne la longueur / largeur du plateau de jeu 
 	 */
 	int getSize();
+	
+	/**
+	 * Retourne si le plateau est rempli.
+	 */
+	boolean isFull();
 	
 	/**
 	 * Retourne si le mouvement du joueur est valide. 
@@ -54,17 +56,4 @@ public interface IBoard {
 	 * Retourne le nombre de points de la couleur du joueur
 	 */
 	public int getPointsPlayer(Color colorPlayer);
-	
-	/**
-	 * Ajoute un écouteur
-	 * @pre : l != null
-	 */
-	void addPropertyChangeListener(String property, PropertyChangeListener l);
-	
-	
-	/**
-	 * Retire un écouteur
-	 * @pre : l != null
-	 */
-	void removePropertyChangeListener(String property, PropertyChangeListener l);
 }

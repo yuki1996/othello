@@ -1,16 +1,13 @@
 package othello.view;
 
-import java.awt.BorderLayout;
 import java.awt.Color;
-import java.awt.Dimension;
-import java.awt.FlowLayout;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
+import javax.swing.border.EmptyBorder;
 
 import othello.model.Othello;
 
@@ -25,8 +22,7 @@ public class Menu extends JFrame{
 		initButtons();
 		//initialisation de la fenetre
 		this.setTitle("Menu - Othello");
-		this.setSize(500,300);
-		this.getContentPane().setBackground(new Color(1,137,42));
+		this.getContentPane().setBackground(Color.WHITE);
 		
 		//Centrer
 		this.setLocationRelativeTo(null);
@@ -49,14 +45,12 @@ public class Menu extends JFrame{
 		panel.add(game2IA);
 		panel.add(game2H);
 		panel.add(quit);
-		panel.setPreferredSize(new Dimension(200, 100));
-		panel.setBackground(new Color(1,137,42));
+		panel.setBackground(Color.WHITE);
 		
-		//placement au centre du panel
-		//this.getContentPane().add(panel, BorderLayout.CENTER);
-		this.setLayout(new FlowLayout(FlowLayout.CENTER));
+		panel.setBorder(new EmptyBorder(50, 100, 50, 100));
 		this.add(panel);
 		
+		pack();
 		//afficher la fenetre
 		this.setVisible(true);
 	}
@@ -66,7 +60,8 @@ public class Menu extends JFrame{
 		
 		game2H.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent event) {
-				BoardView othello = new BoardView(new Othello());
+				BoardView board = new BoardView(new Othello());
+				board.display();
 				quitter();
 			}
 		});
