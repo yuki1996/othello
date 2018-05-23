@@ -3,13 +3,12 @@ package othello.model;
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
 import java.util.HashSet;
-import java.util.Observable;
 import java.util.Set;
 
 import othello.util.Color;
 import othello.util.Coord;
 
-public class Board extends Observable implements IBoard {
+public class Board implements IBoard {
 	
 	private int size;
 

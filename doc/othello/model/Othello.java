@@ -1,8 +1,6 @@
 package othello.model;
 
-import java.util.HashSet;
 import java.util.Observable;
-import java.util.Set;
 
 import othello.util.Color;
 import othello.util.Coord;
@@ -23,10 +21,13 @@ public class Othello extends Observable implements IOthello {
 	}
 	
 	//jeu avec 1 humain et 1 IA, l'humain joue d'abord
-	public Othello(int player, String strategie, int niveau) {
+	public Othello(Color colorHumain, String strategie, int niveau) {
+		if (colorHumain == null) {
+			throw new IllegalArgumentException("le joueur humain doit avoir une couleur");
+		}
 		myBoard = new Board(8);
-		playerBlack = spawnPlayer(player == 0 ? Color.BLACK : Color.WHITE);
-		playerWhite = spawnAI(player == 0 ? Color.WHITE : Color.BLACK, strategie, niveau);
+		playerBlack = spawnPlayer(colorHumain);
+		playerWhite = spawnAI(colorHumain == Color.BLACK ? Color.WHITE : Color.BLACK, strategie, niveau);
 		initialisationBoard();
 		currentPlayer = playerBlack;
 	}
