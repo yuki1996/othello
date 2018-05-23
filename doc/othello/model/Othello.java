@@ -18,9 +18,9 @@ public class Othello implements IOthello {
 		myBoard = new Board(8);
 		playerBlack = spawnPlayer(Color.BLACK);
 		playerWhite = spawnPlayer(Color.WHITE);
+		propertySupport = new PropertyChangeSupport(this);
 		initialisationBoard();
 		currentPlayer = playerBlack;
-		propertySupport = new PropertyChangeSupport(this);
 	}
 	
 	//jeu avec 1 humain et 1 IA, l'humain joue d'abord
@@ -31,19 +31,20 @@ public class Othello implements IOthello {
 		myBoard = new Board(8);
 		playerBlack = spawnPlayer(colorHumain);
 		playerWhite = spawnAI(colorHumain == Color.BLACK ? Color.WHITE : Color.BLACK, strategie, niveau);
+		propertySupport = new PropertyChangeSupport(this);
 		initialisationBoard();
 		currentPlayer = playerBlack;
-		propertySupport = new PropertyChangeSupport(this);
 	}
 	
 	//Jeu avec 2 IA
 	public Othello(String strategieP1, int niveauP1, String strategieP2, int niveauP2) {
+		propertySupport = new PropertyChangeSupport(this);
 		myBoard = new Board(8);
 		playerBlack = spawnAI(Color.BLACK, strategieP1, niveauP1);
 		playerWhite = spawnAI(Color.WHITE, strategieP2, niveauP2);
+		propertySupport = new PropertyChangeSupport(this);
 		initialisationBoard();
 		currentPlayer = playerBlack;
-		propertySupport = new PropertyChangeSupport(this);
 	}
 	
 	//REQUETES
