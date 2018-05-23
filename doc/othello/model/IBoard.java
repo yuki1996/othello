@@ -17,6 +17,11 @@ public interface IBoard {
 	int getSize();
 	
 	/**
+	 * Retourne si le plateau est rempli.
+	 */
+	boolean isFull();
+	
+	/**
 	 * Retourne si le mouvement du joueur est valide. 
 	 * La coordonnée doit être valide, la case est soit vide ou soit la color de l'adversaire
 	 * et le mouvement doit rapporter des pions de l'adversaire.

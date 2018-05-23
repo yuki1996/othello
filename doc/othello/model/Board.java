@@ -30,6 +30,17 @@ public class Board implements IBoard {
 		return coord_color[c.row()][c.col()];
 	}
 	
+	public boolean isFull() {
+		for (Color[] t : coord_color) {
+			for (Color c : t) {
+				if (c == null) {
+					return false;
+				}
+			}
+		}
+		return true;
+	}
+	
 	public boolean isValidMove(Coord xy, Color color) {
 		if (!isValid(xy)) {
 			return false;

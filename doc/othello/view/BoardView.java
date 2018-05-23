@@ -8,6 +8,7 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
+import java.util.Set;
 
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -32,6 +33,7 @@ public class BoardView {
     private JLabel whitePlayer;
     private JLabel blackPlayer;
     private JLabel blackScore;
+    private Set<Coord> possibilities;
     
     // CONSTRUCTEUR
     public BoardView(IOthello model) {
@@ -56,19 +58,18 @@ public class BoardView {
     
     public void setModel(IOthello model) {
         this.model = model;
-        refreshBoard();
-        refreshPlayer();
+        refresh();
     }
     
     //OUTILS
     
     private void createModel(IOthello model) {
         this.model = model;
+        possibilities = model.getBoard().getValidMoves(model.getCurrentPlayer().getColor());
     }
     
     private void createView() {
         cells = new CellView[model.getBoard().getSize()][model.getBoard().getSize()];
-        Color colorCurrentPlayer = getModel().getCurrentPlayer().getColor();
         for(int i = 0 ; i < cells.length; ++i) {
         	for(int j = 0 ; j < cells[i].length; ++j) {
         		Coord coord = new Coord(i,j);
@@ -77,7 +78,7 @@ public class BoardView {
                     cells[i][j] = new CellView(DrawableCell.BLACK);
         		} else if (c == Color.WHITE) {
                     cells[i][j] = new CellView(DrawableCell.WHITE);
-        		} else if (getModel().getBoard().getValidMoves(colorCurrentPlayer).contains(coord)) {
+        		} else if (possibilities.contains(coord)) {
                     cells[i][j] = new CellView(DrawableCell.VALID_MOVE);
         		} else {
                     cells[i][j] = new CellView(DrawableCell.INVALID_MOVE);
@@ -127,27 +128,20 @@ public class BoardView {
     private void createController() {
     	for(int i = 0 ; i < cells.length; ++i) {
         	for(int j = 0 ; j < cells[i].length; ++j) {
-            	cells[i][j].addMouseListener(new CellListener(model, i, j));
+            	cells[i][j].addMouseListener(new CellListener(new Coord(i,j)));
             }
         }
-        
-        model.addPropertyChangeListener(IOthello.PLAYER, new PropertyChangeListener() {
+    	
+    	model.addPropertyChangeListener(IOthello.TURN, new PropertyChangeListener() {
 			@Override
 			public void propertyChange(PropertyChangeEvent evt) {
-				refreshPlayer();
-			}
-		});
-       model.addPropertyChangeListener("TURN", new PropertyChangeListener() {
-			@Override
-			public void propertyChange(PropertyChangeEvent evt) {
-				refreshPlayer();
-				refreshBoard();
+				refresh();
 			}
 		});
     }
     
-    private void refreshBoard() {
-	    Color colorCurrentPlayer = getModel().getCurrentPlayer().getColor();
+    private void refresh() {
+        possibilities = model.getBoard().getValidMoves(model.getCurrentPlayer().getColor());
 	    for(int i = 0 ; i < cells.length; ++i) {
 	    	for(int j = 0 ; j < cells[i].length; ++j) {
 	    		Coord coord = new Coord(i,j);
@@ -156,23 +150,20 @@ public class BoardView {
 	                cells[i][j].setDrawableCell(DrawableCell.BLACK);
 	    		} else if (c == Color.WHITE) {
 	                cells[i][j].setDrawableCell(DrawableCell.WHITE);
-	    		} else if (getModel().getBoard().getValidMoves(colorCurrentPlayer)
-	    				.contains(coord)) {
+	    		} else if (possibilities.contains(coord)) {
 	                cells[i][j].setDrawableCell(DrawableCell.VALID_MOVE);
 	    		} else {
 	                cells[i][j].setDrawableCell(DrawableCell.INVALID_MOVE);
 	    		}
-				}
+			}
 	    }
     	whiteScore.setText(model.getBoard().getPointsPlayer(Color.WHITE) + "");
         blackScore.setText(model.getBoard().getPointsPlayer(Color.BLACK) + "");
-    }
-    
-    private void refreshPlayer() {
     	currentPlayer.setText("Joueur " 
         		+ colorToString(model.getCurrentPlayer().getColor()) + " doit jouer.");
     	if (model.isGameOver()) {
 			//TODO
+    		System.out.println("fini");
 		}
     }
     
@@ -187,19 +178,15 @@ public class BoardView {
     //CLASSES INTERNES
     class CellListener extends MouseAdapter {
     	
-    	private IOthello model;
-    	private int i;
-    	private int j;
+    	private Coord c;
     	
-    	public CellListener(IOthello model, int i, int j) {
-    		this.model = model;
-    		this.i = i;
-    		this.j = j;
+    	public CellListener(Coord c) {
+    		this.c = c;
     	}
     	
     	public void mouseClicked(MouseEvent e) {
-    		if (model.canPlay(model.getCurrentPlayer())) {
-    			model.turn(new Coord(i,j));
+    		if (possibilities.contains(c)) {
+    			model.turn(c);
     		}
     	}
     }
