@@ -67,7 +67,7 @@ public class Menu extends JFrame{
 		game2H.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent event) {
 				BoardView othello = new BoardView(new Othello());
-				quitter();
+				//quitter();
 			}
 		});
 		
