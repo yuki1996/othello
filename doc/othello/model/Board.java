@@ -1,21 +1,24 @@
 package othello.model;
 
+import java.beans.PropertyChangeListener;
+import java.beans.PropertyChangeSupport;
 import java.util.HashSet;
-import java.util.Observable;
 import java.util.Set;
 
 import othello.util.Color;
 import othello.util.Coord;
 
-public class Board extends Observable implements IBoard {
+public class Board implements IBoard {
 	
 	private int size;
 
 	private Color coord_color[][]; //= new Color[getSize()][getSize()];
+	private PropertyChangeSupport propertySupport;
 	
 	Board(int size){
 		this.size = size;
 		coord_color = new Color [this.size][this.size];
+		propertySupport = new PropertyChangeSupport(this);
 	}
 
 	//REQUÊTES
@@ -92,8 +95,10 @@ public class Board extends Observable implements IBoard {
 
 		//couleur adversaire;
 		Color foeColor = color == Color.WHITE ? Color.BLACK : Color.WHITE;
-		
+		Color oldColor = getColor(xy);
 		coord_color[xy.row()][xy.col()] = color;
+		int index = xy.row() * 10 + xy.col();
+		propertySupport.fireIndexedPropertyChange(COLOR, index, oldColor, color);
 		for (Coord card : Coord.CARDINALS) {
 			Coord x = xy.plus(card);
 			//On verifie qu'il y a un élément à prendre en "sanwich" dans cette direction
@@ -109,14 +114,30 @@ public class Board extends Observable implements IBoard {
 		        }
 			}
 	    }
-		notifyObservers();
 	}
 	
 	public void putDisk(Coord xy, Color color) {
 		if (!isValid(xy)) {
 			throw new IllegalArgumentException("mouvement impossible");
 		}
+		Color oldColor = getColor(xy);
 		coord_color[xy.row()][xy.col()] = color;
+		int index = xy.row() * 10 + xy.col();
+		propertySupport.fireIndexedPropertyChange(COLOR, index, oldColor, color);
+	}
+	
+	public void addPropertyChangeListener(String property, PropertyChangeListener l) {
+		if (l == null) {
+			throw new IllegalArgumentException("l'écouteur est null");
+		}
+		propertySupport.addPropertyChangeListener(property, l);
+	}
+	
+	public void removePropertyChangeListener(String property, PropertyChangeListener l) {
+		if (l == null) {
+			throw new IllegalArgumentException("l'écouteur est null");
+		}
+		propertySupport.removePropertyChangeListener(property, l);
 	}
 	
 	//OUTILS
