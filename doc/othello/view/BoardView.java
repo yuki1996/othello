@@ -94,7 +94,7 @@ public class BoardView {
         		}
             }
         }
-        mainFrame = new JFrame("Plateau de jeu");
+        mainFrame = new JFrame("Othello");
         mainFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         mainFrame.setResizable(false);
         currentPlayer = new JLabel("Joueur " 
@@ -240,8 +240,7 @@ public class BoardView {
     	currentPlayer.setText("Joueur " 
         		+ colorToString(model.getCurrentPlayer().getColor()) + " doit jouer.");
     	if (model.isGameOver()) {
-			//TODO
-    		System.out.println("fini");
+    		currentPlayer.setText("La partie est finie !");
 		}
     }
     
