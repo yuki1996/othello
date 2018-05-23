@@ -17,7 +17,7 @@ public class MinSpaceStrategyTree implements StrategyTree {
 	
 	public class MSNode implements Node {
 		private final List<Node> children;
-		private final long[] boardState;
+		private final long[] boardState; // représentation compact du plateau
 		private double evaluation;
 		
 		// CONSTRUCTEURS
@@ -37,7 +37,7 @@ public class MinSpaceStrategyTree implements StrategyTree {
 			}
 			children = new LinkedList<Node>();
 			evaluation = Double.NEGATIVE_INFINITY;
-			boardState = new long[(b.getSize()*b.getSize()*BITS) / Long.SIZE];
+			boardState = boardToLong(b);
 		}
 		
 		// REQUETE
@@ -58,9 +58,21 @@ public class MinSpaceStrategyTree implements StrategyTree {
 			assert(move != null);
 			assert(move.isInRect(new Coord(board.getSize(), board.getSize())));
 			
-			long a = boardState[shift(move) / Long.SIZE] >> (shift(move) % Long.SIZE);
+			long a = (boardState[shift(move) / Long.SIZE] >> (shift(move) % Long.SIZE))
+					& BIT_MASK;
 			return a == 0 ? null :
-				Color.values()[(int) (a & BIT_MASK)];
+				Color.values()[(int) a - 1];
+		}
+		
+		public String toString() {
+			String s = "eval=" + evaluation + ":" + System.lineSeparator();
+			for (int row = 0; row < 8; row++) {
+				for (int col = 0; col < 8; col++) {
+					s += getDisk(new Coord(row, col)) + " ";
+				}
+				s += System.lineSeparator();
+			}
+			return s;
 		}
 
 		// COMMANDES
@@ -82,7 +94,28 @@ public class MinSpaceStrategyTree implements StrategyTree {
 		}
 		
 		private int shift(Coord c) {
-			return BITS * c.row() * board.getSize() + c.col();
+			return BITS * (c.row() * board.getSize() + c.col());
+		}
+		
+		/**
+		 * Conversion d'un IBoard vers un long[] (représentation compact).
+		 */
+		private long[] boardToLong(IBoard board) {
+			assert(board != null);
+			
+			int size = board.getSize();
+			long[] res = new long[(size*size*BITS) / Long.SIZE];
+			
+			for (int row = size - 1; row >= 0; row--) {
+				for (int col = size - 1; col >= 0; col--) {
+					Coord coord = new Coord(row, col);
+					Color c = board.getColor(coord);
+					int ind = shift(coord) / Long.SIZE;
+					res[ind] <<= BITS;
+					res[ind] |= c == null ? 0 : (c.ordinal() + 1);
+				}
+			}
+			return res;
 		}
 		
 	}
@@ -104,15 +137,13 @@ public class MinSpaceStrategyTree implements StrategyTree {
 	
 	public static void main(String[] args) {
 		IBoard b = new Board(8);
+		b.putDisk(new Coord(0,0), Color.BLACK);
+		b.putDisk(new Coord(4,6), Color.WHITE);
+		
 		MinSpaceStrategyTree t = new MinSpaceStrategyTree(b);
 		Node m = t.getRoot();
 		
-		for (int k = 0; k < 8; k++) {
-			for (int j = 0; j < 8; k++) {
-				System.out.print(m.getDisk(new Coord(k, j)) + " ");
-			}
-			System.out.println("");
-		}
+		System.out.println(m);
 	}
 	
 }

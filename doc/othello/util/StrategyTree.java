@@ -47,7 +47,7 @@ public interface StrategyTree {
 		/**
 		 * 
 		 */
-		void setDisk(Coord move, Color c)
+		void setDisk(Coord move, Color c);
 	}
 	
 	/**

@@ -122,7 +122,7 @@ public class Board implements IBoard {
 		}
 		Color oldColor = getColor(xy);
 		coord_color[xy.row()][xy.col()] = color;
-		int index = xy.row() * 10 + xy.col();
+		int index = xy.row() * size + xy.col();
 		propertySupport.fireIndexedPropertyChange(COLOR, index, oldColor, color);
 	}
 	
