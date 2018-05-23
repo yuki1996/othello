@@ -6,6 +6,7 @@ import java.awt.Dimension;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.GridLayout;
+import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
@@ -20,6 +21,7 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JSlider;
 import javax.swing.border.Border;
+import javax.swing.border.EmptyBorder;
 
 public abstract class Parameters extends JFrame {
 	private int niveauDispo = 0;
@@ -27,6 +29,7 @@ public abstract class Parameters extends JFrame {
 	private Bouton play = new Bouton("Jouer !");
 	private JPanel panel = new JPanel();
 	private GridBagConstraints constraint = new GridBagConstraints();
+	private int espace = 10;
 	
 	//Composant J1
 	private JLabel labelStratJ1 = new JLabel("Stratégie utilisée ");
@@ -50,6 +53,9 @@ public abstract class Parameters extends JFrame {
 	
 		//init du layout du panel
 		panel.setLayout(new GridBagLayout());
+		panel.setBackground(Color.WHITE);
+		panel.setBorder(new EmptyBorder(50, 100, 50, 100));
+		
 		this.getContentPane().add(panel);
 		
 		this.setVisible(true);
@@ -64,19 +70,27 @@ public abstract class Parameters extends JFrame {
 		panel.add(new JLabel("Paramètre IA"), constraint);
 		niveauDispo++;
 		
+		setAlignLeft();
+		setMargeX(50);
 		//Position du label de la liste déroulante de stratégie
 		setPosition(0,niveauDispo,1);
 		panel.add(labelStratJ1, constraint);
-		
+
+		setAlignMiddle();
+		setMargeX(0);
 		//Position de la liste déroulante de stratégie
 		setPosition(1,niveauDispo,2);
 		panel.add(stratJ1, constraint);
 		niveauDispo++;
-		
+
+		setAlignLeft();
+		setMargeX(50);
 		//Position du label de la liste déroulante de stratégie
 		setPosition(0,niveauDispo,1);
 		panel.add(labelNiveauJ1, constraint);
-		
+
+		setAlignMiddle();
+		setMargeX(0);
 		//Position du slider
 		setPosition(1,niveauDispo,2);
 		panel.add(niveauJ1, constraint);
@@ -99,6 +113,22 @@ public abstract class Parameters extends JFrame {
 		constraint.gridy = y;
 		constraint.gridwidth = tailleLargeur;
 		constraint.gridheight = tailleHauteur;
+	}
+	
+	public void setMargeX(int x) {
+		constraint.insets = new Insets(espace,espace,espace,x);
+	}
+	
+	public void setAlignLeft() {
+		constraint.anchor = GridBagConstraints.WEST;
+	}
+	
+	public void setAlignRight() {
+		constraint.anchor = GridBagConstraints.EAST;
+	}
+	
+	public void setAlignMiddle() {
+		constraint.anchor = GridBagConstraints.CENTER;
 	}
 	
 	public JFrame getParent() {
