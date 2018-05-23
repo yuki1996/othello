@@ -2,7 +2,7 @@ package othello.util;
 
 import java.util.List;
 
-import othello.model.Board;
+import othello.model.IBoard;
 
 /**
  * 
@@ -10,11 +10,17 @@ import othello.model.Board;
  * 
  * Classe représentant les arbres utilisés pour les stratégies.
  * 
+ * @inv
+ * 	getBoard() != null
+ * 	getRoot() != null
  */
 public interface StrategyTree {
 	/**
 	 * Classe représentant un noeud/une feuille de l'arbre.
 	 * On peut parcourir les enfants d'un Node en le mettant dans un for-each.
+	 * 
+	 * @inv
+	 * 	children() != null
 	 */
 	interface Node extends Iterable<Node> {
 		/**
@@ -37,12 +43,17 @@ public interface StrategyTree {
 		 * contenu dans le noeud.
 		 */
 		Color getDisk(Coord move);
+		
+		/**
+		 * 
+		 */
+		void setDisk(Coord move, Color c)
 	}
 	
 	/**
 	 * Renvoie le Board associé à cet arbre.
 	 */
-	Board getBoard();
+	IBoard getBoard();
 	
 	/**
 	 * Renvoie la racine de l'arbre.
