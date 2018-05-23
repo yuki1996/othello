@@ -103,13 +103,12 @@ public class Othello implements IOthello {
 		if (isGameOver()) {
 			throw new IllegalArgumentException("fin du jeu");
 		} else if (canPlay(currentPlayer)) {
-			IBoard oldBoard = getBoard();
 			currentPlayer.play(xy);
-			propertySupport.firePropertyChange(BOARD, oldBoard, getBoard());
+			propertySupport.firePropertyChange(BOARD, null, getBoard());
 		}
 		IPlayer oldCurrentPlayer = currentPlayer;
 		currentPlayer = (oldCurrentPlayer == playerBlack ? playerWhite : playerBlack);
-		propertySupport.firePropertyChange(PLAYER, oldCurrentPlayer, currentPlayer);
+		propertySupport.firePropertyChange("TURN", false, true);
 	}
 	
 	public void addPropertyChangeListener(String property, PropertyChangeListener l) {

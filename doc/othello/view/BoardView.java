@@ -29,6 +29,8 @@ public class BoardView {
     private JFrame mainFrame;
     private JLabel currentPlayer;
     private JLabel whiteScore;
+    private JLabel whitePlayer;
+    private JLabel blackPlayer;
     private JLabel blackScore;
     
     // CONSTRUCTEUR
@@ -87,10 +89,11 @@ public class BoardView {
         mainFrame.setResizable(false);
         currentPlayer = new JLabel("Joueur " 
         		+ colorToString(model.getCurrentPlayer().getColor()) + " doit jouer.");
-        whiteScore = new JLabel("Joueur " + colorToString(Color.WHITE) + " : " + 
-    			model.getBoard().getPointsPlayer(Color.WHITE) + " disque");
-        blackScore = new JLabel("Joueur " + colorToString(Color.BLACK) + " : " + 
-    			model.getBoard().getPointsPlayer(Color.BLACK) + " disque");
+        whiteScore = new JLabel(model.getBoard().getPointsPlayer(Color.WHITE) + "");
+        whitePlayer = new JLabel(colorToString(Color.WHITE) + " : ");
+        
+        blackScore = new JLabel(model.getBoard().getPointsPlayer(Color.BLACK) + "");
+        blackPlayer = new JLabel(colorToString(Color.BLACK) + " : ");
     }
     
     private void placeComponents() {
@@ -106,11 +109,13 @@ public class BoardView {
         p = new JPanel(new GridLayout(2,1)); {
         	JPanel q = new JPanel(new FlowLayout()); {
         		p.add(new ImagePanel("jeton_blanc.png"));
+        		p.add(whitePlayer);
             	p.add(whiteScore);
         	}
         	p.add(q);
         	q = new JPanel(new FlowLayout()); {
         		p.add(new ImagePanel("jeton_noir.png"));
+        		p.add(blackPlayer);
             	p.add(blackScore);
         	}
         	p.add(q);
@@ -132,9 +137,10 @@ public class BoardView {
 				refreshPlayer();
 			}
 		});
-        model.addPropertyChangeListener(IOthello.BOARD, new PropertyChangeListener() {
+       model.addPropertyChangeListener("TURN", new PropertyChangeListener() {
 			@Override
 			public void propertyChange(PropertyChangeEvent evt) {
+				refreshPlayer();
 				refreshBoard();
 			}
 		});
@@ -156,12 +162,10 @@ public class BoardView {
 	    		} else {
 	                cells[i][j].setDrawableCell(DrawableCell.INVALID_MOVE);
 	    		}
-	        }
+				}
 	    }
-    	whiteScore.setText("Joueur " + colorToString(Color.WHITE) + " : " + 
-    			model.getBoard().getPointsPlayer(Color.WHITE) + " disque");
-        blackScore.setText("Joueur " + colorToString(Color.BLACK) + " : " + 
-    			model.getBoard().getPointsPlayer(Color.BLACK) + " disque");
+    	whiteScore.setText(model.getBoard().getPointsPlayer(Color.WHITE) + "");
+        blackScore.setText(model.getBoard().getPointsPlayer(Color.BLACK) + "");
     }
     
     private void refreshPlayer() {
@@ -206,8 +210,5 @@ public class BoardView {
     	IOthello model = new Othello();
         BoardView bv = new BoardView(model);
         bv.display();
-        bv.cells[0][0].setDrawableCell(DrawableCell.BLACK);
-        bv.cells[0][1].setDrawableCell(DrawableCell.WHITE);
-        bv.cells[0][2].setDrawableCell(DrawableCell.VALID_MOVE);
     }
 }
