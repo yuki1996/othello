@@ -104,11 +104,10 @@ public class Othello implements IOthello {
 			throw new IllegalArgumentException("fin du jeu");
 		} else if (canPlay(currentPlayer)) {
 			currentPlayer.play(xy);
-			propertySupport.firePropertyChange(BOARD, null, getBoard());
 		}
 		IPlayer oldCurrentPlayer = currentPlayer;
 		currentPlayer = (oldCurrentPlayer == playerBlack ? playerWhite : playerBlack);
-		propertySupport.firePropertyChange("TURN", false, true);
+		propertySupport.firePropertyChange(TURN, false, true);
 	}
 	
 	public void addPropertyChangeListener(String property, PropertyChangeListener l) {
@@ -145,7 +144,6 @@ public class Othello implements IOthello {
 	 * Initialise le plateau avec les 4 pièces au départ.
 	 */
 	private void initialisationBoard() {
-		IBoard oldBoard = getBoard();
 		//D4(3,3) pion blanc
 		myBoard.putDisk(new Coord(3,3), Color.WHITE);
 		//E4(3,4) pion noir
@@ -154,6 +152,5 @@ public class Othello implements IOthello {
 		myBoard.putDisk(new Coord(4,3), Color.BLACK);
 		//E5(4,4) pion blanc
 		myBoard.putDisk(new Coord(4,4), Color.WHITE);
-		propertySupport.firePropertyChange(BOARD, oldBoard, getBoard());
 	}
 }
