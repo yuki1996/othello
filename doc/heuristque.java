@@ -60,7 +60,7 @@ public MSNode sss_etoile(MSNode noeud_root){
 	h_noeud node = null;
 	
 	while( true ) {
-		node = G.pol();
+		node = G.poll();
 		
 		if(node.status == resolved && node.name == root) {
 			return node.value
@@ -107,11 +107,11 @@ public int heuristique(MSNode noeud) {
 	}else if(num_noeud(noeud.color) == num_noeud(noeud.color.neg)){
 		return 0;
 	}else {
-		int coin = 0; //int coin = coin(noeud);
-		int mobilite = 0; //int mobilite = mobilite(noeud);
-		int stabilite = 0; //int stabilite = stabilite(noeud);
+
+		int mob_stab = mobilite_stabilite(noeud);
+		int coin = coin(noeud);
 		
-		return coin+mobilite+stabilite;
+		return coin+mob_stab;
 	}
 }
 
