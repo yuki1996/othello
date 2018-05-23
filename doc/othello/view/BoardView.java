@@ -241,6 +241,8 @@ public class BoardView {
         		+ colorToString(model.getCurrentPlayer().getColor()) + " doit jouer.");
     	if (model.isGameOver()) {
     		currentPlayer.setText("La partie est finie !");
+    		JFrame popUp = new PopUpResult(model);
+    		mainFrame.dispose();
 		}
     }
     

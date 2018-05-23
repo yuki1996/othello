@@ -81,7 +81,6 @@ public class Othello implements IOthello {
 		} 
 		int nbPointWhite = myBoard.getPointsPlayer(Color.WHITE);
 		int nbPointBlack = myBoard.getPointsPlayer(Color.BLACK);
-		System.out.println("white :" + nbPointWhite + "/ black :"+nbPointBlack);
 		if (nbPointWhite == nbPointBlack) {
 			return null;
 		} else if (nbPointWhite > nbPointBlack) {
@@ -96,7 +95,10 @@ public class Othello implements IOthello {
 	public void restart() {
 		myBoard = new Board(8);
 		initialisationBoard();
+		playerBlack.setBoard(myBoard);
+		playerWhite.setBoard(myBoard);
 		currentPlayer = playerBlack;
+		propertySupport.firePropertyChange(IOthello.TURN, false, true);
 	}
 	
 	public void turn(Coord xy) {
@@ -109,7 +111,7 @@ public class Othello implements IOthello {
 		currentPlayer = (oldCurrentPlayer == playerBlack ? playerWhite : playerBlack);
 		propertySupport.firePropertyChange(IOthello.TURN, false, true);
 		if (!canPlay(currentPlayer) && !isGameOver()) {
-			System.out.println(isGameOver());
+			//System.out.println(isGameOver());
 			turn(null);
 		}
 	}

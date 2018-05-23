@@ -6,7 +6,7 @@ import othello.util.Coord;
 abstract class AbstractPlayer implements IPlayer{
 	
 	protected final Color myColor;
-	protected final IBoard board;
+	protected IBoard board;
 	protected boolean isPlaying;
 	
 	AbstractPlayer(Color myColor, IBoard board){
@@ -39,6 +39,10 @@ abstract class AbstractPlayer implements IPlayer{
 
 	public void finishTurn() {
 		isPlaying = false;
+	}
+	
+	public void setBoard(IBoard board) {
+		this.board = board;
 	}
 	
 	public abstract void play(Coord xy);
