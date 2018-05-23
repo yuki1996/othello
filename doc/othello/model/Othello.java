@@ -1,15 +1,17 @@
 package othello.model;
 
-import java.util.Observable;
+import java.beans.PropertyChangeListener;
+import java.beans.PropertyChangeSupport;
 
 import othello.util.Color;
 import othello.util.Coord;
 
-public class Othello extends Observable implements IOthello {
+public class Othello implements IOthello {
 	
 	private IPlayer playerBlack, playerWhite;
 	private IBoard myBoard;
 	private IPlayer currentPlayer;
+	private PropertyChangeSupport propertySupport;
 	
 	//Jeu avec 2 humains
 	public Othello() {
@@ -18,6 +20,7 @@ public class Othello extends Observable implements IOthello {
 		playerWhite = spawnPlayer(Color.WHITE);
 		initialisationBoard();
 		currentPlayer = playerBlack;
+		propertySupport = new PropertyChangeSupport(this);
 	}
 	
 	//jeu avec 1 humain et 1 IA, l'humain joue d'abord
@@ -30,6 +33,7 @@ public class Othello extends Observable implements IOthello {
 		playerWhite = spawnAI(colorHumain == Color.BLACK ? Color.WHITE : Color.BLACK, strategie, niveau);
 		initialisationBoard();
 		currentPlayer = playerBlack;
+		propertySupport = new PropertyChangeSupport(this);
 	}
 	
 	//Jeu avec 2 IA
@@ -39,6 +43,7 @@ public class Othello extends Observable implements IOthello {
 		playerWhite = spawnAI(Color.WHITE, strategieP2, niveauP2);
 		initialisationBoard();
 		currentPlayer = playerBlack;
+		propertySupport = new PropertyChangeSupport(this);
 	}
 	
 	//REQUETES
@@ -97,11 +102,29 @@ public class Othello extends Observable implements IOthello {
 		if (isGameOver()) {
 			throw new IllegalArgumentException("fin du jeu");
 		} else if (canPlay(currentPlayer)) {
+			IBoard oldBoard = getBoard();
 			currentPlayer.play(xy);
+			propertySupport.firePropertyChange(BOARD, oldBoard, getBoard());
 		}
-		currentPlayer = (currentPlayer == playerBlack ? playerWhite : playerBlack);
-		notifyObservers();
+		IPlayer oldCurrentPlayer = currentPlayer;
+		currentPlayer = (oldCurrentPlayer == playerBlack ? playerWhite : playerBlack);
+		propertySupport.firePropertyChange(PLAYER, oldCurrentPlayer, currentPlayer);
 	}
+	
+	public void addPropertyChangeListener(String property, PropertyChangeListener l) {
+		if (l == null) {
+			throw new IllegalArgumentException("l'écouteur est null");
+		}
+		propertySupport.addPropertyChangeListener(property, l);
+	}
+	
+	public void removePropertyChangeListener(String property, PropertyChangeListener l) {
+		if (l == null) {
+			throw new IllegalArgumentException("l'écouteur est null");
+		}
+		propertySupport.removePropertyChangeListener(property, l);
+	}
+	
 	
 	//OUTILS
 	/**
@@ -122,6 +145,7 @@ public class Othello extends Observable implements IOthello {
 	 * Initialise le plateau avec les 4 pièces au départ.
 	 */
 	private void initialisationBoard() {
+		IBoard oldBoard = getBoard();
 		//D4(3,3) pion blanc
 		myBoard.putDisk(new Coord(3,3), Color.WHITE);
 		//E4(3,4) pion noir
@@ -130,6 +154,6 @@ public class Othello extends Observable implements IOthello {
 		myBoard.putDisk(new Coord(4,3), Color.BLACK);
 		//E5(4,4) pion blanc
 		myBoard.putDisk(new Coord(4,4), Color.WHITE);
-		notifyObservers();
+		propertySupport.firePropertyChange(BOARD, oldBoard, getBoard());
 	}
 }
