@@ -10,9 +10,9 @@ import othello.util.Coord;
 
 public class Board implements IBoard {
 	
-	private int size;
+	private final int size;
 
-	private Color coord_color[][]; //= new Color[getSize()][getSize()];
+	private final Color coord_color[][]; //= new Color[getSize()][getSize()];
 	private PropertyChangeSupport propertySupport;
 	
 	public Board(int size){
@@ -101,7 +101,7 @@ public class Board implements IBoard {
 		propertySupport.fireIndexedPropertyChange(COLOR, index, oldColor, color);
 		for (Coord card : Coord.CARDINALS) {
 			Coord x = xy.plus(card);
-			//On verifie qu'il y a un élément à prendre en "sanwich" dans cette direction
+			//On verifie qu'il y a un élément à prendre en "sandwich" dans cette direction
 			while (isValid(x) && getColor(x) == foeColor) {
 	        	x = x.plus(card);
 	        }

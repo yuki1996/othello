@@ -118,13 +118,13 @@ public class Coord {
 	/**
 	 * Renvoie true si this est "plus proche" de l'origine que c.
 	 * Ici "plus proche" signifie que this est dans le rectangle
-	 * défini par ORIGIN et c inclus.
+	 * défini par ORIGIN et c exclus.
 	 * Sinon renvoie false.
 	 */
 	public boolean isInRect(final Coord c) {
 		return row * c.row >= 0 && col * c.col >= 0
-			&& Math.abs(row) <= Math.abs(c.row)
-			&& Math.abs(col) <= Math.abs(c.col);
+			&& Math.abs(row) < Math.abs(c.row)
+			&& Math.abs(col) < Math.abs(c.col);
 	}
 	
 	/**
