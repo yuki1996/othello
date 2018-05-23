@@ -2,14 +2,19 @@ package othello.view;
 
 
 import java.awt.BorderLayout;
+import java.awt.Dimension;
 import java.awt.FlowLayout;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
 import java.awt.GridLayout;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
+import java.util.HashSet;
 import java.util.Set;
 
+import javax.swing.BorderFactory;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -24,7 +29,9 @@ public class BoardView {
 	// ATTRIBUTS
 
     public final int BORDER_SIZE = 1;
-    
+	private static final Dimension DEFAULT_PREFERED_DIMENSION = new Dimension(30,30);
+	private static final Color BORDER_COLOR = Color.BLACK;
+	
     private IOthello model;
     private CellView[][] cells;
     private JFrame mainFrame;
@@ -98,7 +105,19 @@ public class BoardView {
     }
     
     private void placeComponents() {
-    	JPanel p = new JPanel(new GridLayout(model.getBoard().getSize(), 
+    	JPanel row = new JPanel(new GridLayout(model.getBoard().getSize(), 1)); {
+			for(int i = 0 ; i < cells.length; ++i) {
+				JLabel headerText = new JLabel((i +  1) +"", JLabel.CENTER);
+				headerText.setForeground(java.awt.Color.WHITE);
+				JPanel header = new JPanel();
+				header.setPreferredSize(DEFAULT_PREFERED_DIMENSION);
+				header.setBackground(new java.awt.Color(139,69,19));
+				header.setBorder(BorderFactory.createLineBorder(java.awt.Color.BLACK, BORDER_SIZE));
+				header.add(headerText);
+				row.add(header);
+	        }
+		}
+        JPanel p = new JPanel(new GridLayout(model.getBoard().getSize(), 
         		model.getBoard().getSize())); {
 			for(int i = 0 ; i < cells.length; ++i) {
 	        	for(int j = 0 ; j < cells[i].length; ++j) {
@@ -106,7 +125,39 @@ public class BoardView {
 	            }
 	        }
 		}
-        mainFrame.add(p, BorderLayout.CENTER);
+		JPanel col = new JPanel(new GridLayout(1, model.getBoard().getSize())); {
+			for(int i = 0 ; i < cells.length; ++i) {
+				JLabel headerText = new JLabel((char) ('a' + i) + "", JLabel.CENTER);
+				headerText.setForeground(java.awt.Color.WHITE);
+				JPanel header = new JPanel();
+				header.setPreferredSize(DEFAULT_PREFERED_DIMENSION);
+				header.setBackground(new java.awt.Color(139,69,19));
+				header.setBorder(BorderFactory.createLineBorder(java.awt.Color.BLACK, BORDER_SIZE));
+				header.add(headerText);
+				col.add(header);
+	        }
+		}
+		
+		JPanel board = new JPanel();
+        board.setLayout(new GridBagLayout());
+	    GridBagConstraints gbc = new GridBagConstraints();
+			
+	    gbc.gridx = 0;
+	    gbc.gridy = 0;
+	    gbc.gridheight = 1;
+	    gbc.gridwidth = 1;
+	    board.add(new JPanel(), gbc);
+	    
+	    gbc.gridx = 1;
+        board.add(col, gbc);
+        
+        gbc.gridx = 0;
+	    gbc.gridy = 1;
+        board.add(row, gbc);
+        
+        gbc.gridx = 1;
+        board.add(p, gbc);
+        mainFrame.add(board, BorderLayout.CENTER);
         p = new JPanel(new GridLayout(2,1)); {
         	JPanel q = new JPanel(new FlowLayout()); {
         		p.add(new ImagePanel("jeton_blanc.png"));
@@ -139,7 +190,7 @@ public class BoardView {
 			}
 		});
     }
-    
+
     private void refresh() {
         possibilities = model.getBoard().getValidMoves(model.getCurrentPlayer().getColor());
 	    for(int i = 0 ; i < cells.length; ++i) {

@@ -9,7 +9,8 @@ public interface IOthello {
 	
 	
 	// PROPRIETES
-	String TURN = "turn";
+
+	static final String TURN = "turn";
 	
 	/**
 	 * Retourne si le jeu est fini
