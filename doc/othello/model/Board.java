@@ -12,7 +12,7 @@ public class Board implements IBoard {
 
 	private Color coord_color[][]; //= new Color[getSize()][getSize()];
 	
-	Board(int size){
+	public Board(int size){
 		this.size = size;
 		coord_color = new Color [this.size][this.size];
 	}

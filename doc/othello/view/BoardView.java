@@ -4,6 +4,7 @@ package othello.view;
 import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
+import java.awt.Font;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.GridLayout;
@@ -15,6 +16,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 import javax.swing.BorderFactory;
+import javax.swing.BoxLayout;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -30,7 +32,7 @@ public class BoardView {
 
     public final int BORDER_SIZE = 1;
 	private static final Dimension DEFAULT_PREFERED_DIMENSION = new Dimension(30,30);
-	private static final Color BORDER_COLOR = Color.BLACK;
+	private static final java.awt.Color BORDER_COLOR = java.awt.Color.BLACK;
 	
     private IOthello model;
     private CellView[][] cells;
@@ -97,7 +99,11 @@ public class BoardView {
         mainFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         mainFrame.setResizable(false);
         currentPlayer = new JLabel("Joueur " 
-        		+ colorToString(model.getCurrentPlayer().getColor()) + " doit jouer.");
+        		+ colorToString(model.getCurrentPlayer().getColor()) + " doit jouer.", JLabel.CENTER);
+        int width = currentPlayer.getWidth();
+        int height = currentPlayer.getHeight() + 50;
+        currentPlayer.setPreferredSize(new Dimension(width, height));
+        currentPlayer.setFont(new Font("Serif", Font.PLAIN, 22));
         whiteScore = new JLabel(model.getBoard().getPointsPlayer(Color.WHITE) + "");
         whitePlayer = new JLabel(colorToString(Color.WHITE) + " : ");
         
@@ -113,7 +119,7 @@ public class BoardView {
 				JPanel header = new JPanel();
 				header.setPreferredSize(DEFAULT_PREFERED_DIMENSION);
 				header.setBackground(new java.awt.Color(139,69,19));
-				header.setBorder(BorderFactory.createLineBorder(java.awt.Color.BLACK, BORDER_SIZE));
+				header.setBorder(BorderFactory.createLineBorder(BORDER_COLOR, BORDER_SIZE));
 				header.add(headerText);
 				row.add(header);
 	        }
@@ -145,29 +151,49 @@ public class BoardView {
 			
 	    gbc.gridx = 0;
 	    gbc.gridy = 0;
-	    gbc.gridheight = 1;
+	    gbc.gridheight = 3;
 	    gbc.gridwidth = 1;
 	    board.add(new JPanel(), gbc);
 	    
 	    gbc.gridx = 1;
+	    gbc.gridheight = 1;
+	    board.add(new JPanel(), gbc);
+	    
+	    gbc.gridx = 2;
         board.add(col, gbc);
         
-        gbc.gridx = 0;
+        gbc.gridx = 3;
+	    gbc.gridheight = 4;
+	    board.add(new JPanel(), gbc);
+	    
+        gbc.gridx = 1;
 	    gbc.gridy = 1;
+	    gbc.gridheight = 1;
         board.add(row, gbc);
         
-        gbc.gridx = 1;
+        gbc.gridx = 2;
         board.add(p, gbc);
+        
+        gbc.gridx = 0;
+	    gbc.gridy = 2;
+	    gbc.gridwidth = 3;
+	    board.add(new JPanel(), gbc);
+	    
         mainFrame.add(board, BorderLayout.CENTER);
-        p = new JPanel(new GridLayout(2,1)); {
-        	JPanel q = new JPanel(new FlowLayout()); {
-        		p.add(new ImagePanel("jeton_blanc.png"));
+        p = new JPanel(new GridLayout(2 ,1)); {
+        	JPanel q = new JPanel(new GridLayout(1 ,2)); {
+        		/*ImagePanel img = new ImagePanel("jeton_blanc.png");
+        		img.setBorder(null);
+        		img.setPreferredSize(new Dimension(10,10));
+        		p.add(img);*/
         		p.add(whitePlayer);
             	p.add(whiteScore);
         	}
         	p.add(q);
-        	q = new JPanel(new FlowLayout()); {
-        		p.add(new ImagePanel("jeton_noir.png"));
+        	q = new JPanel(new GridLayout(1 ,2)); {
+        		/*ImagePanel img = new ImagePanel("jeton_noir.png");
+        		img.setBorder(null);
+        		p.add(img);*/
         		p.add(blackPlayer);
             	p.add(blackScore);
         	}
@@ -183,7 +209,7 @@ public class BoardView {
             	cells[i][j].addMouseListener(new CellListener(model, i, j));
             }
         }
-        
+
        model.addPropertyChangeListener(IOthello.TURN, new PropertyChangeListener() {
 			@Override
 			public void propertyChange(PropertyChangeEvent evt) {
