@@ -33,7 +33,7 @@ public abstract class Parameters extends JFrame {
 	private int espace = 10;
 	
 	//Composant J1
-	private JLabel labelStratJ1 = new JLabel("Stratégie utilisée ");
+	private JLabel labelStratJ1 = new JLabel("StratÃ©gie utilisÃ©e ");
 	private JComboBox<String> stratJ1 = new JComboBox<String>();
 	private JLabel labelNiveauJ1 = new JLabel("Niveau ");
 	private JSlider niveauJ1 = new JSlider(JSlider.HORIZONTAL, 0, 100, 50);
@@ -42,7 +42,7 @@ public abstract class Parameters extends JFrame {
 		parent = p;
 
 		//initialisation de la fenetre
-		this.setTitle("Paramètres - Othello");
+		this.setTitle("ParamÃ¨tres - Othello");
 		//this.getContentPane().setBackground(Color.white);
 		
 		//Centrer
@@ -77,25 +77,25 @@ public abstract class Parameters extends JFrame {
 		
 		//Position titre Joueur 1
 		setPosition(0, niveauDispo, 3);
-		panel.add(new JLabel("Paramétre IA"), constraint);
+		panel.add(new JLabel("ParamÃ¨tre IA"), constraint);
 		niveauDispo++;
 		
 		setAlignLeft();
 		setMargeX(50);
-		//Position du label de la liste déroulante de stratégie
+		//Position du label de la liste dÃ©roulante de stratÃ©gie
 		setPosition(0,niveauDispo,1);
 		panel.add(labelStratJ1, constraint);
 
 		setAlignMiddle();
 		setMargeX(0);
-		//Position de la liste déroulante de stratégie
+		//Position de la liste dÃ©roulante de stratÃ©gie
 		setPosition(1,niveauDispo,2);
 		panel.add(stratJ1, constraint);
 		niveauDispo++;
 
 		setAlignLeft();
 		setMargeX(50);
-		//Position du label de la liste déroulante de stratégie
+		//Position du label de la liste dÃ©roulante de stratÃ©gie
 		setPosition(0,niveauDispo,1);
 		panel.add(labelNiveauJ1, constraint);
 

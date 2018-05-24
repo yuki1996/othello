@@ -45,9 +45,9 @@ public class PopUpResult extends JFrame{
 		JPanel panel = new JPanel();
 		panel.setLayout(gl);
 		JLabel winner = null;
-		
-		if (o.isWinner() != null) {
-			winner = new JLabel("Le joueur " +colorToString(o.isWinner()) +" gagne", JLabel.CENTER);
+		othello.util.Color colorWinner = o.isWinner();
+		if (colorWinner != null) {
+			winner = new JLabel("Le joueur " +colorToString(colorWinner) +" gagne", JLabel.CENTER);
 		} else {
 			winner = new JLabel("Match nul", JLabel.CENTER);
 		}
@@ -56,7 +56,13 @@ public class PopUpResult extends JFrame{
 		JPanel panelPoint = new JPanel();
 		GridLayout gl2 = new GridLayout(1,3);
 		panelPoint.setLayout(gl2);
-		panelPoint.add(new JLabel("Noir "+o.getBoard().getPointsPlayer(othello.util.Color.BLACK)+" ", JLabel.CENTER));
+		String blackResult = "Noir ";
+		if (colorWinner == othello.util.Color.BLACK) {
+			blackResult += (o.getBoard().getPointsPlayer(othello.util.Color.BLACK) + o.getBoard().getPointsNobody());
+		} else {
+			blackResult += (o.getBoard().getPointsPlayer(othello.util.Color.BLACK));
+		}
+		panelPoint.add(new JLabel(blackResult, JLabel.CENTER));
 		/*
 		ImagePanel black = new ImagePanel("jeton_noir.png");
 		ImagePanel white = new ImagePanel("jeton_blanc.png");
@@ -67,7 +73,14 @@ public class PopUpResult extends JFrame{
 		*/
 		panelPoint.add(new JLabel(" vs ", JLabel.CENTER));
 		//panelPoint.add(white);
-		panelPoint.add(new JLabel("Blanc "+o.getBoard().getPointsPlayer(othello.util.Color.WHITE)+" ", JLabel.CENTER));
+
+		String whiteResult = "Blanc ";
+		if (colorWinner == othello.util.Color.WHITE) {
+			whiteResult += (o.getBoard().getPointsPlayer(othello.util.Color.WHITE) + o.getBoard().getPointsNobody());
+		} else {
+			whiteResult += (o.getBoard().getPointsPlayer(othello.util.Color.WHITE));
+		}
+		panelPoint.add(new JLabel(whiteResult, JLabel.CENTER));
 		
 		panel.add(panelPoint);
 		panel.add(restart);
