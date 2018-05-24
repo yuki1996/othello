@@ -48,9 +48,10 @@ public class Calcul_h{
 	public Double getValue(String strategie) {
 		
 		//this.noeud_root.generateChildren();
-		double h_value = Double.POSITIVE_INFINITY;
+		double h_value = 0;
 		
 		if(this.max_depth == 1) {
+			System.out.println("wat");
 			return heuristique(noeud_root);
 		}else {
 			
@@ -71,19 +72,23 @@ public class Calcul_h{
 //			}else {
 				
 				for(Node n : this.noeud_root) {
-					if(strategie == NEGA) {
+					if(strategie.equals(NEGA)) {
+						
 						if(this.noeud_root.getPlayerColor() == Color.BLACK) {
 							h_value = Double.max(h_value, Negalphabeta(n,Double.NEGATIVE_INFINITY,Double.POSITIVE_INFINITY));
 						}else {
 							h_value = Double.min(h_value, Negalphabeta(n,Double.NEGATIVE_INFINITY,Double.POSITIVE_INFINITY));
 						}
 						System.out.println("Value Negalphabeta* : "+h_value);
-					}else if(strategie == SSS_STAR) {
+					}else if(strategie.equals(SSS_STAR)) {
+						System.out.println("Value SSSS* : "+h_value);
 						if(this.noeud_root.getPlayerColor() == Color.BLACK) {
 							h_value = Double.max(h_value, sss_etoile(n));
 						}else {
 							h_value = Double.min(h_value, sss_etoile(n));
 						}
+					}else {
+						throw new IllegalArgumentException("Not an strategy");
 					}
 				}
 				
@@ -94,7 +99,9 @@ public class Calcul_h{
 	
 		
 	public Double Negalphabeta(Node node,double alpha, double beta) {
-		//node.generateChildren();
+		node.generateChildren();
+		
+		//System.out.println("Dans NEGA : "+node.hashCode());
 		
 		if(node.getDepth() == max_depth) {
 			if(node.getPlayerColor() == Color.BLACK)
@@ -104,15 +111,21 @@ public class Calcul_h{
 		}else {
 		
 			double val = Double.NEGATIVE_INFINITY;
-			
-			Iterator<Node> childs = node.iterator();
-			
-			while( alpha < beta && childs.hasNext()){
-				val = Double.max(val, -Negalphabeta(childs.next(),-beta,-alpha));
-				alpha = Double.max(val, alpha);
+						
+			if(node.children().isEmpty()) {
+				if(node.getPlayerColor() == Color.BLACK)
+					return heuristique(node);
+				else
+					return -heuristique(node);
+			}else {
+				Iterator<Node> childs = node.iterator();
+				while( alpha < beta && childs.hasNext()){
+					val = Double.max(val, -Negalphabeta(childs.next(),-beta,-alpha));
+					alpha = Double.max(val, alpha);
+				}
+				
+				return alpha;
 			}
-			
-			return alpha;
 		}
 	}
 	
@@ -213,7 +226,7 @@ public class Calcul_h{
 		
 		double poid_mobilite = (double) 10;
 		
-		double poid_stabilite = (double) 10;
+		double poid_stabilite = (double) 25;
 	
 		double mblt = 0;
 		
@@ -255,9 +268,9 @@ public class Calcul_h{
 		
 		Set<Coord> set_coord_white_stable = new HashSet<Coord>();
 		
-		mblt += set_coord_moves_black.size() * poid_mobilite;
-		
-		mblt -= set_coord_moves_white.size() * poid_mobilite;
+//		mblt += (double)set_coord_moves_black.size() * poid_mobilite;
+//		
+//		mblt -= (double)set_coord_moves_white.size() * poid_mobilite;
 		
 		Coord c = new Coord(0,0);
 		//Coord d = c;
@@ -303,13 +316,22 @@ public class Calcul_h{
 		
 		// discs stables = intersetion de flanks et tous les discs
 		
-		stbl += set_coord_black_stable.size() * poid_stabilite;
+		System.out.println("set coord black stable size : "+set_coord_black_stable.size());
+		System.out.println("set coord white stable size : "+set_coord_white_stable.size());
+		System.out.println("set coord black flank size : "+set_coord_black_flank.size());
+		System.out.println("set coord white flank size : "+set_coord_white_flank.size());
 		
-		stbl -= set_coord_white_stable.size() * poid_stabilite;
+		stbl += (double)set_coord_black_stable.size() * poid_stabilite;
 		
-		stbl += set_coord_white_flank.size() * poid_stabilite;
+		stbl -= (double)set_coord_white_stable.size() * poid_stabilite;
 		
-		stbl -= set_coord_black_flank.size() * poid_stabilite;
+		stbl += (double)set_coord_white_flank.size() * poid_stabilite;
+		
+		stbl -= (double)set_coord_black_flank.size() * poid_stabilite;
+		
+		double somme = mblt+stbl;
+		
+		System.out.println("Value heuristique: "+somme);
 		
 		return mblt+stbl;
 	}
