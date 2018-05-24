@@ -1,8 +1,8 @@
 package othello.util;
 
 import java.util.Comparator;
-import java.util.Iterator;
-import java.util.List;
+//import java.util.Iterator;
+//import java.util.List;
 import java.util.PriorityQueue;
 
 import othello.model.Board;
@@ -10,9 +10,9 @@ import othello.model.IBoard;
 //import othello.util.MinSpaceStrategyTree.MSNode;
 import othello.util.StrategyTree.Node;
 
-enum Status{
-	alive,resolved;
-}
+//enum Status{
+//	alive,resolved;
+//}
 
 /*
  * creer la liste de priorite avec tous ses fonctions //java.util.PriorityQueue
@@ -80,22 +80,24 @@ public class Calcul_h{
 		
 		PriorityQueue<h_noeud> G = new PriorityQueue<h_noeud>(100, valuecomp);
 		
+		root.setEval(Double.POSITIVE_INFINITY);
+		
 		h_noeud h_root = new h_noeud(root,Status.alive,Double.POSITIVE_INFINITY,1,null);
 		
 		G.add(h_root);
 		
 		h_noeud node = null;
 		
-		System.out.println("Value dans sss pour "+root.hashCode()+": "+G.peek().value);
+		System.out.println("Value dans sss pour "+root.hashCode()+": "+G.peek().noeud.getEval());
 		
 		while( true ) {
 			node = G.poll();
 			
 			if(node.status == Status.resolved && node.noeud == root) {
-				return node.value;
+				return node.noeud.getEval();
 			}else {
 				if(node.status == Status.alive) {
-					if(node.depth >= max_depth) {
+//					if(node.depth >= max_depth) {
 //						h = heuristique(node)
 //						G.add(node,Status.resolved,min(node.value,h),node.depth,node.parent);
 //					}else {
@@ -120,7 +122,7 @@ public class Calcul_h{
 //							insert(node.parent.name,resolved,node.value,G)
 //						}
 //					}
-				}
+//				}
 				}
 				//return Double.NEGATIVE_INFINITY;
 			}
@@ -191,47 +193,47 @@ public class Calcul_h{
 	
 }
 
-class h_noeud implements Iterable<h_noeud> {
-	
-	Boolean explored;
-	Node noeud;
-	Status status;
-	Double value;
-	int depth;
-	h_noeud parent;
-	
-	private List<h_noeud> children;
-	
-	//CONSTRUCTEUR
-	h_noeud (Node noeud, Status init_status, Double init_value, int init_depth,h_noeud pere){
-		explored = false;
-		status = init_status;
-		value = init_value;
-		depth = init_depth;
-		parent = pere;
-	}
-	
-	public Iterator<h_noeud> iterator() {
-		return children.iterator();
-	}
-}
+//class h_noeud implements Iterable<h_noeud> {
+//	
+//	Boolean explored;
+//	Node noeud;
+//	Status status;
+//	Double value;
+//	int depth;
+//	h_noeud parent;
+//	
+//	private List<h_noeud> children;
+//	
+//	//CONSTRUCTEUR
+//	h_noeud (Node noeud, Status init_status, Double init_value, int init_depth,h_noeud pere){
+//		explored = false;
+//		status = init_status;
+//		value = init_value;
+//		depth = init_depth;
+//		parent = pere;
+//	}
+//	
+//	public Iterator<h_noeud> iterator() {
+//		return children.iterator();
+//	}
+//}
 
 
-class ValComp implements Comparator<h_noeud> {
-
-    @Override
-    public int compare (h_noeud noeud1, h_noeud noeud2) {
-    	if(noeud1.value == noeud2.value) {
-    		return 0;
-    	}else {
-    		if(noeud1.value > noeud2.value) {
-    			return -1;
-    		}else {
-    			return 1;
-    		}
-    	}
-    }
-}
+//class ValComp implements Comparator<h_noeud> {
+//
+//    @Override
+//    public int compare (h_noeud noeud1, h_noeud noeud2) {
+//    	if(noeud1.value == noeud2.value) {
+//    		return 0;
+//    	}else {
+//    		if(noeud1.value > noeud2.value) {
+//    			return -1;
+//    		}else {
+//    			return 1;
+//    		}
+//    	}
+//    }
+//}
 
 
 //
