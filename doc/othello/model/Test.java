@@ -5,6 +5,7 @@ import java.util.Set;
 
 import othello.util.Color;
 import othello.util.Coord;
+import othello.view.PopUpResult;
 
 public class Test {
 
@@ -30,9 +31,7 @@ public class Test {
 			set = game.getBoard().getValidMoves( k % 2 != 0 ? Color.WHITE : Color.BLACK);
 		}
 		
-		if (game.isGameOver()) {
-			System.out.println("Partie fini :" + game.isWinner());
-		}
+		PopUpResult pop = new PopUpResult(game);
 		
 		
 		game.restart();

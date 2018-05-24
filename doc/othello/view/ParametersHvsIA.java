@@ -18,7 +18,7 @@ public class ParametersHvsIA extends Parameters {
 	private JLabel labelJeton = new JLabel("Choix couleur ");
 	private JPanel black = new JPanel();
 	private JPanel white = new JPanel();
-	private othello.util.Color selected = othello.util.Color.WHITE;
+	private Color selected = Color.WHITE;
 	
 	public ParametersHvsIA(JFrame p) {
 		super(p);

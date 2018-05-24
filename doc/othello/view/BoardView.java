@@ -21,6 +21,7 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
+import othello.model.AI;
 import othello.model.IOthello;
 import othello.model.Othello;
 import othello.util.Color;
@@ -58,7 +59,6 @@ public class BoardView {
     }
     
     // COMMANDES
-    
     public void display() {
         mainFrame.pack();
         mainFrame.setLocationRelativeTo(null);
@@ -71,7 +71,6 @@ public class BoardView {
     }
     
     //OUTILS
-    
     private void createModel(IOthello model) {
         this.model = model;
         possibilities = model.getBoard().getValidMoves(model.getCurrentPlayer().getColor());
@@ -244,6 +243,9 @@ public class BoardView {
     		JFrame popUp = new PopUpResult(model);
     		mainFrame.dispose();
 		}
+    	if (model.getCurrentPlayer().getClass() == AI.class){
+        	model.turn(null);
+        }
     }
     
     private String colorToString(Color c) {
