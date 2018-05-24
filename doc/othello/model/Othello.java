@@ -12,6 +12,7 @@ public class Othello implements IOthello {
 	private IBoard myBoard;
 	private IPlayer currentPlayer;
 	private PropertyChangeSupport propertySupport;
+	private boolean foeHasPlay;
 	
 	//Jeu avec 2 humains
 	public Othello() {
@@ -21,6 +22,7 @@ public class Othello implements IOthello {
 		propertySupport = new PropertyChangeSupport(this);
 		initialisationBoard();
 		currentPlayer = playerBlack;
+		foeHasPlay = true;
 	}
 	
 	//jeu avec 1 humain et 1 IA, l'humain joue d'abord
@@ -34,6 +36,7 @@ public class Othello implements IOthello {
 		propertySupport = new PropertyChangeSupport(this);
 		initialisationBoard();
 		currentPlayer = playerBlack;
+		foeHasPlay = true;
 	}
 	
 	//Jeu avec 2 IA
@@ -45,11 +48,12 @@ public class Othello implements IOthello {
 		propertySupport = new PropertyChangeSupport(this);
 		initialisationBoard();
 		currentPlayer = playerBlack;
+		foeHasPlay = true;
 	}
 	
 	//REQUETES
 	public boolean isGameOver() {
-		if (!foePlayed() && !canPlay(currentPlayer) || getBoard().isFull()) {
+		if (!foePlayed() && !canPlay(currentPlayer)) {
 			return true;
 		} 
 		return false;
@@ -60,8 +64,7 @@ public class Othello implements IOthello {
 	}
 	
 	public boolean foePlayed() {
-		IPlayer foe = (currentPlayer == playerBlack ? playerWhite : playerBlack);
-		return !foe.isPlaying();
+		return foeHasPlay;
 	}
 	
 	public IBoard getBoard() {
@@ -106,6 +109,9 @@ public class Othello implements IOthello {
 			throw new IllegalArgumentException("fin du jeu");
 		} else if (canPlay(currentPlayer)) {
 			currentPlayer.play(xy);
+			foeHasPlay = true;
+		} else {
+			foeHasPlay = false;
 		}
 		IPlayer oldCurrentPlayer = currentPlayer;
 		currentPlayer = (oldCurrentPlayer == playerBlack ? playerWhite : playerBlack);

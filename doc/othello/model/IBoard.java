@@ -1,6 +1,5 @@
 package othello.model;
 
-import java.beans.PropertyChangeListener;
 import java.util.Set;
 
 import othello.util.Color;
