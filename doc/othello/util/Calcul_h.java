@@ -23,7 +23,7 @@ enum Status{
  * 
  */
 
-public class calcul_h{
+public class Calcul_h{
 	
 	public static void main(String[] args) {
 		System.out.println("hello world");
@@ -31,7 +31,6 @@ public class calcul_h{
 		h_noeud test = new h_noeud(null,Status.alive,Double.POSITIVE_INFINITY);
 		
 		System.out.println(test.status);
-		
 		
 		Comparator<h_noeud> valuecomp = new ValComp();
 		
