@@ -180,7 +180,7 @@ public class MinSpaceStrategyTree implements StrategyTree {
 					child.generateNextLevel(rootLevel);
 				}
 			}
-			else if (children == null && depth - rootLevel < maxDepth) {
+			else if (children == null && depth - rootLevel <= maxDepth) {
 				generateChildren();
 				generateNextLevel(rootLevel);
 			} else if (children == null) {
@@ -234,9 +234,16 @@ public class MinSpaceStrategyTree implements StrategyTree {
 	
 	public void move(Coord c) {
 		for (Node n : root.children()) {
-			if (n.getMove() == null && c == null || n.getMove().equals(c)) {
-				root = n;
-				root.generateNextLevel(maxDepth);
+			if (n.getMove() == null) {
+				if (c == null) {
+					root = n;
+					root.generateNextLevel(maxDepth);
+				}
+			} else {
+				if (n.getMove().equals(c)) {
+					root = n;
+					root.generateNextLevel(maxDepth);
+				}
 			}
 		}
 	}
