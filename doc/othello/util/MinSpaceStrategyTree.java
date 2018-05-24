@@ -34,7 +34,7 @@ public class MinSpaceStrategyTree implements StrategyTree {
 		// CONSTRUCTEURS
 		public MSNode(MSNode parent, Coord move, double ev) {
 			super(board.getSize());
-			if (parent == null || move == null) {
+			if (parent == null) {
 				throw new AssertionError();
 			}
 			playerColor = Color.values()[(parent.playerColor.ordinal() + 1) % Color.values().length];
@@ -44,7 +44,9 @@ public class MinSpaceStrategyTree implements StrategyTree {
 			this.parent = parent;
 			depth = parent.depth + 1;
 			this.move = move;
-			playAShot(move, parent.playerColor);
+			if (move != null) {
+				playAShot(move, parent.playerColor);
+			}
 		}
 		
 		public MSNode(IBoard b, Color c) {
@@ -234,7 +236,7 @@ public class MinSpaceStrategyTree implements StrategyTree {
 	
 	public void move(Coord c) {
 		for (Node n : root.children()) {
-			if (n.getMove().equals(c)) {
+			if (n.getMove() == null && c == null || n.getMove().equals(c)) {
 				root = n;
 				root.generateNextLevel(maxDepth);
 			}
@@ -244,24 +246,25 @@ public class MinSpaceStrategyTree implements StrategyTree {
 	public static void main(String[] args) {
 		IBoard b = new Board(8);
 		b.putDisk(new Coord(3,3), Color.BLACK);
-		b.putDisk(new Coord(4,4), Color.BLACK);
 		b.putDisk(new Coord(3,4), Color.WHITE);
-		b.putDisk(new Coord(4,3), Color.WHITE);
+		b.putDisk(new Coord(3,5), Color.BLACK);
 		
-		MinSpaceStrategyTree t = new MinSpaceStrategyTree(b, 20);
+		MinSpaceStrategyTree t = new MinSpaceStrategyTree(b, 4);
 		Node m = t.getRoot();
-		m.generateChildren();
+		m.generateNextLevel(0);
 		
 		
-		System.out.println(m.getAllDisks());
-		System.out.println(m);
-		System.out.println("Children size: "+m.children().size()+"\n");
-		
-		System.out.println("Printing childs: \n");
-		for (Node n : m) {
-			System.out.println(n);
-		}
-		
+		System.out.println(t.getRoot().toString());
+		System.out.println(t.getRoot().children().size());
+		t.move(null);
+		System.out.println(t.getRoot().toString());
+		System.out.println(t.getRoot().children().size());
+		t.move(new Coord(3,2));
+		System.out.println(t.getRoot().toString());
+		System.out.println(t.getRoot().children().size());
+		t.move(new Coord(3,1));
+		System.out.println(t.getRoot().toString());
+		System.out.println(t.getRoot().children().size());
 	}
 	
 }

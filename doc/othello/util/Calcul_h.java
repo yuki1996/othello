@@ -331,6 +331,18 @@ public class Calcul_h{
 	
 
 public Double coin(Node noeud) {
+	for (Node n : noeud.children()) {
+		if (n.getLastShot().equals(new Coord(0,0))
+				|| n.getLastShot().equals(new Coord(0,7))
+				|| n.getLastShot().equals(new Coord(7,0))
+				|| n.getLastShot().equals(new Coord(7,7))) {
+			if (noeud.getPlayerColor().equals(Color.BLACK)) {
+				return 100.;
+			} else {
+				return -100.;
+			}
+		}
+	}
 //	if(a1,a8,h1,h8 in noeud.last_disc) {
 //		if(noued.last_disc.color == Noir) {
 //			return 100;
@@ -348,7 +360,7 @@ public Double coin(Node noeud) {
 //	}else{
 //		return 0;
 //	}
-	return Double.POSITIVE_INFINITY;
+	return 0.;
 }
 	
 	public static void main(String[] args) {
