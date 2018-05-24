@@ -21,11 +21,11 @@ public class MinSpaceStrategyTree implements StrategyTree {
 	public class MSNode implements Node {
 		private final Color playerColor;
 		private final long[] boardState; // représentation compact du plateau
-		private int evaluation;
+		private double evaluation;
 		private SortedSet<Node> children; // null => enfants non générés
 		
 		// CONSTRUCTEURS
-		public MSNode(MSNode parent, Coord move, int ev) {
+		public MSNode(MSNode parent, Coord move, double ev) {
 			if (parent == null || move == null) {
 				throw new AssertionError();
 			}
@@ -56,7 +56,7 @@ public class MinSpaceStrategyTree implements StrategyTree {
 			return children;
 		}
 		
-		public int getEval() {
+		public double getEval() {
 			return evaluation;
 		}
 		
@@ -85,16 +85,16 @@ public class MinSpaceStrategyTree implements StrategyTree {
 			return s;
 		}
 		
-		public boolean equals(Object obj) {
-			if (obj != null && this.getClass() == obj.getClass()) {
-				Node c = (Node) obj;
-				return getEval() == c.getEval();
-			}
-			return false;
-		}
+//		public boolean equals(Object obj) {
+//			if (obj != null && this.getClass() == obj.getClass()) {
+//				Node c = (Node) obj;
+//				return getEval() == c.getEval();
+//			}
+//			return false;
+//		}
 
 		// COMMANDES
-		public void setEval(int e) {
+		public void setEval(double e) {
 			evaluation = e;
 		}
 		

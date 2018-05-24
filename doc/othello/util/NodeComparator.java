@@ -10,7 +10,23 @@ class NodeComparator implements Comparator<StrategyTree.Node> {
 			throw new AssertionError("Comparaison entre deux neuds de couleurs différentes");
 		}
 		
-		return n1.getPlayerColor() == Color.BLACK ? n1.getEval() - n2.getEval() : n2.getEval() - n1.getEval();
+		if (n1.getPlayerColor() == Color.BLACK) {
+			if (n1.getEval() - n2.getEval() < 0) {
+				return -1;
+			} else if (n1.getEval() - n2.getEval() > 0) {
+				return 1;
+			} else {
+				return 0;
+			}
+		} else {
+			if (n2.getEval() - n1.getEval() < 0) {
+				return -1;
+			} else if (n1.getEval() - n2.getEval() > 0) {
+				return 1;
+			} else {
+				return 0;
+			}
+		}
 	}
 	
 }

@@ -31,7 +31,7 @@ public interface StrategyTree {
 		/**
 		 * Renvoie l'évaluation du noeud.
 		 */
-		int getEval();
+		double getEval();
 		
 		/**
 		 * Renvoie la couleur du joueur devant jouer à l'état du noeud.
@@ -40,7 +40,7 @@ public interface StrategyTree {
 		/**
 		 * Modifie l'évaluation du noeud.
 		 */
-		void setEval(int e);
+		void setEval(double e);
 		
 		/**
 		 * Renvoie la couleur de la case de coordonnée move dans l'état
