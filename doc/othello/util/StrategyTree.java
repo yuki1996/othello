@@ -39,15 +39,21 @@ public interface StrategyTree {
 		void setEval(double e);
 		
 		/**
-		 * Renvoie la couleur de la case de coordonnée c dans l'état
+		 * Renvoie la couleur de la case de coordonnée move dans l'état
 		 * contenu dans le noeud.
 		 */
 		Color getDisk(Coord move);
 		
 		/**
-		 * 
+		 * Pose un jeton de couleur c dans la case move du plateau du noeud
+		 * avec retournement des jetons adverses.
 		 */
 		void setDisk(Coord move, Color c);
+		
+		/**
+		 * Génère tous les noeuds enfants correspondant à un coup possible.
+		 */
+		void generateChildren();
 	}
 	
 	/**
