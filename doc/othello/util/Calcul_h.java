@@ -5,6 +5,7 @@ import java.util.Iterator;
 //import java.util.Iterator;
 //import java.util.List;
 import java.util.PriorityQueue;
+import java.util.Set;
 
 import othello.model.Board;
 import othello.model.IBoard;
@@ -30,8 +31,8 @@ import othello.util.StrategyTree.Node;
  */
 
 public class Calcul_h{
-	public static final String SSS_STAR = "SSS";
-	public static final String NEGA = "NEGALPHA BETA";
+	public static final String SSS_STAR = "sss";
+	public static final String NEGA = "negalphabeta";
 	
 	private Node noeud_root;
 	//int depth;
@@ -42,36 +43,53 @@ public class Calcul_h{
 		this.max_depth = max_depth;
 	}
 	
-	public Double getValue() {
+	public Double getValue(String strategie) {
 		
-		this.noeud_root.generateChildren();
+		//this.noeud_root.generateChildren();
 		double h_value = Double.POSITIVE_INFINITY;
 		
 		if(this.max_depth == 1) {
 			
-			for(Node n : this.noeud_root) {
-				System.out.println("Children de profondeur 1: "+n);
-				
-				h_value = Double.min(h_value, heuristique(n));
-			}
+//			for(Node n : this.noeud_root) {
+//				System.out.println("Children de profondeur 1: "+n);
+//				
+//				h_value = Double.min(h_value, heuristique(n));
+//			}
 			
-			return Double.POSITIVE_INFINITY;
-			
+//			return Double.POSITIVE_INFINITY;
+			return heuristique(noeud_root);
 		}else {
-						
-			for(Node n : this.noeud_root) {
-				h_value = Double.min(h_value, Negalphabeta(n,Double.NEGATIVE_INFINITY,Double.POSITIVE_INFINITY));
-			}
 			
-			//double sss_etoile = sss_etoile();
-			System.out.println("Value SSS* : "+h_value);
-		
-			return Double.POSITIVE_INFINITY;
+			if(this.max_depth == 2) {
+				
+				for(Node n : this.noeud_root) {
+					System.out.println("Children de profondeur 1: "+n);
+					
+					h_value = Double.min(h_value, heuristique(n));
+				}
+					return h_value;
+				
+			}else {
+				
+			
+				for(Node n : this.noeud_root) {
+					if(strategie == NEGA) {
+						h_value = Double.min(h_value, Negalphabeta(n,Double.NEGATIVE_INFINITY,Double.POSITIVE_INFINITY));
+					}else if(strategie == SSS_STAR) {
+						h_value = Double.min(h_value, sss_etoile(n));
+					}
+				}
+				
+				//double sss_etoile = sss_etoile();
+				System.out.println("Value SSS* : "+h_value);
+			
+				return h_value;
+			}
 		}
 	}
 		
 	public Double Negalphabeta(Node node,double alpha, double beta) {
-		node.generateChildren();
+		//node.generateChildren();
 		
 		if(node.getDepth() == max_depth) {
 			if(node.getPlayerColor() == Color.BLACK)
@@ -178,13 +196,17 @@ public class Calcul_h{
 			}
 		}else {
 			double mob_stab = mobilite_stabilite(noeud);
-			double coin = coin(noeud);
+			//double coin = coin(noeud);
+			
+			double coin = (double)0;
 			
 			return coin+mob_stab;
 		}
 	}
 	
 	Double mobilite_stabilite(Node noeud) {
+		
+		double poid_mobilite = (double) 10;
 	
 		double mblt = 0;
 		
@@ -214,9 +236,100 @@ public class Calcul_h{
 	//	
 	//	return stbl+mblt;
 		
-		return Double.POSITIVE_INFINITY;
+		Set<Coord> set_coord_black = noeud.getValidMoves(Color.BLACK);
+		
+//		Set<Coord> set_coord_black_flack = new HashSet<Coord>();
+		
+		Set<Coord> set_coord_white = noeud.getValidMoves(Color.WHITE);
+		
+		mblt += set_coord_black.size() * poid_mobilite;
+		
+		mblt -= set_coord_white.size() * poid_mobilite;
+		
+		
+//		for(int row = 0; row < noeud.getSize(); row++) {
+//			for (int col = 0; col < noeud.getSize(); col++) {
+//				
+//			}
+//		}
+		
+		return mblt+stbl;
 	}
-//
+	
+
+//	Boolean canmove(Node noeud, int row, int col) {
+//		
+//		Color current_color = noeud.getColor(new Coord(row,col));
+//		
+//		//up
+//		for(int rowup = row-1; rowup < 1; rowup--) {
+//			if(noeud.getColor(new Coord(rowup,col)) == current_color) {
+//				break;
+//			}else {
+//				if(noeud.getColor(new Coord(rowup-1,col)) == null) {
+//					return true;
+//				}
+//			}
+//		}
+//		
+//		//down
+//		for(int rowdown = row+1; rowdown < noeud.getSize()-1; rowdown++) {
+//			if(noeud.getColor(new Coord(rowdown,col)) == current_color) {
+//				break;
+//			}else {
+//				if(noeud.getColor(new Coord(rowdown+1,col)) == null) {
+//					return true;
+//				}
+//			}
+//		}
+//		
+//		//right
+//		for(int colright = col+1; colright < noeud.getSize()-1; colright++) {
+//			if(noeud.getColor(new Coord(row,colright)) == current_color) {
+//				break;
+//			}else {
+//				if(noeud.getColor(new Coord(row,colright+1)) == null) {
+//					return true;
+//				}
+//			}
+//		}
+//		
+//		//left
+//		for(int colleft = col-1; colleft < 1; colleft--) {
+//			if(noeud.getColor(new Coord(row,colleft)) == current_color) {
+//				break;
+//			}else {
+//				if(noeud.getColor(new Coord(row,colleft-1)) == null) {
+//					return true;
+//				}
+//			}
+//		}
+//		
+//		
+//		
+//		return false;
+//	}
+	
+	
+//	Boolean flank(Node noeud, int row, int col) {
+//		
+//		Color current_color = noeud.getColor(new Coord(row,col));
+//		
+//		//up
+//		for(int rowup = row-1; rowup < 1; rowup--) {
+//			if(noeud.getColor(new Coord(rowup,col)) == null) {
+//				break;
+//			}else {
+//				if(noeud.getColor(new Coord(rowup-1,col)) != null) {
+//					for(int rowdown = row+1; rowdown <
+//				}
+//			}
+//		}
+//		
+//		return false;
+//	}
+	
+
 public Double coin(Node noeud) {
 //	if(a1,a8,h1,h8 in noeud.last_disc) {
 //		if(noued.last_disc.color == Noir) {
@@ -254,7 +367,7 @@ public Double coin(Node noeud) {
 		
 		Calcul_h h = new Calcul_h(t.getRoot(),tree_depth);
 
-		System.out.println("Value : "+h.getValue());
+		//System.out.println("Value : "+h.getValue());
 		
 //		Node m = t.getRoot();
 //		m.generateChildren();		

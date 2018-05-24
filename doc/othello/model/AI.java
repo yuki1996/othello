@@ -50,7 +50,6 @@ public class AI extends AbstractPlayer{
 		if (board.getLastShot() != null) {
 			sTree.move(board.getLastShot());
 		}
-		
 		switch (strategy) {
 			case Calcul_h.SSS_STAR:
 				calcul_h.sss_etoile(sTree.getRoot());
@@ -95,4 +94,5 @@ public class AI extends AbstractPlayer{
 	private Coord getChoice() {
 		return new Coord(0,0); // TODO
 	}
+	
 }
