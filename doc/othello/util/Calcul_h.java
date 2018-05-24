@@ -38,7 +38,6 @@ public class Calcul_h{
 	public static final String NEGA = "negalphabeta";
 	
 	private Node noeud_root;
-	//int depth;
 	int max_depth;
 	
 	public Calcul_h(Node init_root, int max_depth){
@@ -52,29 +51,25 @@ public class Calcul_h{
 		double h_value = Double.POSITIVE_INFINITY;
 		
 		if(this.max_depth == 1) {
-			
-//			for(Node n : this.noeud_root) {
-//				System.out.println("Children de profondeur 1: "+n);
-//				
-//				h_value = Double.min(h_value, heuristique(n));
-//			}
-			
-//			return Double.POSITIVE_INFINITY;
 			return heuristique(noeud_root);
 		}else {
 			
-			if(this.max_depth == 2) {
+//			if(this.max_depth == 2) {
+//				
+//				for(Node n : this.noeud_root) {
+//					System.out.println("Children de profondeur 1: "+n);
+//					
+//					if(this.noeud_root.getPlayerColor() == Color.BLACK) {
+//						h_value = Double.min(h_value, heuristique(n));
+//					}else {
+//						h_value = Double.max(h_value, heuristique(n));
+//					}
+//				}
+//				
+//				return h_value;
+//				
+//			}else {
 				
-				for(Node n : this.noeud_root) {
-					System.out.println("Children de profondeur 1: "+n);
-					
-					h_value = Double.min(h_value, heuristique(n));
-				}
-					return h_value;
-				
-			}else {
-				
-			
 				for(Node n : this.noeud_root) {
 					if(strategie == NEGA) {
 						if(this.noeud_root.getPlayerColor() == Color.BLACK) {
@@ -93,12 +88,10 @@ public class Calcul_h{
 				}
 				
 				//double sss_etoile = sss_etoile();
-				
-			
 				return h_value;
 			}
 		}
-	}
+	
 		
 	public Double Negalphabeta(Node node,double alpha, double beta) {
 		//node.generateChildren();
