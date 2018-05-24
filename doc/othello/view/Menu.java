@@ -17,13 +17,14 @@ public class Menu extends JFrame{
 	private Bouton gameAgainstIA = new Bouton("Joueur VS IA");
 	private Bouton game2IA = new Bouton("IA VS IA");
 	private Bouton game2H = new Bouton("Joueur VS Joueur");
+	private Bouton tuto = new Bouton("Aide");
 	
 	public Menu () {
 		//initialisation des boutons
 		initButtons();
 		//initialisation de la fenetre
 		this.setTitle("Menu - Othello");
-		this.setPreferredSize(new Dimension(300,300));
+		this.setPreferredSize(new Dimension(350,350));
 		this.getContentPane().setBackground(Color.WHITE);
 		
 		//Centrer
@@ -35,7 +36,7 @@ public class Menu extends JFrame{
 		this.setResizable(false);
 		
 		//layout des boutons
-		GridLayout gl = new GridLayout(4,1);
+		GridLayout gl = new GridLayout(5,1);
 		//espace entre les boutons
 		gl.setHgap(5);
 		gl.setVgap(5);
@@ -43,6 +44,7 @@ public class Menu extends JFrame{
 		//panel qui contient les boutons
 		JPanel panel = new JPanel();
 		panel.setLayout(gl);
+		panel.add(tuto);
 		panel.add(gameAgainstIA);
 		panel.add(game2IA);
 		panel.add(game2H);
@@ -59,6 +61,13 @@ public class Menu extends JFrame{
 
 	private void initButtons() {
 		JFrame fenetre = this;
+		
+		tuto.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent event) {
+				Tutorial tuto = new Tutorial();
+				tuto.display();
+			}
+		});
 		
 		game2H.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent event) {
