@@ -35,6 +35,8 @@ public class BoardView {
     private IOthello model;
     private CellView[][] cells;
     private CellListener[][] cellListeners;
+    private PropertyChangeListener turnListener;
+    private PropertyChangeListener aiListener;
     private JFrame mainFrame;
     private JLabel currentPlayer;
     private JLabel whiteScore;
@@ -51,7 +53,7 @@ public class BoardView {
         createController();
         if (model.getCurrentPlayer().getClass() == AI.class){
        		model.turn(null);
-       }
+        }
     }
     
     // REQUETES
@@ -211,14 +213,15 @@ public class BoardView {
             }
         }
 
-        model.addPropertyChangeListener(IOthello.TURN, new PropertyChangeListener() {
+        turnListener = new PropertyChangeListener() {
  			@Override
  			public void propertyChange(PropertyChangeEvent evt) {
  				refresh();
  			}
- 		});
+ 		};
+        model.addPropertyChangeListener(IOthello.TURN, turnListener);
 
-        model.addPropertyChangeListener(IOthello.AI_PLAY, new PropertyChangeListener() {
+ 		aiListener = new PropertyChangeListener() {
  			@Override
  			public void propertyChange(PropertyChangeEvent evt) {
  				if ((boolean) evt.getNewValue()) {
@@ -235,7 +238,8 @@ public class BoardView {
  			        }
  				}
  			}
- 		});
+ 		};
+        model.addPropertyChangeListener(IOthello.AI_PLAY, aiListener);
     }
 
     private void refresh() {
@@ -260,7 +264,8 @@ public class BoardView {
     	currentPlayer.setText("Joueur " 
         		+ colorToString(model.getCurrentPlayer().getColor()) + " doit jouer.");
     	if (model.isGameOver()) {
-    		currentPlayer.setText("La partie est finie !");
+    		model.removePropertyChangeListener(IOthello.AI_PLAY, aiListener);
+    		model.removePropertyChangeListener(IOthello.TURN, turnListener);
     		new PopUpResult(model);
     		mainFrame.dispose();
 		}
