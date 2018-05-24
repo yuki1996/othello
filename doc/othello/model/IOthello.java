@@ -11,6 +11,8 @@ public interface IOthello {
 	// PROPRIETES
 
 	static final String TURN = "turn";
+
+	static final String AI_PLAY = "ai_play";
 	
 	/**
 	 * Retourne si le jeu est fini
