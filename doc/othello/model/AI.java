@@ -51,7 +51,6 @@ public class AI extends AbstractPlayer{
 	@Override
 	public void play(Coord xy) {
 		
-		
 //		System.out.println("mon tour");
 //		Set<Coord> set = getBoard().getValidMoves(getColor());
 //		if (!set.isEmpty()) {
