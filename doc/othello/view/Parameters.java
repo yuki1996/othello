@@ -27,6 +27,7 @@ public abstract class Parameters extends JFrame {
 	private int niveauDispo = 0;
 	private JFrame parent;
 	private Bouton play = new Bouton("Jouer !");
+	private JPanel content = new JPanel();
 	private JPanel panel = new JPanel();
 	private GridBagConstraints constraint = new GridBagConstraints();
 	private int espace = 10;
@@ -42,6 +43,7 @@ public abstract class Parameters extends JFrame {
 
 		//initialisation de la fenetre
 		this.setTitle("Paramètres - Othello");
+		//this.getContentPane().setBackground(Color.white);
 		
 		//Centrer
 		this.setLocationRelativeTo(null);
@@ -53,17 +55,25 @@ public abstract class Parameters extends JFrame {
 	
 		//init du layout du panel
 		panel.setLayout(new GridBagLayout());
-		panel.setBackground(Color.WHITE);
-		panel.setBorder(new EmptyBorder(50, 100, 50, 100));
+
+//		panel.setBorder(new EmptyBorder(50, 100, 50, 100));
+		panel.setOpaque(true);
 		
-		this.getContentPane().add(panel);
+		this.getContentPane().setBackground(Color.white);
+		content.setBackground(Color.WHITE);
+		panel.setBackground(Color.WHITE);
+		content.setBorder(new EmptyBorder(10, 20, 10, 20));
+		content.setLayout(new BorderLayout());
+		content.add(panel, BorderLayout.CENTER);
+		this.getContentPane().add(content);
 		
 		this.setVisible(true);
 	}
 	
 	public void init() {
-		stratJ1.addItem("Stratégie 1");
-		stratJ1.addItem("Stratégie 2");
+		niveauJ1.setOpaque(false);
+		stratJ1.addItem("AlphaBeta");
+		stratJ1.addItem("SSS*");
 		
 		//Position titre Joueur 1
 		setPosition(0, niveauDispo, 3);

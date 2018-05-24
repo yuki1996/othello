@@ -20,32 +20,46 @@ public class Parameters2IA extends Parameters{
 	public Parameters2IA(JFrame p) {
 		super(p);
 		init();
-		
-		stratJ2.addItem("Stratégie 1");
-		stratJ2.addItem("Stratégie 2");
+
+		niveauJ2.setOpaque(false);
+		stratJ2.addItem("AlphaBeta");
+		stratJ2.addItem("SSS*");
 		
 		//Position titre Joueur 1
 		setPosition(0, getNiveauDispo(), 3);
 		getPanel().add(new JLabel("Paramètre IA 2"), getConstraint());
 		incrNiveauDispo();
 		
+		setAlignLeft();
+		setMargeX(50);
 		//Position du label de la liste déroulante de stratégie
 		setPosition(0,getNiveauDispo(),1);
 		getPanel().add(labelStratJ2, getConstraint());
 		
+		setAlignMiddle();
+		setMargeX(0);
 		//Position de la liste déroulante de stratégie
 		setPosition(1,getNiveauDispo(),2);
 		getPanel().add(stratJ2, getConstraint());
 		incrNiveauDispo();
 		
+		setAlignLeft();
+		setMargeX(50);
 		//Position du label de la liste déroulante de stratégie
 		setPosition(0,getNiveauDispo(),1);
 		getPanel().add(labelNiveauJ2, getConstraint());
 		
+		setAlignMiddle();
+		setMargeX(0);
 		//Position du slider
 		setPosition(1,getNiveauDispo(),2);
 		getPanel().add(niveauJ2, getConstraint());
 		incrNiveauDispo();
+		
+		//Position bouton play
+		setPosition(0, getNiveauDispo(), 3);
+		getPanel().add(getPlay(), getConstraint());
+		getPanel().setOpaque(false);
 		
 		//init bouton play
 		getPlay().addActionListener(new ActionListener() {
