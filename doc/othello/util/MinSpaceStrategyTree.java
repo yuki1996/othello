@@ -2,13 +2,14 @@ package othello.util;
 
 import java.util.HashSet;
 import java.util.Iterator;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.Set;
 import java.util.SortedSet;
 import java.util.TreeSet;
 
 import othello.model.Board;
 import othello.model.IBoard;
-import othello.util.StrategyTree.Node;
 
 public class MinSpaceStrategyTree implements StrategyTree {
 	private static final int BITS = 
@@ -47,7 +48,7 @@ public class MinSpaceStrategyTree implements StrategyTree {
 			}
 			playerColor = c;
 			children = null;
-			evaluation = Integer.MIN_VALUE;
+			evaluation = Double.POSITIVE_INFINITY;
 			boardState = boardToLong(b);
 			parent = null;
 			depth = 0;
@@ -79,6 +80,18 @@ public class MinSpaceStrategyTree implements StrategyTree {
 			return depth;
 		}
 		
+		public List<Color> getAllDisks() {
+			List<Color> res = new LinkedList<Color>();
+			int size = board.getSize();
+			
+			for (int row = 0; row < size; row++) {
+				for (int col = 0; col < size; col++) {
+					res.add(getDisk(new Coord(row, col)));
+				}
+			}
+			return res;
+		}
+		
 		public Color getDisk(Coord move) {
 			assert(move != null);
 			assert(move.isInRect(new Coord(board.getSize(), board.getSize())));
@@ -102,8 +115,8 @@ public class MinSpaceStrategyTree implements StrategyTree {
 		
 		public boolean equals(Object obj) {
 			if (obj != null && this.getClass() == obj.getClass()) {
-				Node c = (Node) obj;
-				return getEval() == c.getEval();		// A DEVELOPPER
+				MSNode c = (MSNode) obj;
+				return evaluation == c.evaluation && boardState.equals(c.boardState);		// A DEVELOPPER
 			}
 			return false;
 		}

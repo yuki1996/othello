@@ -1,5 +1,6 @@
 package othello.util;
 
+import java.util.List;
 import java.util.SortedSet;
 
 import othello.model.IBoard;
@@ -47,6 +48,14 @@ public interface StrategyTree {
 		 * Renvoie la profondeur du noeud dans son arbre.
 		 */
 		int getDepth();
+		
+		/**
+		 * Renvoie une liste de tous les jetons.
+		 * 
+		 * @post
+		 * 	return == List( Coord(0,0), Coord(1,0), ... Coord(size - 1, 0), Coord(0, 1), ... Coord(size - 1, size - 1) )
+		 */
+		List<Color> getAllDisks();
 		
 		/**
 		 * Modifie l'évaluation du noeud.
