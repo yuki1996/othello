@@ -1,11 +1,14 @@
 package othello.model;
 
+import java.util.Map.Entry;
+import java.util.SortedSet;
+
 import othello.util.Calcul_h;
 import othello.util.Color;
 import othello.util.Coord;
 import othello.util.MinSpaceStrategyTree;
+import othello.util.NodeComparator;
 import othello.util.StrategyTree;
-
 import othello.util.StrategyTree.Node;
 
 public class AI extends AbstractPlayer{
@@ -17,6 +20,7 @@ public class AI extends AbstractPlayer{
 	private final Calcul_h calcul_h;
 	private final double bestProba;
 	private final int maxDepth;
+	private final NodeComparator comp;
 	
 	//Constructeur
 	AI(Color myColor, IBoard board, int niveau, String strategy){
@@ -27,6 +31,7 @@ public class AI extends AbstractPlayer{
 		maxDepth = getMaxDepth(niveau);
 		sTree = new MinSpaceStrategyTree(board, maxDepth);
 		calcul_h = new Calcul_h(sTree.getRoot(), getMaxDepth(niveau));
+		comp = new NodeComparator();
 	}
 
 	//Requêtes
@@ -47,21 +52,9 @@ public class AI extends AbstractPlayer{
 	//Méthodes
 	@Override
 	public void play(Coord xy) {
-		if (board.getLastShot() != null) {
-			sTree.move(board.getLastShot());
-		}
-		switch (strategy) {
-			case Calcul_h.SSS_STAR:
-				calcul_h.sss_etoile(sTree.getRoot());
-				break;
-			case Calcul_h.NEGA:
-				// TODO
-				break;
-			default:
-				throw new IllegalArgumentException();
-		}
+		sTree.move(board.getLastShot());
 		
-		Coord c = getChoice();
+		Coord c = getChoice(Calcul_h.SSS_STAR);
 		choose(c);
 		sTree.move(c);
 	}
@@ -91,8 +84,20 @@ public class AI extends AbstractPlayer{
 		return level / 5;
 	}
 	
-	private Coord getChoice() {
-		return new Coord(0,0); // TODO
+	private int probaChoice(int size) {
+		return (int) (size * Math.pow(Math.random(), - (Math.log(bestProba) / Math.log(size))));
+	}
+	
+	private Coord getChoice(String strategy) {
+		
+		for (Node s : sTree.getRoot()) {
+			s.setEval(calcul_h.getValue(strategy));
+		}
+
+		sTree.getRoot().children().sort(comp);
+		int ind = bestProba == 1.0 ? 0 : probaChoice(sTree.getRoot().children().size());
+	
+		return sTree.getRoot().children().get(ind).getMove();
 	}
 	
 }
