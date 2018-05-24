@@ -1,7 +1,6 @@
 package othello.util;
 
 import java.util.List;
-import java.util.Queue;
 import java.util.Set;
 
 import othello.model.IBoard;
@@ -28,7 +27,7 @@ public interface StrategyTree {
 		/**
 		 * renvoie la liste des enfants deu noeud.
 		 */
-		Queue<? extends Node> children();
+		List<? extends Node> children();
 		
 		/**
 		 * Renvoie l'évaluation du noeud.

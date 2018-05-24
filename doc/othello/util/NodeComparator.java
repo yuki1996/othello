@@ -2,7 +2,7 @@ package othello.util;
 
 import java.util.Comparator;
 
-class NodeComparator implements Comparator<StrategyTree.Node> {
+public class NodeComparator implements Comparator<StrategyTree.Node> {
 
 	@Override
 	public int compare(StrategyTree.Node n1, StrategyTree.Node n2) {

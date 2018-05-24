@@ -1,11 +1,10 @@
 package othello.util;
 
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.PriorityQueue;
-import java.util.Queue;
 import java.util.Set;
 
 import othello.model.AbstractBoard;
@@ -17,7 +16,6 @@ public class MinSpaceStrategyTree implements StrategyTree {
 		(int) Math.ceil(Math.log((Color.values().length + 1)) / Math.log(2.0));
 	private static final long BIT_MASK = (long) Math.pow(2, BITS) - 1;
 	
-	private final NodeComparator nodeComparator;
 	private final IBoard board;
 	private final int maxDepth;
 	private Node root;
@@ -29,7 +27,7 @@ public class MinSpaceStrategyTree implements StrategyTree {
 		private final int depth;
 		private final Coord move;
 		private double evaluation;
-		private PriorityQueue<Node> children; // null => enfants non générés
+		private List<Node> children; // null => enfants non générés
 		
 		// CONSTRUCTEURS
 		public MSNode(MSNode parent, Coord move, double ev) {
@@ -69,7 +67,7 @@ public class MinSpaceStrategyTree implements StrategyTree {
 			return children.iterator();
 		}
 		
-		public Queue<? extends Node> children() {
+		public List<? extends Node> children() {
 			return children;
 		}
 		
@@ -160,7 +158,7 @@ public class MinSpaceStrategyTree implements StrategyTree {
 		}
 		
 		public void generateChildren() {
-			children = new PriorityQueue<Node>(nodeComparator);
+			children = new ArrayList<Node>();
 			Set<Coord> movesOfPlayer = getValidMoves(playerColor);
 
 			if (movesOfPlayer.isEmpty()) {
@@ -219,7 +217,6 @@ public class MinSpaceStrategyTree implements StrategyTree {
 	
 	// CONSTRUCTEURS
 	public MinSpaceStrategyTree(IBoard board, int maxDepth) {
-		this.nodeComparator = new NodeComparator();
 		this.board = board;
 		this.root = new MSNode(board, Color.BLACK);
 		this.maxDepth = maxDepth;
