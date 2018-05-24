@@ -41,6 +41,11 @@ public interface IBoard {
 	void putDisk(Coord xy, Color color);
 	
 	/**
+	 * Retourne le dernier coup joué
+	 */
+	public Coord getLastShot();
+	
+	/**
 	 * Jeu le coup en xy, cad poser le pion, et retourne les pions de l'adversaire correspondant au coup 
 	 * @pre : isValidMove(xy, color)
 	 */

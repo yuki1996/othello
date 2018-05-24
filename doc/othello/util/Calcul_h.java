@@ -44,10 +44,8 @@ public class Calcul_h{
 	
 	public Double getValue() {
 		
-		
 		this.noeud_root.generateChildren();
 		double h_value = Double.POSITIVE_INFINITY;
-		
 		
 		if(this.max_depth == 1) {
 			
@@ -62,7 +60,6 @@ public class Calcul_h{
 		}else {
 						
 			for(Node n : this.noeud_root) {
-				//System.out.println(n);
 				h_value = Double.min(h_value, Negalphabeta(n,Double.NEGATIVE_INFINITY,Double.POSITIVE_INFINITY));
 			}
 			
@@ -72,10 +69,9 @@ public class Calcul_h{
 			return Double.POSITIVE_INFINITY;
 		}
 	}
-	
-	
-	
+		
 	public Double Negalphabeta(Node node,double alpha, double beta) {
+		node.generateChildren();
 		
 		if(node.getDepth() == max_depth) {
 			if(node.getPlayerColor() == Color.BLACK)
@@ -96,8 +92,6 @@ public class Calcul_h{
 			return alpha;
 		}
 	}
-	
-	
 	
 	public Double sss_etoile(Node root) {
 		
@@ -174,21 +168,20 @@ public class Calcul_h{
 	}
 	
 	Double heuristique(Node noeud) {
-//		if(num_noeud(noeud.color) > num_noeud(noeud.color.neg)) {
-//			if(noeud.color == Noir)
-//				return MAX-1;
-//			else
-//				return MIN;
-//		}else if(num_noeud(noeud.color) == num_noeud(noeud.color.neg)){
-//			return 0;
-//		}else {
-//
-//			double mob_stab = mobilite_stabilite(noeud);
-//			double coin = coin(noeud);
-//			
-//			return coin+mob_stab;
-//		}
-		return Double.POSITIVE_INFINITY;
+		if(noeud.isFull()) {
+			if(noeud.getDisksOfPlayer(Color.BLACK).size() > noeud.getDisksOfPlayer(Color.WHITE).size()) {
+				return Double.POSITIVE_INFINITY;
+			}else if(noeud.getDisksOfPlayer(Color.BLACK).size() < noeud.getDisksOfPlayer(Color.WHITE).size()) {
+				return Double.NEGATIVE_INFINITY;
+			}else {
+				return (double) 0;
+			}
+		}else {
+			double mob_stab = mobilite_stabilite(noeud);
+			double coin = coin(noeud);
+			
+			return coin+mob_stab;
+		}
 	}
 	
 	Double mobilite_stabilite(Node noeud) {
@@ -224,7 +217,7 @@ public class Calcul_h{
 		return Double.POSITIVE_INFINITY;
 	}
 //
-//public int coin(MSNode noeud) {
+public Double coin(Node noeud) {
 //	if(a1,a8,h1,h8 in noeud.last_disc) {
 //		if(noued.last_disc.color == Noir) {
 //			return 100;
@@ -242,7 +235,8 @@ public class Calcul_h{
 //	}else{
 //		return 0;
 //	}
-//}
+	return Double.POSITIVE_INFINITY;
+}
 	
 	public static void main(String[] args) {
 		//System.out.println("hello world");

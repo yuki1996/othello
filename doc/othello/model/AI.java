@@ -47,6 +47,7 @@ public class AI extends AbstractPlayer{
 	//Méthodes
 	@Override
 	public void play(Coord xy) {
+<<<<<<< HEAD
 		if () {
 			sTree.move(c);
 		}
@@ -69,14 +70,18 @@ public class AI extends AbstractPlayer{
 	
 //	@Override
 //	public void play(Coord xy) {
-//		System.out.println("mon tour");
 //		Set<Coord> set = getBoard().getValidMoves(getColor());
 //		if (!set.isEmpty()) {
 //			Iterator<Coord> it = set.iterator();
 //			Coord coord = (Coord) it.next();
 //			choose(coord);
 //		}
-//		System.out.println("fin tour");
+//		try {
+//			Thread.sleep(1000);
+//		} catch (InterruptedException e) {
+//			// TODO Auto-generated catch block
+//			e.printStackTrace();
+//		}
 //	}
 	
 	// OUTILS
