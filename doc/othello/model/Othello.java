@@ -124,15 +124,17 @@ public class Othello implements IOthello {
 		IPlayer oldCurrentPlayer = currentPlayer;
 		currentPlayer = (oldCurrentPlayer == playerBlack ? playerWhite : playerBlack);
 		propertySupport.firePropertyChange(IOthello.TURN, false, true);
-		if (!canPlay(currentPlayer) && !isGameOver()) {
-			//System.out.println(isGameOver());
-			turn(null);
+		if (!isGameOver()) {
+			if (currentPlayer.getClass() == AI.class){
+				propertySupport.firePropertyChange(IOthello.AI_PLAY, aiPlay, true);
+				aiPlay = true;
+	        	turn(null);
+				propertySupport.firePropertyChange(IOthello.AI_PLAY, aiPlay, false);
+				aiPlay = false;
+	        } else if (!canPlay(currentPlayer)) {
+				turn(null);
+	        }
 		}
-		if (!isGameOver() && currentPlayer.getClass() == AI.class){=
-			propertySupport.firePropertyChange(IOthello.AI_PLAY, aiPlay, true);
-        	turn(null);
-			propertySupport.firePropertyChange(IOthello.AI_PLAY, aiPlay, false);
-        }
 	}
 	
 	public void addPropertyChangeListener(String property, PropertyChangeListener l) {

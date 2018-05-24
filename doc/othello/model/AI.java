@@ -58,5 +58,11 @@ public class AI extends AbstractPlayer{
 			choose(coord);
 		}
 		System.out.println("fin tour");
+		try {
+			Thread.sleep(1000);
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 }
