@@ -77,14 +77,23 @@ public class Calcul_h{
 			
 				for(Node n : this.noeud_root) {
 					if(strategie == NEGA) {
-						h_value = Double.min(h_value, Negalphabeta(n,Double.NEGATIVE_INFINITY,Double.POSITIVE_INFINITY));
+						if(this.noeud_root.getPlayerColor() == Color.BLACK) {
+							h_value = Double.max(h_value, Negalphabeta(n,Double.NEGATIVE_INFINITY,Double.POSITIVE_INFINITY));
+						}else {
+							h_value = Double.min(h_value, Negalphabeta(n,Double.NEGATIVE_INFINITY,Double.POSITIVE_INFINITY));
+						}
+						System.out.println("Value Negalphabeta* : "+h_value);
 					}else if(strategie == SSS_STAR) {
-						h_value = Double.min(h_value, sss_etoile(n));
+						if(this.noeud_root.getPlayerColor() == Color.BLACK) {
+							h_value = Double.max(h_value, sss_etoile(n));
+						}else {
+							h_value = Double.min(h_value, sss_etoile(n));
+						}
 					}
 				}
 				
 				//double sss_etoile = sss_etoile();
-				System.out.println("Value SSS* : "+h_value);
+				
 			
 				return h_value;
 			}
