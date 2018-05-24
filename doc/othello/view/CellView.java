@@ -23,7 +23,12 @@ public class CellView extends JComponent {
 		this.dc = dc;
 		setPreferredSize(DEFAULT_PREFERED_DIMENSION);
 		setBackground(Color.red);
-		repaint();
+	}
+	
+	//REQUETES
+	
+	public DrawableCell getDrawableCell() {
+		return dc;
 	}
 	
 	//COMMANDES
@@ -31,7 +36,6 @@ public class CellView extends JComponent {
 	public void setDrawableCell(DrawableCell dc) {
 		if (this.dc != dc) {
 			this.dc = dc;
-			repaint();
 		}
 	}
 	
