@@ -94,6 +94,19 @@ public class Board implements IBoard {
 		return result;
 	}
 	
+	public int getPointsNobody() {
+		int result = 0 ;
+		for (int i = 0; i < size; i++) {
+			for (int j = 0; j < size; j++) {
+				Coord xy = new Coord(i,j);
+				if (getColor(xy) == null) {
+					++result;
+				}
+			}
+		}
+		return result;
+	}
+	
 	//METHODES
 	public void playAShot(Coord xy, Color color) {
 		if (!isValidMove(xy, color)) {

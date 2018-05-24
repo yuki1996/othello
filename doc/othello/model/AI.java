@@ -47,7 +47,12 @@ public class AI extends AbstractPlayer{
 	}
 	@Override
 	public void play(Coord xy) {
-		// TODO Auto-generated method stub
-		
+		System.out.println("mon tour");
+		try {
+			Thread.sleep(10000);
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 }

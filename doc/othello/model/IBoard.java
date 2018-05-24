@@ -56,4 +56,9 @@ public interface IBoard {
 	 * Retourne le nombre de points de la couleur du joueur
 	 */
 	public int getPointsPlayer(Color colorPlayer);
+	
+	/**
+	 * Retourne le nombre de points sans couleur
+	 */
+	public int getPointsNobody();
 }
