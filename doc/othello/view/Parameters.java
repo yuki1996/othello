@@ -23,6 +23,10 @@ import javax.swing.JSlider;
 import javax.swing.border.Border;
 import javax.swing.border.EmptyBorder;
 
+/**
+ * Classe abstraite servant de super classes aux spécialisation de paramètres
+ *
+ */
 public abstract class Parameters extends JFrame {
 	private int niveauDispo = 0;
 	private JFrame parent;
@@ -38,12 +42,15 @@ public abstract class Parameters extends JFrame {
 	private JLabel labelNiveauJ1 = new JLabel("Niveau ");
 	private JSlider niveauJ1 = new JSlider(JSlider.HORIZONTAL, 0, 100, 50);
 	
+	/**
+	 * Constructeur de la classe, initialise la fenêtre générale
+	 * @param p : fenetre créatrice du paramètre
+	 */
 	public Parameters(JFrame p) {
 		parent = p;
 
 		//initialisation de la fenetre
 		this.setTitle("Paramètres - Othello");
-		//this.getContentPane().setBackground(Color.white);
 		
 		//Centrer
 		this.setLocationRelativeTo(null);
@@ -55,8 +62,6 @@ public abstract class Parameters extends JFrame {
 	
 		//init du layout du panel
 		panel.setLayout(new GridBagLayout());
-
-//		panel.setBorder(new EmptyBorder(50, 100, 50, 100));
 		panel.setOpaque(true);
 		
 		this.getContentPane().setBackground(Color.white);
@@ -70,6 +75,9 @@ public abstract class Parameters extends JFrame {
 		this.setVisible(true);
 	}
 	
+	/**
+	 * initialise les composants de la fenêtre
+	 */
 	public void init() {
 		niveauJ1.setOpaque(false);
 		stratJ1.addItem("AlphaBeta");
@@ -82,20 +90,20 @@ public abstract class Parameters extends JFrame {
 		
 		setAlignLeft();
 		setMargeX(50);
-		//Position du label de la liste déroulante de stratégie
+		//Position du label de la liste dÃ©roulante de stratÃ©gie
 		setPosition(0,niveauDispo,1);
 		panel.add(labelStratJ1, constraint);
 
 		setAlignMiddle();
 		setMargeX(0);
-		//Position de la liste déroulante de stratégie
+		//Position de la liste dÃ©roulante de stratÃ©gie
 		setPosition(1,niveauDispo,2);
 		panel.add(stratJ1, constraint);
 		niveauDispo++;
 
 		setAlignLeft();
 		setMargeX(50);
-		//Position du label de la liste déroulante de stratégie
+		//Position du label de la liste dÃ©roulante de stratÃ©gie
 		setPosition(0,niveauDispo,1);
 		panel.add(labelNiveauJ1, constraint);
 
@@ -107,17 +115,35 @@ public abstract class Parameters extends JFrame {
 		niveauDispo++;
 	}
 	
+	/**
+	 * permet de modifier la position d'un composant
+	 * @param x : position en x
+	 * @param y : position en y
+	 */
 	public void setPosition(int x, int y) {
 		constraint.gridx = x;
 		constraint.gridy = y;
 	}
-	
+
+	/**
+	 * permet de modifier la position d'un composant
+	 * @param x : position en x
+	 * @param y : position en y
+	 * @param tailleLargeur : taille prise par le composant en largeur
+	 */
 	public void setPosition(int x, int y, int tailleLargeur) {
 		constraint.gridx = x;
 		constraint.gridy = y;
 		constraint.gridwidth = tailleLargeur;
 	}
-	
+
+	/**
+	 * permet de modifier la position d'un composant
+	 * @param x : position en x
+	 * @param y : position en y
+	 * @param tailleLargeur : taille prise par le composant en largeur
+	 * @param tailleHauteur : taille prise par le composant en hauteur
+	 */
 	public void setPosition(int x, int y, int tailleLargeur, int tailleHauteur) {
 		constraint.gridx = x;
 		constraint.gridy = y;
@@ -125,22 +151,38 @@ public abstract class Parameters extends JFrame {
 		constraint.gridheight = tailleHauteur;
 	}
 	
+	/**
+	 * Ajoute une marge sur l'axe des X
+	 * @param x : taille de la marge
+	 */
 	public void setMargeX(int x) {
 		constraint.insets = new Insets(espace,espace,espace,x);
 	}
 	
+	/**
+	 * Aligne a gauche les composants
+	 */
 	public void setAlignLeft() {
 		constraint.anchor = GridBagConstraints.WEST;
 	}
 	
+	/**
+	 * Aligne à droite les composants 
+	 */
 	public void setAlignRight() {
 		constraint.anchor = GridBagConstraints.EAST;
 	}
 	
+	/**
+	 * Centre les composants
+	 */
 	public void setAlignMiddle() {
 		constraint.anchor = GridBagConstraints.CENTER;
 	}
 	
+	/*
+	 * GET & SET
+	 */
 	public JFrame getParent() {
 		return parent;
 	}
@@ -173,6 +215,9 @@ public abstract class Parameters extends JFrame {
 		return niveauJ1.getValue();
 	}
 	
+	/**
+	 * ferme la fenetre
+	 */
 	public void quitter() {
 		this.dispose();
 	}

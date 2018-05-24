@@ -10,6 +10,10 @@ import javax.swing.JSlider;
 
 import othello.model.Othello;
 
+/**
+ * Classe de paramètre pour le type de partie IA vs IA
+ *
+ */
 public class Parameters2IA extends Parameters{
 	//Composant J2
 	private JLabel labelStratJ2 = new JLabel("Stratégie utilisée ");
@@ -17,6 +21,10 @@ public class Parameters2IA extends Parameters{
 	private JLabel labelNiveauJ2 = new JLabel("Niveau ");
 	private JSlider niveauJ2 = new JSlider(JSlider.HORIZONTAL, 0, 100, 50);
 	
+	/**
+	 * Constructeur de la classe, construit la fenêtre
+	 * @param p : fenetre créant la fenetre de paramètre
+	 */
 	public Parameters2IA(JFrame p) {
 		super(p);
 		init();

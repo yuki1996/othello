@@ -154,6 +154,10 @@ public class Coord {
 		return 7 * row + col;
 	}
 	
+	public String toString() {
+		return "Coord(" + row + "," + col + ")";
+	}
+	
 	// CREATEURS
 	/**
 	 * Addition de deux coordonnées.

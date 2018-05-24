@@ -19,6 +19,7 @@ public class MinSpaceStrategyTree implements StrategyTree {
 	
 	private final NodeComparator nodeComparator;
 	private final IBoard board;
+	private final int maxDepth;
 	private Node root;
 	
 	public class MSNode extends AbstractBoard implements Node {
@@ -113,7 +114,7 @@ public class MinSpaceStrategyTree implements StrategyTree {
 		}
 		
 		public String toString() {
-			String s = playerColor + ":eval=" + evaluation + ":" + System.lineSeparator();
+			String s = playerColor + ":coup=" + move + ":eval=" + evaluation + ":" + System.lineSeparator();
 			s += super.toString();
 			return s;
 		}
@@ -158,21 +159,32 @@ public class MinSpaceStrategyTree implements StrategyTree {
 		
 		public void generateChildren() {
 			children = new PriorityQueue<Node>(nodeComparator);
+			Set<Coord> movesOfPlayer = getValidMoves(playerColor);
 
-			for (Coord d : getDisksOfPlayer(playerColor)) {
-		        for (Coord card : Coord.CARDINALS) {
-		            Coord x = d.plus(card);
-		            if (board.isValid(x) && getColor(x) != playerColor && getColor(x) != null) {
-		                x = x.plus(card);
-		                while (board.isValid(x) && getColor(x) != playerColor && getColor(x) != null) {
-		                    x = x.plus(card);
-		                }
-		                if (board.isValid(x) && getColor(x) == null) {
-		                    children.add(new MSNode(this, x, evaluation));
-		                }
-		            }
-		        }
-		    }
+			if (movesOfPlayer.isEmpty()) {
+				if (!getValidMoves(Color.values()[(playerColor.ordinal() + 1) % Color.values().length]).isEmpty()) {
+					children.add(new MSNode(this, null, evaluation));
+				}
+			} else {
+				for (Coord d : movesOfPlayer) {
+	                children.add(new MSNode(this, d, evaluation));
+			    }
+			}
+		}
+		
+		public void generateNextLevel(int rootLevel) {
+			
+			if (children != null && !children.isEmpty()) {
+				for (Node child : children) {
+					child.generateNextLevel(rootLevel);
+				}
+			}
+			else if (children == null && depth - rootLevel < maxDepth) {
+				generateChildren();
+				generateNextLevel(rootLevel);
+			} else if (children == null) {
+				generateChildren();
+			}
 		}
 		
 		// OUTILS
@@ -204,10 +216,11 @@ public class MinSpaceStrategyTree implements StrategyTree {
 	}
 	
 	// CONSTRUCTEURS
-	public MinSpaceStrategyTree(IBoard board) {
+	public MinSpaceStrategyTree(IBoard board, int maxDepth) {
 		this.nodeComparator = new NodeComparator();
 		this.board = board;
 		this.root = new MSNode(board, Color.BLACK);
+		this.maxDepth = maxDepth;
 	}
 	
 	// REQUETES
@@ -223,6 +236,7 @@ public class MinSpaceStrategyTree implements StrategyTree {
 		for (Node n : root.children()) {
 			if (n.getMove().equals(c)) {
 				root = n;
+				root.generateNextLevel(maxDepth);
 			}
 		}
 	}
@@ -234,9 +248,10 @@ public class MinSpaceStrategyTree implements StrategyTree {
 		b.putDisk(new Coord(3,4), Color.WHITE);
 		b.putDisk(new Coord(4,3), Color.WHITE);
 		
-		MinSpaceStrategyTree t = new MinSpaceStrategyTree(b);
+		MinSpaceStrategyTree t = new MinSpaceStrategyTree(b, 20);
 		Node m = t.getRoot();
 		m.generateChildren();
+		
 		
 		System.out.println(m.getAllDisks());
 		System.out.println(m);

@@ -23,10 +23,10 @@ public class AI extends AbstractPlayer{
 		super(myColor, board);
 		this.niveau = niveau;
 		this.strategy = strategy;
-		sTree = new MinSpaceStrategyTree(board);
-		calcul_h = new Calcul_h(sTree.getRoot(), getMaxDepth(niveau));
 		bestProba = getBestProba(niveau);
 		maxDepth = getMaxDepth(niveau);
+		sTree = new MinSpaceStrategyTree(board, maxDepth);
+		calcul_h = new Calcul_h(sTree.getRoot(), getMaxDepth(niveau));
 	}
 
 	//Requêtes
@@ -47,8 +47,8 @@ public class AI extends AbstractPlayer{
 	//Méthodes
 	@Override
 	public void play(Coord xy) {
-		if () {
-			sTree.move(c);
+		if (board.getLastShot() != null) {
+			sTree.move(board.getLastShot());
 		}
 		switch (strategy) {
 			case Calcul_h.SSS_STAR:

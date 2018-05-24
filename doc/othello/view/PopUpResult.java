@@ -14,6 +14,10 @@ import javax.swing.border.EmptyBorder;
 
 import othello.model.IOthello;
 
+/**
+ * Classe créant l'interface qui affiche le résultat d'une partie
+ *
+ */
 public class PopUpResult extends JFrame{
 	//private JPanel panel;
 	private Bouton restart = new Bouton("Recommencer");
@@ -21,19 +25,19 @@ public class PopUpResult extends JFrame{
 	private Bouton quit = new Bouton("Quitter");
 	private IOthello model;
 	
+	/**
+	 * Constructeur de la classe, créer la fenetre
+	 * @param o : interface othello concernée
+	 */
 	public PopUpResult(IOthello o) {
 		model = o;
 		this.setTitle("Résultat - Othello");
 		this.setPreferredSize(new Dimension(300,300));
-		//this.getContentPane().setBackground(new Color(1,137,42));
 		
 		//Centrer
 		this.setLocationRelativeTo(null);
 		//termine proc quand croix rouge
 		this.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-		
-		//annule la modification de taille
-		//this.setResizable(false);
 		
 		//layout des boutons
 		GridLayout gl = new GridLayout(5,1);
@@ -63,16 +67,7 @@ public class PopUpResult extends JFrame{
 			blackResult += (o.getBoard().getPointsPlayer(othello.util.Color.BLACK));
 		}
 		panelPoint.add(new JLabel(blackResult, JLabel.CENTER));
-		/*
-		ImagePanel black = new ImagePanel("jeton_noir.png");
-		ImagePanel white = new ImagePanel("jeton_blanc.png");
-		black.setPreferredSize(new Dimension(10,10));
-		white.setPreferredSize(new Dimension(10,10));
-		
-		panelPoint.add(black);
-		*/
 		panelPoint.add(new JLabel(" vs ", JLabel.CENTER));
-		//panelPoint.add(white);
 
 		String whiteResult = "Blanc ";
 		if (colorWinner == othello.util.Color.WHITE) {
@@ -96,7 +91,10 @@ public class PopUpResult extends JFrame{
 		pack();
 		this.setVisible(true);
 	}
-	
+
+	/**
+	 * Initialisation des boutons
+	 */
 	private void initButtons() {
 		
 		restart.addActionListener(new ActionListener() {
@@ -122,10 +120,18 @@ public class PopUpResult extends JFrame{
 		});
 	}
 	
+	/**
+	 * ferme l'application
+	 */
 	private void quitter() {
 		this.dispose();
 	}
 	
+	/**
+	 * conversion d'une couleur en chaine de caractères
+	 * @param c : couleur à convertir
+	 * @return chaine de caractères
+	 */
 	private String colorToString(othello.util.Color c) {
     	if (c == othello.util.Color.BLACK) {
     		return "NOIR";
