@@ -45,7 +45,7 @@ public class Calcul_h{
 	
 	public Double getValue(String strategie) {
 		
-		this.noeud_root.generateChildren();
+		//this.noeud_root.generateChildren();
 		double h_value = Double.POSITIVE_INFINITY;
 		
 		if(this.max_depth == 1) {
@@ -89,7 +89,7 @@ public class Calcul_h{
 	}
 		
 	public Double Negalphabeta(Node node,double alpha, double beta) {
-		node.generateChildren();
+		//node.generateChildren();
 		
 		if(node.getDepth() == max_depth) {
 			if(node.getPlayerColor() == Color.BLACK)
