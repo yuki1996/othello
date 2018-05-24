@@ -9,9 +9,11 @@ import othello.util.Coord;
 public abstract class AbstractBoard implements IBoard {
 
 	protected final int size;
+	private Coord lastShot;
 	
 	protected AbstractBoard(int size) {
 		this.size = size;
+		this.lastShot = null;
 	}
 	
 	public int getSize() {
@@ -82,6 +84,10 @@ public abstract class AbstractBoard implements IBoard {
 		return result;
 	}
 	
+	public Coord getLastShot() {
+		return lastShot;
+	}
+	
 	public void playAShot(Coord xy, Color color) {
 		if (!isValidMove(xy, color)) {
 			throw new IllegalArgumentException("Pose invalide");
@@ -90,6 +96,7 @@ public abstract class AbstractBoard implements IBoard {
 		//couleur adversaire;
 		Color foeColor = color == Color.WHITE ? Color.BLACK : Color.WHITE;
 		putDisk(xy, color);
+		lastShot = xy;
 		for (Coord card : Coord.CARDINALS) {
 			Coord x = xy.plus(card);
 			//On verifie qu'il y a un élément à prendre en "sandwich" dans cette direction
