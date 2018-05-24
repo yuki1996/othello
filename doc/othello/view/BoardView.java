@@ -64,7 +64,7 @@ public class BoardView {
     // COMMANDES
     
     /**
-     * affiche la partie d'othello du modèle.
+     * affiche la partie d'othello du modï¿½le.
      */
     public void display() {
         mainFrame.pack();
@@ -110,10 +110,10 @@ public class BoardView {
         currentPlayer.setPreferredSize(new Dimension(width, height));
         currentPlayer.setFont(new Font("Serif", Font.PLAIN, 22));
         whiteScore = new JLabel(model.getBoard().getPointsPlayer(Color.WHITE) + "");
-        whitePlayer = new JLabel(Color.WHITE + " : ");
+        whitePlayer = new JLabel(Color.WHITE.toString() + " : ");
         
         blackScore = new JLabel(model.getBoard().getPointsPlayer(Color.BLACK) + "");
-        blackPlayer = new JLabel(Color.BLACK + " : ");
+        blackPlayer = new JLabel(Color.BLACK.toString() + " : ");
     }
     
     private void placeComponents() {
@@ -240,7 +240,7 @@ public class BoardView {
     }
     
     /**
-     * rafraîchis la vue.
+     * rafraï¿½chis la vue.
      */
     private void refresh() {
         possibilities = model.getBoard().getValidMoves(model.getCurrentPlayer().getColor());
@@ -262,7 +262,7 @@ public class BoardView {
     	whiteScore.setText(model.getBoard().getPointsPlayer(Color.WHITE) + "");
         blackScore.setText(model.getBoard().getPointsPlayer(Color.BLACK) + "");
     	currentPlayer.setText("Joueur " 
-        		+ model.getCurrentPlayer().getColor() + " doit jouer.");
+        		+ model.getCurrentPlayer().getColor().toString() + " doit jouer.");
     	if (model.isGameOver()) {
     		model.removePropertyChangeListener(IOthello.AI_PLAY, aiListener);
     		model.removePropertyChangeListener(IOthello.TURN, turnListener);
@@ -274,7 +274,7 @@ public class BoardView {
     //CLASSES INTERNES
     
     /**
-     * Un Listener qui joue un coup lorsqu'un événement lui est notifié. 
+     * Un Listener qui joue un coup lorsqu'un ï¿½vï¿½nement lui est notifiï¿½. 
      */
     class CellListener extends MouseAdapter {
     	

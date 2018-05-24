@@ -23,6 +23,8 @@ import javax.swing.JSlider;
 import javax.swing.border.Border;
 import javax.swing.border.EmptyBorder;
 
+import othello.util.Calcul_h;
+
 /**
  * Classe abstraite servant de super classes aux spécialisation de paramètres
  *
@@ -80,8 +82,8 @@ public abstract class Parameters extends JFrame {
 	 */
 	public void init() {
 		niveauJ1.setOpaque(false);
-		stratJ1.addItem("AlphaBeta");
-		stratJ1.addItem("SSS*");
+		stratJ1.addItem(Calcul_h.NEGA);
+		stratJ1.addItem(Calcul_h.SSS_STAR);
 		
 		//Position titre Joueur 1
 		setPosition(0, niveauDispo, 3);
