@@ -34,8 +34,8 @@ import othello.util.StrategyTree.Node;
  */
 
 public class Calcul_h{
-	public static final String SSS_STAR = "sss";
-	public static final String NEGA = "negalphabeta";
+	public static final String SSS_STAR = "SSS*";
+	public static final String NEGA = "NegalphaBeta";
 	
 	private Node noeud_root;
 	//int depth;

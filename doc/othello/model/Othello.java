@@ -33,6 +33,10 @@ public class Othello implements IOthello {
 			throw new IllegalArgumentException("le joueur humain doit avoir une couleur");
 		}
 		myBoard = new Board(8);
+		propertySupport = new PropertyChangeSupport(this);
+		initialisationBoard();
+		foeHasPlay = true;
+		aiPlay = false;
 		if (colorHumain == Color.BLACK) {
 			playerBlack = spawnPlayer(Color.BLACK);
 			playerWhite = spawnAI(Color.WHITE, strategie, niveau);
@@ -40,25 +44,21 @@ public class Othello implements IOthello {
 			playerWhite = spawnPlayer(Color.WHITE);
 			playerBlack = spawnAI(Color.BLACK, strategie, niveau);
 		}
-
-		propertySupport = new PropertyChangeSupport(this);
-		initialisationBoard();
 		currentPlayer = playerBlack;
-		foeHasPlay = true;
-		aiPlay = false;
+
 	}
 	
 	//Jeu avec 2 IA
 	public Othello(String strategieP1, int niveauP1, String strategieP2, int niveauP2) {
 		propertySupport = new PropertyChangeSupport(this);
 		myBoard = new Board(8);
-		playerBlack = spawnAI(Color.BLACK, strategieP1, niveauP1);
-		playerWhite = spawnAI(Color.WHITE, strategieP2, niveauP2);
 		propertySupport = new PropertyChangeSupport(this);
 		initialisationBoard();
-		currentPlayer = playerBlack;
 		foeHasPlay = true;
 		aiPlay = false;
+		playerBlack = spawnAI(Color.BLACK, strategieP1, niveauP1);
+		playerWhite = spawnAI(Color.WHITE, strategieP2, niveauP2);
+		currentPlayer = playerBlack;
 	}
 	
 	//REQUETES

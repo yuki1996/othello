@@ -59,6 +59,7 @@ public class MinSpaceStrategyTree implements StrategyTree {
 			parent = null;
 			depth = 0;
 			move = null;
+			generateNextLevel(0);
 		}
 		
 		// REQUETE
@@ -244,24 +245,26 @@ public class MinSpaceStrategyTree implements StrategyTree {
 		IBoard b = new Board(8);
 		b.putDisk(new Coord(3,3), Color.BLACK);
 		b.putDisk(new Coord(3,4), Color.WHITE);
-		b.putDisk(new Coord(3,5), Color.BLACK);
+		b.putDisk(new Coord(4,3), Color.WHITE);
+		b.putDisk(new Coord(4,4), Color.BLACK);
 		
 		MinSpaceStrategyTree t = new MinSpaceStrategyTree(b, 4);
-		Node m = t.getRoot();
-		m.generateNextLevel(0);
 		
 		
-		System.out.println(t.getRoot().toString());
+		System.out.println(t.getRoot());
 		System.out.println(t.getRoot().children().size());
-		t.move(null);
-		System.out.println(t.getRoot().toString());
+		t.move(new Coord(5,3));
+		System.out.println(t.getRoot());
 		System.out.println(t.getRoot().children().size());
-		t.move(new Coord(3,2));
-		System.out.println(t.getRoot().toString());
-		System.out.println(t.getRoot().children().size());
-		t.move(new Coord(3,1));
-		System.out.println(t.getRoot().toString());
-		System.out.println(t.getRoot().children().size());
+		
+		System.out.println(t.getRoot().children());
+		
+//		t.move(new Coord(3,2));
+//		System.out.println(t.getRoot());
+//		System.out.println(t.getRoot().children().size());
+//		t.move(new Coord(3,1));
+//		System.out.println(t.getRoot());
+//		System.out.println(t.getRoot().children().size());
 	}
 	
 }

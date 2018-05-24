@@ -26,6 +26,7 @@ public class AI extends AbstractPlayer{
 		this.strategy = strategy;
 		bestProba = getBestProba(niveau);
 		maxDepth = getMaxDepth(niveau);
+		System.out.println("maxD:" + maxDepth);
 		sTree = new MinSpaceStrategyTree(board, maxDepth);
 		calcul_h = new Calcul_h(sTree.getRoot(), getMaxDepth(niveau));
 		comp = new NodeComparator();
@@ -49,11 +50,16 @@ public class AI extends AbstractPlayer{
 	//Méthodes
 	@Override
 	public void play(Coord xy) {
+		startTurn();
 		sTree.move(board.getLastShot());
-		
-		Coord c = getChoice(Calcul_h.SSS_STAR);
-		choose(c);
-		sTree.move(c);
+		System.out.println("plop");
+
+		//if (!sTree.getRoot().children().isEmpty()) {
+			Coord c = getChoice(Calcul_h.SSS_STAR);
+			choose(c);
+			sTree.move(c);
+		//}
+		finishTurn();
 	}
 	
 //	@Override
@@ -78,7 +84,7 @@ public class AI extends AbstractPlayer{
 	}
 	
 	private int getMaxDepth(int level) {
-		return level / 5;
+		return level / 20;
 	}
 	
 	private int probaChoice(int size) {
