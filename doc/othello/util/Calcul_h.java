@@ -258,7 +258,7 @@ public class Calcul_h{
 		mblt -= set_coord_moves_white.size() * poid_mobilite;
 		
 		Coord c = new Coord(0,0);
-		Coord d = c;
+		//Coord d = c;
 		
 		//int discs_flank = 0;
 		
@@ -329,8 +329,6 @@ public class Calcul_h{
 		case "downLeft" : move = init.downLeft();
 		}
 		
-//		Coord d = init.up();
-		
 		if(init.isInRect(move) && noeud.getColor(move) != noeud.getColor(init) && noeud.getColor(move) != null) {
 			
 			while(init.isInRect(move) && noeud.getColor(move) != noeud.getColor(init)) {
@@ -366,80 +364,8 @@ public class Calcul_h{
 	}
 	
 
-//	Boolean canmove(Node noeud, int row, int col) {
-//		
-//		Color current_color = noeud.getColor(new Coord(row,col));
-//		
-//		//up
-//		for(int rowup = row-1; rowup < 1; rowup--) {
-//			if(noeud.getColor(new Coord(rowup,col)) == current_color) {
-//				break;
-//			}else {
-//				if(noeud.getColor(new Coord(rowup-1,col)) == null) {
-//					return true;
-//				}
-//			}
-//		}
-//		
-//		//down
-//		for(int rowdown = row+1; rowdown < noeud.getSize()-1; rowdown++) {
-//			if(noeud.getColor(new Coord(rowdown,col)) == current_color) {
-//				break;
-//			}else {
-//				if(noeud.getColor(new Coord(rowdown+1,col)) == null) {
-//					return true;
-//				}
-//			}
-//		}
-//		
-//		//right
-//		for(int colright = col+1; colright < noeud.getSize()-1; colright++) {
-//			if(noeud.getColor(new Coord(row,colright)) == current_color) {
-//				break;
-//			}else {
-//				if(noeud.getColor(new Coord(row,colright+1)) == null) {
-//					return true;
-//				}
-//			}
-//		}
-//		
-//		//left
-//		for(int colleft = col-1; colleft < 1; colleft--) {
-//			if(noeud.getColor(new Coord(row,colleft)) == current_color) {
-//				break;
-//			}else {
-//				if(noeud.getColor(new Coord(row,colleft-1)) == null) {
-//					return true;
-//				}
-//			}
-//		}
-//		
-//		
-//		
-//		return false;
-//	}
-	
-	
-//	Boolean flank(Node noeud, int row, int col) {
-//		
-//		Color current_color = noeud.getColor(new Coord(row,col));
-//		
-//		//up
-//		for(int rowup = row-1; rowup < 1; rowup--) {
-//			if(noeud.getColor(new Coord(rowup,col)) == null) {
-//				break;
-//			}else {
-//				if(noeud.getColor(new Coord(rowup-1,col)) != null) {
-//					for(int rowdown = row+1; rowdown <
-//				}
-//			}
-//		}
-//		
-//		return false;
-//	}
-	
-
 public Double coin(Node noeud) {
+	
 	for (Node n : noeud.children()) {
 		if (n.getLastShot().equals(new Coord(0,0))
 				|| n.getLastShot().equals(new Coord(0,7))
