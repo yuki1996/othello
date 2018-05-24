@@ -8,6 +8,7 @@ import java.util.Set;
 import java.util.SortedSet;
 import java.util.TreeSet;
 
+import othello.model.AbstractBoard;
 import othello.model.Board;
 import othello.model.IBoard;
 
@@ -20,7 +21,7 @@ public class MinSpaceStrategyTree implements StrategyTree {
 	private final IBoard board;
 	private final MSNode root;
 	
-	public class MSNode implements Node {
+	public class MSNode extends AbstractBoard implements Node {
 		private final Color playerColor;
 		private final long[] boardState; // représentation compact du plateau
 		private final Node parent;
@@ -30,6 +31,7 @@ public class MinSpaceStrategyTree implements StrategyTree {
 		
 		// CONSTRUCTEURS
 		public MSNode(MSNode parent, Coord move, double ev) {
+			super(board.getSize());
 			if (parent == null || move == null) {
 				throw new AssertionError();
 			}
@@ -39,10 +41,11 @@ public class MinSpaceStrategyTree implements StrategyTree {
 			boardState = parent.boardState.clone();
 			this.parent = parent;
 			depth = parent.depth + 1;
-			setDisk(move, parent.playerColor);
+			playAShot(move, parent.playerColor);
 		}
 		
 		public MSNode(IBoard b, Color c) {
+			super(board.getSize());
 			if (b == null) {
 				throw new AssertionError();
 			}
@@ -86,13 +89,13 @@ public class MinSpaceStrategyTree implements StrategyTree {
 			
 			for (int row = 0; row < size; row++) {
 				for (int col = 0; col < size; col++) {
-					res.add(getDisk(new Coord(row, col)));
+					res.add(getColor(new Coord(row, col)));
 				}
 			}
 			return res;
 		}
 		
-		public Color getDisk(Coord move) {
+		public Color getColor(Coord move) {
 			assert(move != null);
 			assert(move.isInRect(new Coord(board.getSize(), board.getSize())));
 			
@@ -104,12 +107,7 @@ public class MinSpaceStrategyTree implements StrategyTree {
 		
 		public String toString() {
 			String s = playerColor + ":eval=" + evaluation + ":" + System.lineSeparator();
-			for (int row = 0; row < 8; row++) {
-				for (int col = 0; col < 8; col++) {
-					s += getDisk(new Coord(row, col)) + "\t";
-				}
-				s += System.lineSeparator();
-			}
+			s += super.toString();
 			return s;
 		}
 		
@@ -120,44 +118,28 @@ public class MinSpaceStrategyTree implements StrategyTree {
 			}
 			return false;
 		}
+		
+		public Set<Coord> getDisksOfPlayer(Color playerColor) {
+			int size = board.getSize();
+			Set<Coord> res = new HashSet<Coord>();
+			
+			for (int row = 0; row < size; row++) {
+				for (int col = 0; col < size; col++) {
+					Coord coord = new Coord(row, col);
+					if (getColor(coord) == playerColor) {
+						res.add(coord);
+					}
+				}
+			}
+			return res;
+		}
 
 		// COMMANDES
 		public void setEval(double e) {
 			evaluation = e;
 		}
 		
-		public void setDisk(Coord move, Color c) {
-			if (move != null) {
-				updateCell(move, c);
-			    for (Coord card : Coord.CARDINALS) {
-			        for (Coord x = move.plus(card); getDisk(x) != c && getDisk(x) != null; x = x.plus(card)) {
-			            updateCell(x, c);
-			        }
-			    }
-			}
-		}
-		
-		public void generateChildren() {
-			children = new TreeSet<Node>(nodeComparator);
-
-			for (Coord d : getDisksOfPlayer()) {
-		        for (Coord card : Coord.CARDINALS) {
-		            Coord x = d.plus(card);
-		            if (board.isValid(x) && getDisk(x) != playerColor && getDisk(x) != null) {
-		                x = x.plus(card);
-		                while (board.isValid(x) && getDisk(x) != playerColor && getDisk(x) != null) {
-		                    x = x.plus(card);
-		                }
-		                if (board.isValid(x) && getDisk(x) == null) {
-		                    children.add(new MSNode(this, x, evaluation));
-		                }
-		            }
-		        }
-		    }
-		}
-		
-		// OUTILS
-		private void updateCell(Coord move, Color c) {
+		public void putDisk(Coord move, Color c) {
 			assert(move != null && c != null);
 			assert(move.isInRect(new Coord(board.getSize(), board.getSize())));
 
@@ -167,6 +149,26 @@ public class MinSpaceStrategyTree implements StrategyTree {
 			boardState[shift(move) / Long.SIZE] |= a;
 		}
 		
+		public void generateChildren() {
+			children = new TreeSet<Node>(nodeComparator);
+
+			for (Coord d : getDisksOfPlayer(playerColor)) {
+		        for (Coord card : Coord.CARDINALS) {
+		            Coord x = d.plus(card);
+		            if (board.isValid(x) && getColor(x) != playerColor && getColor(x) != null) {
+		                x = x.plus(card);
+		                while (board.isValid(x) && getColor(x) != playerColor && getColor(x) != null) {
+		                    x = x.plus(card);
+		                }
+		                if (board.isValid(x) && getColor(x) == null) {
+		                    children.add(new MSNode(this, x, evaluation));
+		                }
+		            }
+		        }
+		    }
+		}
+		
+		// OUTILS
 		private int shift(Coord c) {
 			return BITS * (c.row() * board.getSize() + c.col());
 		}
@@ -187,21 +189,6 @@ public class MinSpaceStrategyTree implements StrategyTree {
 					int ind = shift(coord) / Long.SIZE;
 					res[ind] <<= BITS;
 					res[ind] |= c == null ? 0 : (c.ordinal() + 1);
-				}
-			}
-			return res;
-		}
-		
-		private Set<Coord> getDisksOfPlayer() {
-			int size = board.getSize();
-			Set<Coord> res = new HashSet<Coord>();
-			
-			for (int row = 0; row < size; row++) {
-				for (int col = 0; col < size; col++) {
-					Coord coord = new Coord(row, col);
-					if (getDisk(coord) == playerColor) {
-						res.add(coord);
-					}
 				}
 			}
 			return res;
@@ -236,6 +223,7 @@ public class MinSpaceStrategyTree implements StrategyTree {
 		Node m = t.getRoot();
 		m.generateChildren();
 		
+		System.out.println(m.getAllDisks());
 		System.out.println(m);
 		System.out.println("Children size: "+m.children().size()+"\n");
 		

@@ -50,13 +50,15 @@ public class AI extends AbstractPlayer{
 	}
 	@Override
 	public void play(Coord xy) {
-		System.out.println("mon tour");
-		Set<Coord> set = getBoard().getValidMoves(getColor());
-		if (!set.isEmpty()) {
-			Iterator<Coord> it = set.iterator();
-			Coord coord = (Coord) it.next();
-			choose(coord);
-		}
-		System.out.println("fin tour");
+		
+		
+//		System.out.println("mon tour");
+//		Set<Coord> set = getBoard().getValidMoves(getColor());
+//		if (!set.isEmpty()) {
+//			Iterator<Coord> it = set.iterator();
+//			Coord coord = (Coord) it.next();
+//			choose(coord);
+//		}
+//		System.out.println("fin tour");
 	}
 }

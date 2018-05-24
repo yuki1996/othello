@@ -58,7 +58,7 @@ public class PopUpResult extends JFrame{
 		panelPoint.setLayout(gl2);
 		String blackResult = "Noir ";
 		if (colorWinner == othello.util.Color.BLACK) {
-			blackResult += (o.getBoard().getPointsPlayer(othello.util.Color.BLACK) + o.getBoard().getPointsNobody());
+			blackResult += (o.getBoard().getPointsPlayer(othello.util.Color.BLACK) + o.getBoard().getPointsPlayer(null));
 		} else {
 			blackResult += (o.getBoard().getPointsPlayer(othello.util.Color.BLACK));
 		}
@@ -76,7 +76,7 @@ public class PopUpResult extends JFrame{
 
 		String whiteResult = "Blanc ";
 		if (colorWinner == othello.util.Color.WHITE) {
-			whiteResult += (o.getBoard().getPointsPlayer(othello.util.Color.WHITE) + o.getBoard().getPointsNobody());
+			whiteResult += (o.getBoard().getPointsPlayer(othello.util.Color.WHITE) + o.getBoard().getPointsPlayer(null));
 		} else {
 			whiteResult += (o.getBoard().getPointsPlayer(othello.util.Color.WHITE));
 		}

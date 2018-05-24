@@ -1,6 +1,7 @@
 package othello.util;
 
 import java.util.List;
+import java.util.Set;
 import java.util.SortedSet;
 
 import othello.model.IBoard;
@@ -23,7 +24,7 @@ public interface StrategyTree {
 	 * @inv
 	 * 	children() != null
 	 */
-	interface Node extends Iterable<Node> {
+	interface Node extends Iterable<Node>, IBoard {
 		/**
 		 * renvoie la liste des enfants deu noeud.
 		 */
@@ -58,21 +59,18 @@ public interface StrategyTree {
 		List<Color> getAllDisks();
 		
 		/**
+		 * Renvoie l'ensemble des jeton de couleur playerColor.
+		 */
+		public Set<Coord> getDisksOfPlayer(Color playerColor);
+		
+		/**
+		 * Renvoie le nombre de coups possible depuis cet état
+		 */
+		
+		/**
 		 * Modifie l'évaluation du noeud.
 		 */
 		void setEval(double e);
-		
-		/**
-		 * Renvoie la couleur de la case de coordonnée move dans l'état
-		 * contenu dans le noeud.
-		 */
-		Color getDisk(Coord move);
-		
-		/**
-		 * Pose un jeton de couleur c dans la case move du plateau du noeud
-		 * avec retournement des jetons adverses.
-		 */
-		void setDisk(Coord move, Color c);
 		
 		/**
 		 * Génère tous les noeuds enfants correspondant à un coup possible.
