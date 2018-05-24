@@ -8,6 +8,7 @@ import java.util.TreeSet;
 
 import othello.model.Board;
 import othello.model.IBoard;
+import othello.util.StrategyTree.Node;
 
 public class MinSpaceStrategyTree implements StrategyTree {
 	private static final int BITS = 
@@ -21,6 +22,8 @@ public class MinSpaceStrategyTree implements StrategyTree {
 	public class MSNode implements Node {
 		private final Color playerColor;
 		private final long[] boardState; // représentation compact du plateau
+		private final Node parent;
+		private final int depth;
 		private double evaluation;
 		private SortedSet<Node> children; // null => enfants non générés
 		
@@ -33,6 +36,8 @@ public class MinSpaceStrategyTree implements StrategyTree {
 			children = null;
 			evaluation = ev;
 			boardState = parent.boardState.clone();
+			this.parent = parent;
+			depth = parent.depth + 1;
 			setDisk(move, parent.playerColor);
 		}
 		
@@ -44,6 +49,8 @@ public class MinSpaceStrategyTree implements StrategyTree {
 			children = null;
 			evaluation = Integer.MIN_VALUE;
 			boardState = boardToLong(b);
+			parent = null;
+			depth = 0;
 		}
 		
 		// REQUETE
@@ -64,6 +71,14 @@ public class MinSpaceStrategyTree implements StrategyTree {
 			return playerColor;
 		}
 
+		public Node getParent() {
+			return parent;
+		}
+		
+		public int getDepth() {
+			return depth;
+		}
+		
 		public Color getDisk(Coord move) {
 			assert(move != null);
 			assert(move.isInRect(new Coord(board.getSize(), board.getSize())));
@@ -85,13 +100,13 @@ public class MinSpaceStrategyTree implements StrategyTree {
 			return s;
 		}
 		
-//		public boolean equals(Object obj) {
-//			if (obj != null && this.getClass() == obj.getClass()) {
-//				Node c = (Node) obj;
-//				return getEval() == c.getEval();
-//			}
-//			return false;
-//		}
+		public boolean equals(Object obj) {
+			if (obj != null && this.getClass() == obj.getClass()) {
+				Node c = (Node) obj;
+				return getEval() == c.getEval();		// A DEVELOPPER
+			}
+			return false;
+		}
 
 		// COMMANDES
 		public void setEval(double e) {
@@ -99,12 +114,14 @@ public class MinSpaceStrategyTree implements StrategyTree {
 		}
 		
 		public void setDisk(Coord move, Color c) {
-			updateCell(move, c);
-		    for (Coord card : Coord.CARDINALS) {
-		        for (Coord x = move.plus(card); getDisk(x) != c && getDisk(x) != null; x = x.plus(card)) {
-		            updateCell(x, c);
-		        }
-		    }
+			if (move != null) {
+				updateCell(move, c);
+			    for (Coord card : Coord.CARDINALS) {
+			        for (Coord x = move.plus(card); getDisk(x) != c && getDisk(x) != null; x = x.plus(card)) {
+			            updateCell(x, c);
+			        }
+			    }
+			}
 		}
 		
 		public void generateChildren() {
@@ -213,8 +230,6 @@ public class MinSpaceStrategyTree implements StrategyTree {
 		for (Node n : m) {
 			System.out.println(n);
 		}
-		
-		
 		
 	}
 	

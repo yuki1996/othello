@@ -37,6 +37,17 @@ public interface StrategyTree {
 		 * Renvoie la couleur du joueur devant jouer à l'état du noeud.
 		 */
 		Color getPlayerColor();
+		
+		/**
+		 * Renvoie le parent du noeud.
+		 */
+		Node getParent();
+		
+		/**
+		 * Renvoie la profondeur du noeud dans son arbre.
+		 */
+		int getDepth();
+		
 		/**
 		 * Modifie l'évaluation du noeud.
 		 */

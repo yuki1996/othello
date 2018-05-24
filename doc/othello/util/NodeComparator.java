@@ -24,7 +24,7 @@ class NodeComparator implements Comparator<StrategyTree.Node> {
 			} else if (n1.getEval() - n2.getEval() > 0) {
 				return 1;
 			} else {
-				return 0;
+				return n1.equals(n2) ? 0 : 1;
 			}
 		}
 	}
