@@ -51,6 +51,7 @@ public class Calcul_h{
 		double h_value = Double.POSITIVE_INFINITY;
 		
 		if(this.max_depth == 1) {
+			System.out.println("wat");
 			return heuristique(noeud_root);
 		}else {
 			
@@ -71,19 +72,23 @@ public class Calcul_h{
 //			}else {
 				
 				for(Node n : this.noeud_root) {
-					if(strategie == NEGA) {
+					if(strategie.equals(NEGA)) {
+						System.out.println("Value Negalphabeta* : "+h_value);
 						if(this.noeud_root.getPlayerColor() == Color.BLACK) {
 							h_value = Double.max(h_value, Negalphabeta(n,Double.NEGATIVE_INFINITY,Double.POSITIVE_INFINITY));
 						}else {
 							h_value = Double.min(h_value, Negalphabeta(n,Double.NEGATIVE_INFINITY,Double.POSITIVE_INFINITY));
 						}
-						System.out.println("Value Negalphabeta* : "+h_value);
-					}else if(strategie == SSS_STAR) {
+						
+					}else if(strategie.equals(SSS_STAR)) {
+						System.out.println("Value SSSS* : "+h_value);
 						if(this.noeud_root.getPlayerColor() == Color.BLACK) {
 							h_value = Double.max(h_value, sss_etoile(n));
 						}else {
 							h_value = Double.min(h_value, sss_etoile(n));
 						}
+					}else {
+						throw new IllegalArgumentException("Not an strategy");
 					}
 				}
 				
@@ -94,7 +99,9 @@ public class Calcul_h{
 	
 		
 	public Double Negalphabeta(Node node,double alpha, double beta) {
-		//node.generateChildren();
+		node.generateChildren();
+		
+		System.out.println("Dans NEGA : "+node.hashCode());
 		
 		if(node.getDepth() == max_depth) {
 			if(node.getPlayerColor() == Color.BLACK)
