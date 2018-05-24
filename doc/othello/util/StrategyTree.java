@@ -83,6 +83,11 @@ public interface StrategyTree {
 		 * Génère tous les noeuds enfants correspondant à un coup possible.
 		 */
 		void generateChildren();
+		
+		/**
+		 * Génère le prochain niveau de noeuds.
+		 */
+		void generateNextLevel(int rootLevel);
 	}
 	
 	/**
