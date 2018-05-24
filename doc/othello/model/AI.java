@@ -13,8 +13,8 @@ public class AI extends AbstractPlayer{
 	//Attributs
 	private final int niveau; // de 0 à 100
 	private final String strategy; // valeurs dans Calcul_h.java
-	private final StrategyTree sTree;
-	private final Calcul_h calcul_h;
+	private StrategyTree sTree;
+	private Calcul_h calcul_h;
 	private final double bestProba;
 	private final int maxDepth;
 	private final NodeComparator comp;
@@ -76,6 +76,13 @@ public class AI extends AbstractPlayer{
 //			e.printStackTrace();
 //		}
 //	}
+	
+	@Override
+	public void setBoard(IBoard board) {
+		super.setBoard(board);
+		sTree = new MinSpaceStrategyTree(board, maxDepth);
+		calcul_h = new Calcul_h(sTree.getRoot(), getMaxDepth(niveau));
+	}
 	
 	// OUTILS
 	private double getBestProba(int level) {
