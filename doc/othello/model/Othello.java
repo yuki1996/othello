@@ -113,28 +113,32 @@ public class Othello implements IOthello {
 	}
 	
 	public void turn(Coord xy) {
-		if (isGameOver()) {
-			throw new IllegalArgumentException("fin du jeu");
-		} else if (canPlay(currentPlayer)) {
-			currentPlayer.play(xy);
-			foeHasPlay = true;
-		} else {
-			foeHasPlay = false;
-		}
-		IPlayer oldCurrentPlayer = currentPlayer;
-		currentPlayer = (oldCurrentPlayer == playerBlack ? playerWhite : playerBlack);
-		propertySupport.firePropertyChange(IOthello.TURN, false, true);
-		if (!isGameOver()) {
-			if (currentPlayer.getClass() == AI.class){
-				propertySupport.firePropertyChange(IOthello.AI_PLAY, aiPlay, true);
-				aiPlay = true;
-	        	turn(null);
-				propertySupport.firePropertyChange(IOthello.AI_PLAY, aiPlay, false);
-				aiPlay = false;
-	        } else if (!canPlay(currentPlayer)) {
-				turn(null);
-	        }
-		}
+		new Thread(new Runnable() {
+			public void run() {
+				if (isGameOver()) {
+					throw new IllegalArgumentException("fin du jeu");
+				} else if (canPlay(currentPlayer)) {
+					currentPlayer.play(xy);
+					foeHasPlay = true;
+				} else {
+					foeHasPlay = false;
+				}
+				IPlayer oldCurrentPlayer = currentPlayer;
+				currentPlayer = (oldCurrentPlayer == playerBlack ? playerWhite : playerBlack);
+				propertySupport.firePropertyChange(IOthello.TURN, false, true);
+				if (!isGameOver()) {
+					if (currentPlayer.getClass() == AI.class){
+						propertySupport.firePropertyChange(IOthello.AI_PLAY, aiPlay, true);
+						aiPlay = true;
+			        	turn(null);
+						propertySupport.firePropertyChange(IOthello.AI_PLAY, aiPlay, false);
+						aiPlay = false;
+			        } else if (!canPlay(currentPlayer)) {
+						turn(null);
+			        }
+				}
+			}
+		}).start();
 	}
 	
 	public void addPropertyChangeListener(String property, PropertyChangeListener l) {

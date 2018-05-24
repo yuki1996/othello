@@ -253,7 +253,7 @@ public class BoardView {
 	    		} else {
 	                cells[i][j].setDrawableCell(DrawableCell.INVALID_MOVE);
 	    		}
-			}
+	    	}
 	    }
     	whiteScore.setText(model.getBoard().getPointsPlayer(Color.WHITE) + "");
         blackScore.setText(model.getBoard().getPointsPlayer(Color.BLACK) + "");
@@ -261,7 +261,7 @@ public class BoardView {
         		+ colorToString(model.getCurrentPlayer().getColor()) + " doit jouer.");
     	if (model.isGameOver()) {
     		currentPlayer.setText("La partie est finie !");
-    		JFrame popUp = new PopUpResult(model);
+    		new PopUpResult(model);
     		mainFrame.dispose();
 		}
     }

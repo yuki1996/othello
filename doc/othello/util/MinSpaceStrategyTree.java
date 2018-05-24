@@ -4,9 +4,9 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.PriorityQueue;
+import java.util.Queue;
 import java.util.Set;
-import java.util.SortedSet;
-import java.util.TreeSet;
 
 import othello.model.AbstractBoard;
 import othello.model.Board;
@@ -19,15 +19,16 @@ public class MinSpaceStrategyTree implements StrategyTree {
 	
 	private final NodeComparator nodeComparator;
 	private final IBoard board;
-	private final MSNode root;
+	private Node root;
 	
 	public class MSNode extends AbstractBoard implements Node {
 		private final Color playerColor;
 		private final long[] boardState; // représentation compact du plateau
 		private final Node parent;
 		private final int depth;
+		private final Coord move;
 		private double evaluation;
-		private SortedSet<Node> children; // null => enfants non générés
+		private PriorityQueue<Node> children; // null => enfants non générés
 		
 		// CONSTRUCTEURS
 		public MSNode(MSNode parent, Coord move, double ev) {
@@ -41,6 +42,7 @@ public class MinSpaceStrategyTree implements StrategyTree {
 			boardState = parent.boardState.clone();
 			this.parent = parent;
 			depth = parent.depth + 1;
+			this.move = move;
 			playAShot(move, parent.playerColor);
 		}
 		
@@ -55,6 +57,7 @@ public class MinSpaceStrategyTree implements StrategyTree {
 			boardState = boardToLong(b);
 			parent = null;
 			depth = 0;
+			move = null;
 		}
 		
 		// REQUETE
@@ -63,7 +66,7 @@ public class MinSpaceStrategyTree implements StrategyTree {
 			return children.iterator();
 		}
 		
-		public SortedSet<? extends Node> children() {
+		public Queue<? extends Node> children() {
 			return children;
 		}
 		
@@ -81,6 +84,10 @@ public class MinSpaceStrategyTree implements StrategyTree {
 		
 		public int getDepth() {
 			return depth;
+		}
+		
+		public Coord getMove() {
+			return move;
 		}
 		
 		public List<Color> getAllDisks() {
@@ -150,7 +157,7 @@ public class MinSpaceStrategyTree implements StrategyTree {
 		}
 		
 		public void generateChildren() {
-			children = new TreeSet<Node>(nodeComparator);
+			children = new PriorityQueue<Node>(nodeComparator);
 
 			for (Coord d : getDisksOfPlayer(playerColor)) {
 		        for (Coord card : Coord.CARDINALS) {
@@ -210,6 +217,14 @@ public class MinSpaceStrategyTree implements StrategyTree {
 	
 	public Node getRoot() {
 		return root;
+	}
+	
+	public void move(Coord c) {
+		for (Node n : root.children()) {
+			if (n.getMove().equals(c)) {
+				root = n;
+			}
+		}
 	}
 
 	public static void main(String[] args) {
