@@ -482,11 +482,11 @@ public Double coin(Node noeud) {
 		b.putDisk(new Coord(3,4), Color.WHITE);
 		b.putDisk(new Coord(4,3), Color.WHITE);
 		
-		MinSpaceStrategyTree t = new MinSpaceStrategyTree(b, 20);
+		//MinSpaceStrategyTree t = new MinSpaceStrategyTree(b, 20);
 		
 		int tree_depth = 2;
 		
-		Calcul_h h = new Calcul_h(t.getRoot(),tree_depth);
+		//Calcul_h h = new Calcul_h(t.getRoot(),tree_depth);
 
 		//System.out.println("Value : "+h.getValue());
 		
