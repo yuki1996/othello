@@ -12,6 +12,10 @@ import javax.swing.border.EmptyBorder;
 
 import othello.model.Othello;
 
+/**
+ * Classe permettant de créer la fenêtre contenant le menu
+ *
+ */
 public class Menu extends JFrame{
 	private Bouton quit = new Bouton("Quitter");
 	private Bouton gameAgainstIA = new Bouton("Joueur VS IA");
@@ -19,6 +23,9 @@ public class Menu extends JFrame{
 	private Bouton game2H = new Bouton("Joueur VS Joueur");
 	private Bouton tuto = new Bouton("Aide");
 	
+	/**
+	 * Constructeur de la classe menu, ajoute les différents composants
+	 */
 	public Menu () {
 		//initialisation des boutons
 		initButtons();
@@ -59,6 +66,9 @@ public class Menu extends JFrame{
 		this.setVisible(true);
 	}
 
+	/**
+	 * Initialise les boutons et les événements associés aux clics
+	 */
 	private void initButtons() {
 		JFrame fenetre = this;
 		
@@ -98,6 +108,9 @@ public class Menu extends JFrame{
 		});
 	}
 	
+	/**
+	 * Ferme l'application
+	 */
 	private void quitter() {
 		this.dispose();
 	}
