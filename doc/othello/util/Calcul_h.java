@@ -1,7 +1,10 @@
 package othello.util;
 
 import java.util.Comparator;
+import java.util.HashSet;
 import java.util.Iterator;
+import java.util.LinkedList;
+import java.util.List;
 //import java.util.Iterator;
 //import java.util.List;
 import java.util.PriorityQueue;
@@ -207,6 +210,8 @@ public class Calcul_h{
 	Double mobilite_stabilite(Node noeud) {
 		
 		double poid_mobilite = (double) 10;
+		
+		double poid_stabilite = (double) 10;
 	
 		double mblt = 0;
 		
@@ -236,24 +241,128 @@ public class Calcul_h{
 	//	
 	//	return stbl+mblt;
 		
-		Set<Coord> set_coord_black = noeud.getValidMoves(Color.BLACK);
+		Set<Coord> set_coord_moves_black = noeud.getValidMoves(Color.BLACK);
 		
-//		Set<Coord> set_coord_black_flack = new HashSet<Coord>();
+		Set<Coord> set_coord_moves_white = noeud.getValidMoves(Color.WHITE);
 		
-		Set<Coord> set_coord_white = noeud.getValidMoves(Color.WHITE);
+		Set<Coord> set_coord_black_flank = new HashSet<Coord>();
 		
-		mblt += set_coord_black.size() * poid_mobilite;
+		Set<Coord> set_coord_white_flank = new HashSet<Coord>();
 		
-		mblt -= set_coord_white.size() * poid_mobilite;
+		Set<Coord> set_coord_black_stable = new HashSet<Coord>();
 		
+		Set<Coord> set_coord_white_stable = new HashSet<Coord>();
 		
-//		for(int row = 0; row < noeud.getSize(); row++) {
-//			for (int col = 0; col < noeud.getSize(); col++) {
-//				
-//			}
-//		}
+		mblt += set_coord_moves_black.size() * poid_mobilite;
+		
+		mblt -= set_coord_moves_white.size() * poid_mobilite;
+		
+		Coord c = new Coord(0,0);
+		Coord d = c;
+		
+		//int discs_flank = 0;
+		
+		//List<Coord> list_temp = new LinkedList<Coord>();
+		
+		for(int row = 0; row < noeud.getSize(); row++) {
+			for (int col = 0; col < noeud.getSize(); col++) {
+				c = new Coord(row,col);
+				
+				if(noeud.getColor(c) == null) {
+					; // faire rien
+				}else {
+
+					//void getFlanks(Node noeud, Coord init, String dir, Set<Coord> black_flank, Set<Coord> white_flank, Set<Coord> black_moves, Set<Coord> white_moves)
+					getFlanks(noeud,c,"up",set_coord_black_flank,set_coord_white_flank,set_coord_moves_black,set_coord_moves_white);
+					getFlanks(noeud,c,"down",set_coord_black_flank,set_coord_white_flank,set_coord_moves_black,set_coord_moves_white);
+					getFlanks(noeud,c,"left",set_coord_black_flank,set_coord_white_flank,set_coord_moves_black,set_coord_moves_white);
+					getFlanks(noeud,c,"rigth",set_coord_black_flank,set_coord_white_flank,set_coord_moves_black,set_coord_moves_white);
+					getFlanks(noeud,c,"upRight",set_coord_black_flank,set_coord_white_flank,set_coord_moves_black,set_coord_moves_white);
+					getFlanks(noeud,c,"upLeft",set_coord_black_flank,set_coord_white_flank,set_coord_moves_black,set_coord_moves_white);
+					getFlanks(noeud,c,"downRight",set_coord_black_flank,set_coord_white_flank,set_coord_moves_black,set_coord_moves_white);
+					getFlanks(noeud,c,"downLeft",set_coord_black_flank,set_coord_white_flank,set_coord_moves_black,set_coord_moves_white);
+					
+				}
+			}
+		}
+		
+		for(int row = 0; row < noeud.getSize(); row++) {
+			for (int col = 0; col < noeud.getSize(); col++) {
+				c = new Coord(row,col);
+				if(noeud.getColor(c) == null) {
+					; //faire rien
+				}else if(noeud.getColor(c) == Color.BLACK && !set_coord_black_flank.contains(c)) {
+					set_coord_black_stable.add(c);
+				}else if(noeud.getColor(c) == Color.WHITE && !set_coord_white_flank.contains(c)) {
+					set_coord_white_stable.add(c);
+				}
+			}
+		}
+		
+		// discs stables = intersetion de flanks et tous les discs
+		
+		stbl += set_coord_black_stable.size() * poid_stabilite;
+		
+		stbl -= set_coord_white_stable.size() * poid_stabilite;
+		
+		stbl += set_coord_white_flank.size() * poid_stabilite;
+		
+		stbl -= set_coord_black_flank.size() * poid_stabilite;
 		
 		return mblt+stbl;
+	}
+	
+	void getFlanks(Node noeud, Coord init, String dir, Set<Coord> black_flank, Set<Coord> white_flank, Set<Coord> black_moves, Set<Coord> white_moves) {
+		
+		List<Coord> list_temp = new LinkedList<Coord>();
+		
+		Coord move = new Coord(0,0);
+		
+		switch (dir) {
+		case "up" : move = init.up();
+		case "down" : move = init.down();
+		case "right" : move = init.right();
+		case "left" : move = init.left();
+		case "upRight" : move = init.upRight();
+		case "upLeft" : move = init.upLeft();
+		case "downRight" : move = init.downRight();
+		case "downLeft" : move = init.downLeft();
+		}
+		
+//		Coord d = init.up();
+		
+		if(init.isInRect(move) && noeud.getColor(move) != noeud.getColor(init) && noeud.getColor(move) != null) {
+			
+			while(init.isInRect(move) && noeud.getColor(move) != noeud.getColor(init)) {
+				
+				list_temp.add(move);
+				
+				switch (dir) {
+				case "up" : move = move.up();
+				case "down" : move = move.down();
+				case "right" : move = move.right();
+				case "left" : move = move.left();
+				case "upRight" : move = move.upRight();
+				case "upLeft" : move = move.upLeft();
+				case "downRight" : move = move.downRight();
+				case "downLeft" : move = move.downLeft();
+				}
+				
+				if(noeud.getColor(move) == null) {
+					if(noeud.getColor(init) == Color.BLACK && black_moves.contains(init)) {
+						for(Coord flank : list_temp ) {
+							white_flank.add(flank);
+						}
+						break;
+					}else if(noeud.getColor(init) == Color.WHITE && white_moves.contains(init)) {
+						for(Coord flank : list_temp ) {
+							black_flank.add(flank);
+						}
+						break;
+					}
+				}
+			}
+		}
 	}
 	
 
@@ -331,6 +440,18 @@ public class Calcul_h{
 	
 
 public Double coin(Node noeud) {
+	for (Node n : noeud.children()) {
+		if (n.getLastShot().equals(new Coord(0,0))
+				|| n.getLastShot().equals(new Coord(0,7))
+				|| n.getLastShot().equals(new Coord(7,0))
+				|| n.getLastShot().equals(new Coord(7,7))) {
+			if (noeud.getPlayerColor().equals(Color.BLACK)) {
+				return 100.;
+			} else {
+				return -100.;
+			}
+		}
+	}
 //	if(a1,a8,h1,h8 in noeud.last_disc) {
 //		if(noued.last_disc.color == Noir) {
 //			return 100;
@@ -348,7 +469,7 @@ public Double coin(Node noeud) {
 //	}else{
 //		return 0;
 //	}
-	return Double.POSITIVE_INFINITY;
+	return 0.;
 }
 	
 	public static void main(String[] args) {
@@ -361,11 +482,11 @@ public Double coin(Node noeud) {
 		b.putDisk(new Coord(3,4), Color.WHITE);
 		b.putDisk(new Coord(4,3), Color.WHITE);
 		
-		MinSpaceStrategyTree t = new MinSpaceStrategyTree(b, 20);
+		//MinSpaceStrategyTree t = new MinSpaceStrategyTree(b, 20);
 		
 		int tree_depth = 2;
 		
-		Calcul_h h = new Calcul_h(t.getRoot(),tree_depth);
+		//Calcul_h h = new Calcul_h(t.getRoot(),tree_depth);
 
 		//System.out.println("Value : "+h.getValue());
 		

@@ -6,6 +6,14 @@ package othello.util;
  * une case vide ou un match nul sera représenté par null
  */
 public enum Color {
-	BLACK,
-	WHITE;
+	BLACK{
+		public String toString() {
+			return "NOIR";
+		}
+	},
+	WHITE {
+		public String toString() {
+			return "BLANC";
+		}
+	};
 }

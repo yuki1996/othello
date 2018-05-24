@@ -14,12 +14,20 @@ import javax.swing.JPanel;
 
 import othello.model.Othello;
 
+/**
+ * Classe de paramètre pour une partie de type Joueur contre IA
+ *
+ */
 public class ParametersHvsIA extends Parameters {
 	private JLabel labelJeton = new JLabel("Choix couleur ");
 	private JPanel black = new JPanel();
 	private JPanel white = new JPanel();
 	private Color selected = Color.WHITE;
 	
+	/**
+	 * Constructeur de la classe, construit la fenetre
+	 * @param p : fenetre créant la fenetre de paramètre
+	 */
 	public ParametersHvsIA(JFrame p) {
 		super(p);
 		init();		
@@ -58,6 +66,9 @@ public class ParametersHvsIA extends Parameters {
 		super.pack();
 	}
 	
+	/**
+	 * Initialisation des boutons
+	 */
 	private void initSelect() {
 		black.addMouseListener(new MouseAdapter() 
 		{
@@ -78,13 +89,20 @@ public class ParametersHvsIA extends Parameters {
 		    }
 		});
 	}
-	
+
+	/**
+	 * Ajout d'une bordure auton d'un panel
+	 * @param panel : panel concerné
+	 */
 	private void addBorder(JPanel panel) {
 		black.setBorder(null);
 		white.setBorder(null);
 		panel.setBorder(BorderFactory.createLineBorder(Color.red));
 	}
 	
+	/**
+	 * initialisation des jetons
+	 */
 	private void initJetons() {
 		black = new ImagePanel("jeton_noir.gif");
 		white = new ImagePanel("jeton_blanc.gif");
