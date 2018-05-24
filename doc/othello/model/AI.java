@@ -1,8 +1,5 @@
 package othello.model;
 
-import java.util.Map.Entry;
-import java.util.SortedSet;
-
 import othello.util.Calcul_h;
 import othello.util.Color;
 import othello.util.Coord;
