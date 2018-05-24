@@ -172,7 +172,7 @@ public class MinSpaceStrategyTree implements StrategyTree {
 					}
 				}
 			}
-			System.out.println(res.size());
+//			System.out.println(res.size());
 			return res;
 		}
 		
@@ -205,10 +205,15 @@ public class MinSpaceStrategyTree implements StrategyTree {
 		m.generateChildren();
 		
 		System.out.println(m);
+		System.out.println("Children size: "+m.children().size()+"\n");
+		
+		System.out.println("Printing childs: \n");
 		for (Node n : m) {
-			System.out.println(m.children().size());
 			System.out.println(n);
 		}
+		
+		
+		
 	}
 	
 }
