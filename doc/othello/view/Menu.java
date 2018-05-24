@@ -1,6 +1,7 @@
 package othello.view;
 
 import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -22,6 +23,7 @@ public class Menu extends JFrame{
 		initButtons();
 		//initialisation de la fenetre
 		this.setTitle("Menu - Othello");
+		this.setPreferredSize(new Dimension(300,300));
 		this.getContentPane().setBackground(Color.WHITE);
 		
 		//Centrer
@@ -46,8 +48,8 @@ public class Menu extends JFrame{
 		panel.add(game2H);
 		panel.add(quit);
 		panel.setBackground(Color.WHITE);
-		
-		panel.setBorder(new EmptyBorder(50, 100, 50, 100));
+
+		panel.setBorder(new EmptyBorder(30, 20, 10, 20));
 		this.add(panel);
 		
 		pack();

@@ -21,6 +21,7 @@ public class ImagePanel extends JPanel{
 		} catch (IOException e) {
 			e.printStackTrace();
 		} 
+		setOpaque(false);
 	}
 	
 	protected void paintComponent(Graphics g) {

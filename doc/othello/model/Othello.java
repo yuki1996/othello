@@ -143,7 +143,7 @@ public class Othello implements IOthello {
 	 * Créer une IA
 	 */
 	private IPlayer spawnAI(Color player_color, String strategie, int niveau) {
-		return new AI(player_color, getBoard());
+		return new AI(player_color, getBoard(), niveau, strategie);
 	}
 	
 	/**
