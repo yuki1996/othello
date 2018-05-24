@@ -1,5 +1,8 @@
 package othello.model;
 
+import java.util.Iterator;
+import java.util.Set;
+
 import othello.util.Color;
 import othello.util.Coord;
 
@@ -48,11 +51,12 @@ public class AI extends AbstractPlayer{
 	@Override
 	public void play(Coord xy) {
 		System.out.println("mon tour");
-		try {
-			Thread.sleep(10000);
-		} catch (InterruptedException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+		Set<Coord> set = getBoard().getValidMoves(getColor());
+		if (!set.isEmpty()) {
+			Iterator<Coord> it = set.iterator();
+			Coord coord = (Coord) it.next();
+			choose(coord);
 		}
+		System.out.println("fin tour");
 	}
 }

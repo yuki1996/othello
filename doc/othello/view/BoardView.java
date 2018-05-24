@@ -51,6 +51,9 @@ public class BoardView {
         createView();
         placeComponents();
         createController();
+        if (model.getCurrentPlayer().getClass() == AI.class){
+       		model.turn(null);
+       }
     }
     
     // REQUETES
@@ -243,9 +246,7 @@ public class BoardView {
     		JFrame popUp = new PopUpResult(model);
     		mainFrame.dispose();
 		}
-    	if (model.getCurrentPlayer().getClass() == AI.class){
-        	model.turn(null);
-        }
+    	
     }
     
     private String colorToString(Color c) {

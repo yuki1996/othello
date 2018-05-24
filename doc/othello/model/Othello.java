@@ -40,9 +40,6 @@ public class Othello implements IOthello {
 		propertySupport = new PropertyChangeSupport(this);
 		initialisationBoard();
 		currentPlayer = playerBlack;
-        if (currentPlayer.getClass() == AI.class){
-        	turn(null);
-        }
 	}
 	
 	//Jeu avec 2 IA
@@ -54,7 +51,6 @@ public class Othello implements IOthello {
 		propertySupport = new PropertyChangeSupport(this);
 		initialisationBoard();
 		currentPlayer = playerBlack;
-		turn(null);
 	}
 	
 	//REQUETES
@@ -124,7 +120,7 @@ public class Othello implements IOthello {
 			//System.out.println(isGameOver());
 			turn(null);
 		}
-		if (currentPlayer.getClass() == AI.class){
+		if (!isGameOver() && currentPlayer.getClass() == AI.class){
         	turn(null);
         }
 	}
