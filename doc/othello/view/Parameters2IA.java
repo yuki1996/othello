@@ -12,7 +12,7 @@ import othello.model.Othello;
 
 public class Parameters2IA extends Parameters{
 	//Composant J2
-	private JLabel labelStratJ2 = new JLabel("Stratï¿½gie utilisï¿½e ");
+	private JLabel labelStratJ2 = new JLabel("Stratégie utilisée ");
 	private JComboBox<String> stratJ2 = new JComboBox<String>();
 	private JLabel labelNiveauJ2 = new JLabel("Niveau ");
 	private JSlider niveauJ2 = new JSlider(JSlider.HORIZONTAL, 0, 100, 50);
@@ -20,32 +20,45 @@ public class Parameters2IA extends Parameters{
 	public Parameters2IA(JFrame p) {
 		super(p);
 		init();
-		
-		stratJ2.addItem("Stratï¿½gie 1");
-		stratJ2.addItem("Stratï¿½gie 2");
+		niveauJ2.setOpaque(false);
+		stratJ2.addItem("AlphaBeta");
+		stratJ2.addItem("SSS*");
 		
 		//Position titre Joueur 1
 		setPosition(0, getNiveauDispo(), 3);
-		getPanel().add(new JLabel("Paramï¿½tre IA 2"), getConstraint());
+		getPanel().add(new JLabel("Paramètre IA 2"), getConstraint());
 		incrNiveauDispo();
 		
-		//Position du label de la liste dï¿½roulante de stratï¿½gie
+		setAlignLeft();
+		setMargeX(50);
+		//Position du label de la liste déroulante de stratégie
 		setPosition(0,getNiveauDispo(),1);
 		getPanel().add(labelStratJ2, getConstraint());
 		
-		//Position de la liste dï¿½roulante de stratï¿½gie
+		setAlignMiddle();
+		setMargeX(0);
+		//Position de la liste déroulante de stratégie
 		setPosition(1,getNiveauDispo(),2);
 		getPanel().add(stratJ2, getConstraint());
 		incrNiveauDispo();
 		
-		//Position du label de la liste dï¿½roulante de stratï¿½gie
+		setAlignLeft();
+		setMargeX(50);
+		//Position du label de la liste déroulante de stratégie
 		setPosition(0,getNiveauDispo(),1);
 		getPanel().add(labelNiveauJ2, getConstraint());
 		
+		setAlignMiddle();
+		setMargeX(0);
 		//Position du slider
 		setPosition(1,getNiveauDispo(),2);
 		getPanel().add(niveauJ2, getConstraint());
 		incrNiveauDispo();
+		
+		//Position bouton play
+		setPosition(0, getNiveauDispo(), 3);
+		getPanel().add(getPlay(), getConstraint());
+		getPanel().setOpaque(false);
 		
 		//init bouton play
 		getPlay().addActionListener(new ActionListener() {

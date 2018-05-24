@@ -53,6 +53,7 @@ public class ParametersHvsIA extends Parameters {
 		//Position bouton play
 		setPosition(0, getNiveauDispo(), 3);
 		getPanel().add(getPlay(), getConstraint());
+		getPanel().setOpaque(false);
 		
 		super.pack();
 	}
@@ -77,20 +78,24 @@ public class ParametersHvsIA extends Parameters {
 	}
 	
 	private void addBorder(JPanel panel) {
-		black.setBorder(BorderFactory.createLineBorder(Color.black));
-		white.setBorder(BorderFactory.createLineBorder(Color.black));
+		black.setBorder(null);
+		white.setBorder(null);
 		panel.setBorder(BorderFactory.createLineBorder(Color.red));
 	}
 	
 	private void initJetons() {
-		black = new ImagePanel("jeton_noir.png");
-		white = new ImagePanel("jeton_blanc.png");
+		black = new ImagePanel("jeton_noir.gif");
+		white = new ImagePanel("jeton_blanc.gif");
 		initSelect();
 		
 		//init bouton play
 		getPlay().addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent event) {
-				BoardView board = new BoardView(new Othello(selected, getStrat(), getNiveau()));
+				othello.util.Color couleur = othello.util.Color.WHITE;
+				if (selected == Color.black) {
+					couleur = othello.util.Color.BLACK;
+				}
+				BoardView board = new BoardView(new Othello(couleur, getStrat(), getNiveau()));
 				board.display();
 				quitter();
 			}
