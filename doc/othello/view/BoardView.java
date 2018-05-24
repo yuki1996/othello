@@ -62,6 +62,10 @@ public class BoardView {
     }
     
     // COMMANDES
+    
+    /**
+     * affiche la partie d'othello du modèle.
+     */
     public void display() {
         mainFrame.pack();
         mainFrame.setLocationRelativeTo(null);
@@ -100,16 +104,16 @@ public class BoardView {
         mainFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         mainFrame.setResizable(false);
         currentPlayer = new JLabel("Joueur " 
-        		+ colorToString(model.getCurrentPlayer().getColor()) + " doit jouer.", JLabel.CENTER);
+        		+ model.getCurrentPlayer().getColor() + " doit jouer.", JLabel.CENTER);
         int width = currentPlayer.getWidth();
         int height = currentPlayer.getHeight() + 50;
         currentPlayer.setPreferredSize(new Dimension(width, height));
         currentPlayer.setFont(new Font("Serif", Font.PLAIN, 22));
         whiteScore = new JLabel(model.getBoard().getPointsPlayer(Color.WHITE) + "");
-        whitePlayer = new JLabel(colorToString(Color.WHITE) + " : ");
+        whitePlayer = new JLabel(Color.WHITE + " : ");
         
         blackScore = new JLabel(model.getBoard().getPointsPlayer(Color.BLACK) + "");
-        blackPlayer = new JLabel(colorToString(Color.BLACK) + " : ");
+        blackPlayer = new JLabel(Color.BLACK + " : ");
     }
     
     private void placeComponents() {
@@ -183,18 +187,11 @@ public class BoardView {
         mainFrame.add(board, BorderLayout.CENTER);
         p = new JPanel(new GridLayout(2 ,1)); {
         	JPanel q = new JPanel(new GridLayout(1 ,2)); {
-        		/*ImagePanel img = new ImagePanel("jeton_blanc.png");
-        		img.setBorder(null);
-        		img.setPreferredSize(new Dimension(10,10));
-        		p.add(img);*/
         		p.add(whitePlayer);
             	p.add(whiteScore);
         	}
         	p.add(q);
         	q = new JPanel(new GridLayout(1 ,2)); {
-        		/*ImagePanel img = new ImagePanel("jeton_noir.png");
-        		img.setBorder(null);
-        		p.add(img);*/
         		p.add(blackPlayer);
             	p.add(blackScore);
         	}
@@ -241,7 +238,10 @@ public class BoardView {
  		};
         model.addPropertyChangeListener(IOthello.AI_PLAY, aiListener);
     }
-
+    
+    /**
+     * rafraîchis la vue.
+     */
     private void refresh() {
         possibilities = model.getBoard().getValidMoves(model.getCurrentPlayer().getColor());
 	    for(int i = 0 ; i < cells.length; ++i) {
@@ -262,7 +262,7 @@ public class BoardView {
     	whiteScore.setText(model.getBoard().getPointsPlayer(Color.WHITE) + "");
         blackScore.setText(model.getBoard().getPointsPlayer(Color.BLACK) + "");
     	currentPlayer.setText("Joueur " 
-        		+ colorToString(model.getCurrentPlayer().getColor()) + " doit jouer.");
+        		+ model.getCurrentPlayer().getColor() + " doit jouer.");
     	if (model.isGameOver()) {
     		model.removePropertyChangeListener(IOthello.AI_PLAY, aiListener);
     		model.removePropertyChangeListener(IOthello.TURN, turnListener);
@@ -271,15 +271,11 @@ public class BoardView {
 		}
     }
     
-    private String colorToString(Color c) {
-    	if (c == Color.BLACK) {
-    		return "NOIR";
-    	} else {
-    		return "BLANC";
-    	}
-    }
-    
     //CLASSES INTERNES
+    
+    /**
+     * Un Listener qui joue un coup lorsqu'un événement lui est notifié. 
+     */
     class CellListener extends MouseAdapter {
     	
     	private Coord c;
