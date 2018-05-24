@@ -9,6 +9,7 @@ import javax.swing.JLabel;
 import javax.swing.JSlider;
 
 import othello.model.Othello;
+import othello.util.Calcul_h;
 
 /**
  * Classe de paramètre pour le type de partie IA vs IA
@@ -29,8 +30,8 @@ public class Parameters2IA extends Parameters{
 		super(p);
 		init();
 		niveauJ2.setOpaque(false);
-		stratJ2.addItem("AlphaBeta");
-		stratJ2.addItem("SSS*");
+		stratJ2.addItem(Calcul_h.NEGA);
+		stratJ2.addItem(Calcul_h.SSS_STAR);
 		
 		//Position titre Joueur 1
 		setPosition(0, getNiveauDispo(), 3);
