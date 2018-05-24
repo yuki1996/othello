@@ -65,6 +65,7 @@ public class ParametersHvsIA extends Parameters {
 		    public void mouseClicked(MouseEvent e) 
 		    {
 		    	addBorder(black);
+		    	selected = Color.black;
 		    }
 		});
 		white.addMouseListener(new MouseAdapter() 
@@ -73,6 +74,7 @@ public class ParametersHvsIA extends Parameters {
 		    public void mouseClicked(MouseEvent e) 
 		    {
 		    	addBorder(white);
+		    	selected = Color.white;
 		    }
 		});
 	}
