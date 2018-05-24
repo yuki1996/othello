@@ -13,6 +13,7 @@ public class Othello implements IOthello {
 	private IPlayer currentPlayer;
 	private PropertyChangeSupport propertySupport;
 	private boolean foeHasPlay;
+	private boolean aiPlay;
 	
 	//Jeu avec 2 humains
 	public Othello() {
@@ -23,6 +24,7 @@ public class Othello implements IOthello {
 		initialisationBoard();
 		currentPlayer = playerBlack;
 		foeHasPlay = true;
+		aiPlay = false;
 	}
 	
 	//jeu avec 1 humain et 1 IA, l'humain joue d'abord
@@ -38,14 +40,12 @@ public class Othello implements IOthello {
 			playerWhite = spawnPlayer(Color.WHITE);
 			playerBlack = spawnAI(Color.BLACK, strategie, niveau);
 		}
-		
+
 		propertySupport = new PropertyChangeSupport(this);
 		initialisationBoard();
 		currentPlayer = playerBlack;
 		foeHasPlay = true;
-        if (currentPlayer.getClass() == AI.class){
-        	turn(null);
-        }
+		aiPlay = false;
 	}
 	
 	//Jeu avec 2 IA
@@ -58,7 +58,7 @@ public class Othello implements IOthello {
 		initialisationBoard();
 		currentPlayer = playerBlack;
 		foeHasPlay = true;
-		turn(null);
+		aiPlay = false;
 	}
 	
 	//REQUETES
@@ -100,8 +100,6 @@ public class Othello implements IOthello {
 			return Color.WHITE;
 		} 
 		return Color.BLACK;
-				
-		
 	}
 	
 	//METHODES
@@ -130,8 +128,10 @@ public class Othello implements IOthello {
 			//System.out.println(isGameOver());
 			turn(null);
 		}
-		if (currentPlayer.getClass() == AI.class){
+		if (!isGameOver() && currentPlayer.getClass() == AI.class){=
+			propertySupport.firePropertyChange(IOthello.AI_PLAY, aiPlay, true);
         	turn(null);
+			propertySupport.firePropertyChange(IOthello.AI_PLAY, aiPlay, false);
         }
 	}
 	

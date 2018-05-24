@@ -3,7 +3,6 @@ package othello.view;
 
 import java.awt.BorderLayout;
 import java.awt.Dimension;
-import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
@@ -12,11 +11,9 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
-import java.util.HashSet;
 import java.util.Set;
 
 import javax.swing.BorderFactory;
-import javax.swing.BoxLayout;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -37,6 +34,7 @@ public class BoardView {
 	
     private IOthello model;
     private CellView[][] cells;
+    private CellListener[][] cellListeners;
     private JFrame mainFrame;
     private JLabel currentPlayer;
     private JLabel whiteScore;
@@ -51,6 +49,9 @@ public class BoardView {
         createView();
         placeComponents();
         createController();
+        if (model.getCurrentPlayer().getClass() == AI.class){
+       		model.turn(null);
+       }
     }
     
     // REQUETES
@@ -202,19 +203,39 @@ public class BoardView {
     }
     
     private void createController() {
+    	cellListeners = new CellListener[model.getBoard().getSize()][model.getBoard().getSize()];
     	for(int i = 0 ; i < cells.length; ++i) {
         	for(int j = 0 ; j < cells[i].length; ++j) {
-            	cells[i][j].addMouseListener(new CellListener(new Coord(i,j)));
+        		cellListeners[i][j] = new CellListener(new Coord(i,j));
+            	cells[i][j].addMouseListener(cellListeners[i][j]);
             }
         }
 
-       model.addPropertyChangeListener(IOthello.TURN, new PropertyChangeListener() {
+        model.addPropertyChangeListener(IOthello.TURN, new PropertyChangeListener() {
+ 			@Override
+ 			public void propertyChange(PropertyChangeEvent evt) {
+ 				refresh();
+ 			}
+ 		});
 
-			@Override
-			public void propertyChange(PropertyChangeEvent evt) {
-				refresh();
-			}
-		});
+        model.addPropertyChangeListener(IOthello.AI_PLAY, new PropertyChangeListener() {
+ 			@Override
+ 			public void propertyChange(PropertyChangeEvent evt) {
+ 				if ((boolean) evt.getNewValue()) {
+ 					for(int i = 0 ; i < cells.length; ++i) {
+ 			        	for(int j = 0 ; j < cells[i].length; ++j) {
+ 			            	cells[i][j].removeMouseListener(cellListeners[i][j]);
+ 			            }
+ 			        }
+ 				} else {
+ 					for(int i = 0 ; i < cells.length; ++i) {
+ 			        	for(int j = 0 ; j < cells[i].length; ++j) {
+ 			            	cells[i][j].addMouseListener(cellListeners[i][j]);
+ 			            }
+ 			        }
+ 				}
+ 			}
+ 		});
     }
 
     private void refresh() {
@@ -243,9 +264,6 @@ public class BoardView {
     		JFrame popUp = new PopUpResult(model);
     		mainFrame.dispose();
 		}
-    	if (model.getCurrentPlayer().getClass() == AI.class){
-        	model.turn(null);
-        }
     }
     
     private String colorToString(Color c) {
