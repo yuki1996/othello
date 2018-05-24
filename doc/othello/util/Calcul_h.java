@@ -43,7 +43,7 @@ public class Calcul_h{
 		this.max_depth = max_depth;
 	}
 	
-	public Double getValue() {
+	public Double getValue(String strategie) {
 		
 		this.noeud_root.generateChildren();
 		double h_value = Double.POSITIVE_INFINITY;
@@ -73,7 +73,11 @@ public class Calcul_h{
 				
 			
 				for(Node n : this.noeud_root) {
-					h_value = Double.min(h_value, Negalphabeta(n,Double.NEGATIVE_INFINITY,Double.POSITIVE_INFINITY));
+					if(strategie == "negalphabeta") {
+						h_value = Double.min(h_value, Negalphabeta(n,Double.NEGATIVE_INFINITY,Double.POSITIVE_INFINITY));
+					}else if(strategie == "sss") {
+						h_value = Double.min(h_value, sss_etoile(n));
+					}
 				}
 				
 				//double sss_etoile = sss_etoile();
@@ -363,7 +367,7 @@ public Double coin(Node noeud) {
 		
 		Calcul_h h = new Calcul_h(t.getRoot(),tree_depth);
 
-		System.out.println("Value : "+h.getValue());
+		//System.out.println("Value : "+h.getValue());
 		
 //		Node m = t.getRoot();
 //		m.generateChildren();		
