@@ -114,12 +114,19 @@ public class Calcul_h{
 			
 			Iterator<Node> childs = node.iterator();
 			
-			while( alpha < beta && childs.hasNext()){
-				val = Double.max(val, -Negalphabeta(childs.next(),-beta,-alpha));
-				alpha = Double.max(val, alpha);
+			if(childs == null) {
+				if(node.getPlayerColor() == Color.BLACK)
+					return heuristique(node);
+				else
+					return -heuristique(node);
+			}else {
+				while( alpha < beta && childs.hasNext()){
+					val = Double.max(val, -Negalphabeta(childs.next(),-beta,-alpha));
+					alpha = Double.max(val, alpha);
+				}
+				
+				return alpha;
 			}
-			
-			return alpha;
 		}
 	}
 	
