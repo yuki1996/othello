@@ -21,7 +21,7 @@ public abstract class AbstractBoard implements IBoard {
 	}
 
 	public boolean isValid(Coord xy) {
-		return xy.isInRect(new Coord(size, size));
+		return xy != null && xy.isInRect(new Coord(size, size));
 	}
 
 	public boolean isFull() {
