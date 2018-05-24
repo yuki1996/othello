@@ -47,11 +47,9 @@ public class AI extends AbstractPlayer{
 	//Méthodes
 	@Override
 	public void play(Coord xy) {
-<<<<<<< HEAD
 		if () {
 			sTree.move(c);
 		}
-		
 		switch (strategy) {
 			case Calcul_h.SSS_STAR:
 				calcul_h.sss_etoile(sTree.getRoot());
@@ -96,4 +94,5 @@ public class AI extends AbstractPlayer{
 	private Coord getChoice() {
 		return new Coord(0,0); // TODO
 	}
+	
 }
