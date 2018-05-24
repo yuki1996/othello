@@ -31,8 +31,8 @@ import othello.util.StrategyTree.Node;
  */
 
 public class Calcul_h{
-	public static final String SSS_STAR = "SSS";
-	public static final String NEGA = "NEGALPHA BETA";
+	public static final String SSS_STAR = "sss";
+	public static final String NEGA = "negalphabeta";
 	
 	private Node noeud_root;
 	//int depth;
@@ -73,9 +73,9 @@ public class Calcul_h{
 				
 			
 				for(Node n : this.noeud_root) {
-					if(strategie == "negalphabeta") {
+					if(strategie == NEGA) {
 						h_value = Double.min(h_value, Negalphabeta(n,Double.NEGATIVE_INFINITY,Double.POSITIVE_INFINITY));
-					}else if(strategie == "sss") {
+					}else if(strategie == SSS_STAR) {
 						h_value = Double.min(h_value, sss_etoile(n));
 					}
 				}
