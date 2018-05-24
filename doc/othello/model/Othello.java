@@ -128,7 +128,7 @@ public class Othello implements IOthello {
 			//System.out.println(isGameOver());
 			turn(null);
 		}
-		if (!isGameOver() && currentPlayer.getClass() == AI.class){=
+		if (!isGameOver() && currentPlayer.getClass() == AI.class){
 			propertySupport.firePropertyChange(IOthello.AI_PLAY, aiPlay, true);
         	turn(null);
 			propertySupport.firePropertyChange(IOthello.AI_PLAY, aiPlay, false);
