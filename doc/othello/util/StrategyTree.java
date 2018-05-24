@@ -1,6 +1,6 @@
 package othello.util;
 
-import java.util.List;
+import java.util.SortedSet;
 
 import othello.model.IBoard;
 
@@ -26,17 +26,21 @@ public interface StrategyTree {
 		/**
 		 * renvoie la liste des enfants deu noeud.
 		 */
-		List<? extends Node> children();
+		SortedSet<? extends Node> children();
 		
 		/**
 		 * Renvoie l'évaluation du noeud.
 		 */
-		double getEval();
+		int getEval();
 		
+		/**
+		 * Renvoie la couleur du joueur devant jouer à l'état du noeud.
+		 */
+		Color getPlayerColor();
 		/**
 		 * Modifie l'évaluation du noeud.
 		 */
-		void setEval(double e);
+		void setEval(int e);
 		
 		/**
 		 * Renvoie la couleur de la case de coordonnée move dans l'état
