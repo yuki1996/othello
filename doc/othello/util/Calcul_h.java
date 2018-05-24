@@ -111,15 +111,14 @@ public class Calcul_h{
 		}else {
 		
 			double val = Double.NEGATIVE_INFINITY;
-			
-			Iterator<Node> childs = node.iterator();
-			
-			if(childs == null) {
+						
+			if(node.children().isEmpty()) {
 				if(node.getPlayerColor() == Color.BLACK)
 					return heuristique(node);
 				else
 					return -heuristique(node);
 			}else {
+				Iterator<Node> childs = node.iterator();
 				while( alpha < beta && childs.hasNext()){
 					val = Double.max(val, -Negalphabeta(childs.next(),-beta,-alpha));
 					alpha = Double.max(val, alpha);
