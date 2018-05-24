@@ -52,7 +52,11 @@ public class BoardView {
         placeComponents();
         createController();
         if (model.getCurrentPlayer().getClass() == AI.class){
-       		model.turn(null);
+        	new Thread(new Runnable() {
+				public void run() {
+					model.turn(null);
+				}
+			}).start();
         }
     }
     
@@ -286,7 +290,12 @@ public class BoardView {
     	
     	public void mouseClicked(MouseEvent e) {
     		if (possibilities.contains(c)) {
-    			model.turn(c);
+
+    			new Thread(new Runnable() {
+    				public void run() {
+    					model.turn(c);
+    				}
+    			}).start();
     		}
     	}
     }

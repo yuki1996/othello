@@ -50,8 +50,12 @@ public class AI extends AbstractPlayer{
 	@Override
 	public void play(Coord xy) {
 		startTurn();
-		sTree.move(board.getLastShot());
-		System.out.println("plop");
+		while (board.getLastShot() != sTree.getRoot().getLastShot()
+			&& board.getPointsPlayer(Color.BLACK) != sTree.getRoot().getPointsPlayer(Color.BLACK)
+			&& board.getPointsPlayer(Color.WHITE) != sTree.getRoot().getPointsPlayer(Color.WHITE)) {
+				sTree.move(board.getLastShot());
+		}
+		calcul_h = new Calcul_h(sTree.getRoot(), maxDepth);
 
 		//if (!sTree.getRoot().children().isEmpty()) {
 			Coord c = getChoice(strategy);
@@ -100,7 +104,6 @@ public class AI extends AbstractPlayer{
 	private Coord getChoice(String strategy) {
 		
 		for (Node s : sTree.getRoot()) {
-			System.out.println("maxD:" + maxDepth + ":start=" + strategy);
 			s.setEval(calcul_h.getValue(strategy));
 		}
 

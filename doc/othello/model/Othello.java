@@ -113,8 +113,8 @@ public class Othello implements IOthello {
 	}
 	
 	public void turn(Coord xy) {
-		new Thread(new Runnable() {
-			public void run() {
+//		new Thread(new Runnable() {
+//			public void run() {
 				if (isGameOver()) {
 					throw new IllegalArgumentException("fin du jeu");
 				} else if (canPlay(currentPlayer)) {
@@ -137,9 +137,10 @@ public class Othello implements IOthello {
 						turn(null);
 			        }
 				}
-			}
-		}).start();
+//			}
+//		}).start();
 	}
+	
 	
 	public void addPropertyChangeListener(String property, PropertyChangeListener l) {
 		if (l == null) {
