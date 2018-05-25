@@ -98,7 +98,7 @@ public class AI extends AbstractPlayer{
 	}
 	
 	private int probaChoice(int size) {
-		return (int) (size * Math.pow(Math.random(), - (Math.log(bestProba) / Math.log(size))));
+		return (int) (size * Math.pow(Math.random(), - (Math.log(size) / Math.log(bestProba))));
 	}
 	
 	private Coord getChoice(String strategy) {
